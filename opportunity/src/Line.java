@@ -14,6 +14,6 @@ public class Line {
         this.length = (float) Line.lineLength(one, two);
     }
     public static double lineLength(Point one, Point two){
-        return Math.sqrt(Math.pow((one.getX() - two.getX()), 2) + Math.pow((one.getY() - two.getY()), 2));;
+        return Math.sqrt(Math.pow((one.getX() - two.getX()), 2) + Math.pow((one.getY() - two.getY()), 2));
     }
 }
