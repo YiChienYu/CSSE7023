@@ -19,8 +19,7 @@ public class Point {
         return Y;
     }
 
-    public void movePoint(float deltaX, float deltaY){
-        this.X += deltaX;
-        this.Y += deltaY;
+    public Point movePoint(float deltaX, float deltaY){
+        return new Point(X+deltaX, Y+deltaY);
     }
 }
