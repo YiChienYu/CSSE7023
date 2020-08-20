@@ -1,6 +1,16 @@
 public class Point {
-    private float X = 0;
-    private float  Y = 0;
+    private float X ;
+    private float  Y;
+
+    public Point(){
+        this.X = 0;
+        this.Y = 0;
+    }
+
+    public Point(float X, float Y){
+        this.X = X;
+        this.Y = Y;
+    }
 
     public float  getX(){
         return X;
