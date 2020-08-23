@@ -138,7 +138,7 @@ public class SimpleDisplay {
             e.printStackTrace();
         }
         */
-        
+
         return building;
     }
 
