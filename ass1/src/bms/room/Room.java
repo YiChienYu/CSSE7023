@@ -58,7 +58,7 @@ public class Room extends Object{
 
     public void addSensor(Sensor sensor) throws DuplicateSensorException{
         if(this.getSensor(sensor.getClass().getSimpleName()) != null){
-            throw new DuplicateSensorException;
+            throw new DuplicateSensorException();
         }else{
             if(sensors.size() == 0){
                 sensors.add(sensor);
@@ -69,7 +69,8 @@ public class Room extends Object{
                         break;
                     }else{
                         if(i==sensors.size()-1){
-                            sensors.add(sensors.size(), sensor);
+                            sensors.add(sensor);
+                            break;
                         }else{
                             continue;
                         }
@@ -78,7 +79,7 @@ public class Room extends Object{
                 }
             }
         }
-    }
+
 
     public String toString(){
         return String.format("Room #%d: type=%s, area=%4.2fm^2, sensors=%d", roomNumber, type.toString(), area, sensors.size());
