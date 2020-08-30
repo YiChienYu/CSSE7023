@@ -1,4 +1,4 @@
 package bms.exceptions;
 
-public class FireDrillException {
+public class FireDrillException extends Exception{
 }

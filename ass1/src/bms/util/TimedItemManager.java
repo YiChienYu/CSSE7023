@@ -20,6 +20,7 @@ public class TimedItemManager extends Object implements TimedItem{
         }return singleton;
     }
 
+    @Override
     public void elapseOneMinute(){
         for(int i=0;i<itemManager.size();i++){
             itemManager.get(i).elapseOneMinute();

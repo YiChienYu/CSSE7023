@@ -1,4 +1,7 @@
 package bms.room;
 
-public class RoomType {
+public enum RoomType{
+    LABORATORY,
+    OFFICE,
+    STUDY;
 }
