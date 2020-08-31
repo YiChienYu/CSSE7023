@@ -44,10 +44,6 @@ public class Building implements FireDrill {
             }
         }
         if(newFloor.getFloorNumber() > 1){
-            /*int previousFloorIndex = floors.indexOf(newFloor.getFloorNumber() -1);
-            if(previousFloorIndex != -1){
-                throw new NoFloorBelowException();
-            }*/
             if(floors.get(newFloor.getFloorNumber() -2).getFloorNumber() != (newFloor.getFloorNumber() -1)){
                 throw new NoFloorBelowException();
             }
