@@ -44,11 +44,14 @@ public class Building implements FireDrill {
             }
         }
         if(newFloor.getFloorNumber() > 1){
-            int previousFloorIndex = floors.indexOf(newFloor.getFloorNumber() -1);
+            /*int previousFloorIndex = floors.indexOf(newFloor.getFloorNumber() -1);
             if(previousFloorIndex != -1){
                 throw new NoFloorBelowException();
+            }*/
+            if(floors.get(newFloor.getFloorNumber() -2).getFloorNumber() != (newFloor.getFloorNumber() -1)){
+                throw new NoFloorBelowException();
             }
-            else if(newFloor.calculateArea() > floors.get(previousFloorIndex).calculateArea()){
+            else if(newFloor.calculateArea() > floors.get(newFloor.getFloorNumber() -2).calculateArea()){
                 throw new FloorTooSmallException();
             }
         }
