@@ -39,7 +39,7 @@ public class SimpleDisplay {
          * This is to be expected until you start to uncomment code below.
          */
 
-        /*
+
         Floor floor1 = new Floor(1, 10, 10);
         Room room1 = new Room(101, RoomType.STUDY, 20);
         Room room2 = new Room(102, RoomType.STUDY, 20);
@@ -137,7 +137,7 @@ public class SimpleDisplay {
                 FloorTooSmallException e) {
             e.printStackTrace();
         }
-        */
+
 
         return building;
     }
