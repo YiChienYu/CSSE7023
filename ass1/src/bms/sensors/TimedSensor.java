@@ -4,7 +4,7 @@ import bms.util.TimedItemManager;
 
 import java.util.Arrays;
 
-public abstract class TimedSensor extends Object implements TimedItem, Sensor{
+public abstract class TimedSensor implements TimedItem, Sensor{
 
     private int updateFrequency;
     protected int[] sensorReadings;

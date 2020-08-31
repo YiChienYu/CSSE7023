@@ -2,11 +2,10 @@ package bms.room;
 
 import java.util.ArrayList;
 import bms.sensors.Sensor;
-import bms.sensors.TimedSensor;
 
 import java.util.List;
 
-public class Room extends Object{
+public class Room{
     private int roomNumber;
     RoomType type;
     double area;
@@ -73,15 +72,15 @@ public class Room extends Object{
                             break;
                         }else{
                             continue;
+                            }
                         }
-                    }
                     }
                 }
             }
         }
 
-
+    @Override
     public String toString(){
-        return String.format("Room #%d: type=%s, area=%4.2fm^2, sensors=%d", roomNumber, type.toString(), area, sensors.size());
+        return String.format("Room #%d: type=%s, area=%.2fm^2, sensors=%d", roomNumber, type.toString(), area, sensors.size());
     }
 }

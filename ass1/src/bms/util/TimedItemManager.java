@@ -1,7 +1,7 @@
 package bms.util;
 import java.util.ArrayList;
 
-public class TimedItemManager extends Object implements TimedItem{
+public class TimedItemManager implements TimedItem{
 
     private static TimedItemManager singleton = null;
     private ArrayList<TimedItem> itemManager = new ArrayList<TimedItem>();
