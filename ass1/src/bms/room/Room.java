@@ -40,7 +40,8 @@ public class Room{
     }
 
     public List<Sensor> getSensors(){
-        return sensors;
+
+        return (ArrayList<Sensor>) sensors.clone();
     }
 
     public void setFireDrill(boolean fireDrill){

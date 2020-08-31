@@ -30,8 +30,10 @@ public class Floor implements FireDrill{
     public static int getMinLength(){
         return 5;
     }
+
     public List<Room> getRooms(){
-        return rooms;
+
+        return (ArrayList<Room>) rooms.clone();
     }
 
     public double getWidth(){
