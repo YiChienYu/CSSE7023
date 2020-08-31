@@ -8,9 +8,9 @@ import java.util.List;
 
 public class Room{
     private int roomNumber;
-    RoomType type;
-    double area;
-    boolean fireDrillState = false;
+    private RoomType type;
+    private double area;
+    private boolean fireDrillState = false;
     private ArrayList<Sensor> sensors;
 
     public Room(int roomNumber, RoomType type, double area){
