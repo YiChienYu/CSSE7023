@@ -68,7 +68,7 @@ public class Floor implements FireDrill{
             throw new IllegalArgumentException();
         }
         for(int i = 0; i<rooms.size();i++){
-            if(rooms.indexOf(newRoom.getRoomNumber())!= -1){
+            if(rooms.get(i).getRoomNumber() == newRoom.getRoomNumber()){
                 throw new DuplicateRoomException();
             }
         }
