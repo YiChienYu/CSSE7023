@@ -34,8 +34,12 @@ public class Building implements FireDrill {
         }return null;
     }
 
-    public void addFloor(Floor newFloor) throws IllegalArgumentException, DuplicateFloorException, NoFloorBelowException, FloorTooSmallException{
-        if(newFloor.getFloorNumber() <= 0 || newFloor.getWidth() < Floor.getMinWidth() || newFloor.getLength() < Floor.getMinLength()){
+    public void addFloor(Floor newFloor) throws IllegalArgumentException,
+            DuplicateFloorException, NoFloorBelowException,
+            FloorTooSmallException{
+        if(newFloor.getFloorNumber() <= 0 ||
+                newFloor.getWidth() < Floor.getMinWidth() ||
+                newFloor.getLength() < Floor.getMinLength()){
             throw new IllegalArgumentException();
         }
         for(int i=0; i<floors.size(); i++){
@@ -47,7 +51,8 @@ public class Building implements FireDrill {
             if(floors.size()!=newFloor.getFloorNumber()-1){
                 throw new NoFloorBelowException();
             }
-            else if(newFloor.calculateArea() > floors.get(newFloor.getFloorNumber() -2).calculateArea()){
+            else if(newFloor.calculateArea() >
+                    floors.get(newFloor.getFloorNumber() -2).calculateArea()){
                 throw new FloorTooSmallException();
             }
         }
@@ -77,7 +82,8 @@ public class Building implements FireDrill {
 
     @Override
     public String toString(){
-        return String.format( "Building: name=\"%s\", floors=%d", name, floors.size());
+        return String.format( "Building: name=\"%s\", floors=%d", name,
+                floors.size());
     }
 
 }

@@ -14,7 +14,8 @@ public abstract class TimedSensor implements TimedItem, Sensor{
 
 
     public TimedSensor(int[] sensorReadings, int updateFrequency) throws IllegalArgumentException{
-        if(updateFrequency>5 || updateFrequency < 1 || sensorReadings == null || sensorReadings.length < 1){
+        if(updateFrequency>5 || updateFrequency < 1 || sensorReadings == null ||
+                sensorReadings.length < 1){
             throw new IllegalArgumentException();
         }
         for(int i=0;i< sensorReadings.length;i++){
@@ -60,6 +61,7 @@ public abstract class TimedSensor implements TimedItem, Sensor{
         String commaSeparated = Arrays.toString(sensorReadings);
         commaSeparated = commaSeparated.substring(1, commaSeparated.length()-1);
         commaSeparated = commaSeparated.replaceAll("\\s+","");
-        return String.format("TimedSensor: freq=%d, readings=%s", updateFrequency, commaSeparated);
+        return String.format("TimedSensor: freq=%d, readings=%s",
+                updateFrequency, commaSeparated);
     }
 }

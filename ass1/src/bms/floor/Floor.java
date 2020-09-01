@@ -63,7 +63,8 @@ public class Floor implements FireDrill{
         }return totalArea;
     }
 
-    public void addRoom(Room newRoom) throws DuplicateRoomException, InsufficientSpaceException{
+    public void addRoom(Room newRoom) throws DuplicateRoomException,
+            InsufficientSpaceException{
         if(newRoom.getArea() < Room.getMinArea()){
             throw new IllegalArgumentException();
         }
@@ -86,7 +87,7 @@ public class Floor implements FireDrill{
         for(int i = 0; i<rooms.size();i++) {
             if (roomType == null) {
                 rooms.get(i).setFireDrill(true);
-            } else if (roomType.equals(rooms.get(i).getClass().getSimpleName())) {
+            }else if (roomType.equals(rooms.get(i).getClass().getSimpleName())){
                 rooms.get(i).setFireDrill(true);
             }
         }
@@ -100,6 +101,7 @@ public class Floor implements FireDrill{
 
     @Override
     public String toString(){
-        return String.format("Floor #%d: width=%.2fm, length=%.2fm, rooms=%d", floorNumber, width, length, rooms.size());
+        return String.format("Floor #%d: width=%.2fm, length=%.2fm, rooms=%d",
+                floorNumber, width, length, rooms.size());
     }
 }

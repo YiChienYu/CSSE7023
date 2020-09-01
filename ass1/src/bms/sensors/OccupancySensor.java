@@ -6,7 +6,8 @@ public class OccupancySensor extends TimedSensor implements HazardSensor{
 
     private int capacity;
 
-    public OccupancySensor(int[] sensorReadings, int updateFrequency, int capacity) throws IllegalArgumentException{
+    public OccupancySensor(int[] sensorReadings, int updateFrequency,
+                           int capacity) throws IllegalArgumentException{
         super(sensorReadings, updateFrequency);
 
         if(capacity < 0){
@@ -30,6 +31,7 @@ public class OccupancySensor extends TimedSensor implements HazardSensor{
 
     @Override
     public String toString(){
-        return super.toString() + String.format(", type=OccupancySensor, capacity=%d", capacity);
+        return super.toString() + String.format(", type=OccupancySensor, " +
+                "capacity=%d", capacity);
     }
 }

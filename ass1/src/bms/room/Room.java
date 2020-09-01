@@ -64,7 +64,8 @@ public class Room{
                 sensors.add(sensor);
             }else{
                 for(int i=0; i< sensors.size();i++){
-                    if(sensor.getClass().getSimpleName().compareTo(sensors.get(i).getClass().getCanonicalName()) < 0){
+                    if(sensor.getClass().getSimpleName().compareTo
+                            (sensors.get(i).getClass().getCanonicalName()) < 0){
                         sensors.add(i, sensor);
                         break;
                     }else{
@@ -82,6 +83,7 @@ public class Room{
 
     @Override
     public String toString(){
-        return String.format("Room #%d: type=%s, area=%.2fm^2, sensors=%d", roomNumber, type.toString(), area, sensors.size());
+        return String.format("Room #%d: type=%s, area=%.2fm^2, sensors=%d",
+                roomNumber, type.toString(), area, sensors.size());
     }
 }

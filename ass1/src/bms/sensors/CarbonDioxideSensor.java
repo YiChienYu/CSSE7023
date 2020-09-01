@@ -8,9 +8,11 @@ public class CarbonDioxideSensor extends TimedSensor implements HazardSensor{
     private int variationLimit;
 
     public CarbonDioxideSensor(int[] sensorReadings, int updateFrequency,
-                               int idealValue, int variationLimit) throws IllegalArgumentException{
+                               int idealValue, int variationLimit)
+                                throws IllegalArgumentException{
         super(sensorReadings, updateFrequency);
-        if(idealValue <= 0 || variationLimit <= 0 || (idealValue - variationLimit) < 0){
+        if(idealValue <= 0 || variationLimit <= 0 ||
+                (idealValue - variationLimit) < 0){
             throw new IllegalArgumentException();
         }
         this.idealValue = idealValue;
@@ -31,10 +33,12 @@ public class CarbonDioxideSensor extends TimedSensor implements HazardSensor{
         if (0 <= this.getCurrentReading() && this.getCurrentReading() < 1000) {
             return 0;
         }
-        else if(1000 <= this.getCurrentReading() && this.getCurrentReading() < 2000){
+        else if(1000 <= this.getCurrentReading() &&
+                this.getCurrentReading() < 2000){
             return 25;
         }
-        else if(2000 <= this.getCurrentReading() && this.getCurrentReading() < 5000){
+        else if(2000 <= this.getCurrentReading() &&
+                this.getCurrentReading() < 5000){
             return 50;
         }
         return 100;
@@ -42,6 +46,7 @@ public class CarbonDioxideSensor extends TimedSensor implements HazardSensor{
 
     @Override
     public String toString(){
-        return super.toString() + String.format(", type=CarbonDioxideSensor, idealPPM=%d, varLimit=%d", idealValue, variationLimit);
+        return super.toString() + String.format(", type=CarbonDioxideSensor, " +
+                "idealPPM=%d, varLimit=%d", idealValue, variationLimit);
     }
 }
