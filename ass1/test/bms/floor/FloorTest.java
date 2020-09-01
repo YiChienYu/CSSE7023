@@ -1,5 +1,6 @@
 package bms.floor;
 
+import bms.exceptions.DuplicateRoomException;
 import bms.room.Room;
 import bms.room.RoomType;
 import org.junit.After;
@@ -51,11 +52,12 @@ public class FloorTest {
     @Test
     public void getRoomByNumber(){
         Assert.assertEquals(null, floor.getRoomByNumber(5));
-        Room r = new Room(4, RoomType.OFFICE, 6);
-        try{floor.addRoom(r);
+        Room room1 = new Room(4, RoomType.OFFICE, 6);
+        try{floor.addRoom(room1);
         }catch (Exception e){}
         Assert.assertEquals(null, floor.getRoomByNumber(5));
-        Assert.assertEquals(r, floor.getRoomByNumber(4));
+        Assert.assertEquals(room1, floor.getRoomByNumber(4));
+
     }
 
     @Test

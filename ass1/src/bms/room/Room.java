@@ -2,8 +2,7 @@ package bms.room;
 
 import java.util.ArrayList;
 import bms.sensors.Sensor;
-import bms.exceptions.DuplicateSensorException;
-
+import bms.exceptions.*;
 import java.util.List;
 
 public class Room{
