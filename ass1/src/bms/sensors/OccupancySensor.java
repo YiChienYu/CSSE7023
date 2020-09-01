@@ -30,10 +30,6 @@ public class OccupancySensor extends TimedSensor implements HazardSensor{
 
     @Override
     public String toString(){
-        String commaSeparated = Arrays.toString(sensorReadings);
-        commaSeparated = commaSeparated.substring(1, commaSeparated.length()-1);
-        commaSeparated = commaSeparated.replaceAll("\\s+","");
-        return String.format("TimedSensor: freq=%d, readings=%s, type=OccupancySensor, capacity=%d",
-                this.getUpdateFrequency(), commaSeparated, this.capacity);
+        return super.toString() + String.format(", type=OccupancySensor, capacity=%d", capacity);
     }
 }

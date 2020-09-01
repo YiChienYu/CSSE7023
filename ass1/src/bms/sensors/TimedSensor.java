@@ -7,7 +7,7 @@ import java.util.Arrays;
 public abstract class TimedSensor implements TimedItem, Sensor{
 
     private int updateFrequency;
-    protected int[] sensorReadings;
+    private int[] sensorReadings;
     private int currentReading;
     private int currentPosition = 0;
     private int timeElapsed;
