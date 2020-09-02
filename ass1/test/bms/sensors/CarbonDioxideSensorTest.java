@@ -57,6 +57,12 @@ public class CarbonDioxideSensorTest {
         sensor = new CarbonDioxideSensor(noSensorReadings, 2,11,7);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void sensorReadingsNegativeElement(){
+        int[] noSensorReadings = new int[]{100, 200, -1000, 6000};
+        sensor = new CarbonDioxideSensor(noSensorReadings, 2,11,7);
+    }
+
     @Test
     public void getVariationLimit(){
         sensor = new CarbonDioxideSensor(readings, 2,11,7);
@@ -79,6 +85,7 @@ public class CarbonDioxideSensorTest {
     public void getHazardLevelTwentyFive(){
         sensor = new CarbonDioxideSensor(readings, 2, 11, 7);
         sensor.elapseOneMinute();
+        sensor.elapseOneMinute();
         assertEquals(25, sensor.getHazardLevel());
     }
 
@@ -90,12 +97,14 @@ public class CarbonDioxideSensorTest {
         sensor.elapseOneMinute();
         sensor.elapseOneMinute();
         sensor.elapseOneMinute();
+        sensor.elapseOneMinute();
         assertEquals(50, sensor.getHazardLevel());
     }
 
     @Test
     public void getHazardLevelHundred(){
         sensor = new CarbonDioxideSensor(readings, 2, 11, 7);
+        sensor.elapseOneMinute();
         sensor.elapseOneMinute();
         sensor.elapseOneMinute();
         sensor.elapseOneMinute();

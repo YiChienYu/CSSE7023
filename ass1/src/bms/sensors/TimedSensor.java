@@ -26,8 +26,8 @@ public abstract class TimedSensor implements TimedItem, Sensor{
         this.updateFrequency = updateFrequency;
         this.sensorReadings = sensorReadings;
         this.currentReading = sensorReadings[currentPosition];
-        this.timeElapsed = 0;
         TimedItemManager.getInstance().registerTimedItem(this);
+        this.timeElapsed = 0;
     }
 
     @Override
