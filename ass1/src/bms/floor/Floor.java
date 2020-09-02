@@ -53,7 +53,7 @@ public class Floor implements FireDrill{
     }
 
     public double calculateArea(){
-        return width*length;
+        return this.getWidth()*this.getLength();
     }
 
     public float occupiedArea(){
