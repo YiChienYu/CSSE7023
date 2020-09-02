@@ -12,10 +12,14 @@ import java.util.ArrayList;
 
 public class FloorTest {
     private Floor floor;
+    private Room room1;
+    private Room room2;
 
     @Before
     public void setFloor() throws Exception{
         floor = new Floor(1, 10.5, 11);
+        room1 = new Room(1, RoomType.STUDY, 80);
+        room2 = new Room(2,RoomType.OFFICE, 40);
     }
 
     @After
