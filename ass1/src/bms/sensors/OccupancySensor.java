@@ -23,10 +23,12 @@ public class OccupancySensor extends TimedSensor implements HazardSensor{
 
     @Override
     public int getHazardLevel(){
-        if(getCurrentReading() > capacity){
+        if(this.getCurrentReading() >= capacity){
             return 100;
         }
-        return 0;
+        float ratio = ((float) this.getCurrentReading())/capacity;
+        int roundRatio = (int) Math.floor(ratio);
+        return roundRatio;
     }
 
     @Override

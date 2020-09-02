@@ -26,8 +26,9 @@ public abstract class TimedSensor implements TimedItem, Sensor{
         this.updateFrequency = updateFrequency;
         this.sensorReadings = sensorReadings;
         this.currentReading = sensorReadings[currentPosition];
+        this.timeElapsed = -1;
         TimedItemManager.getInstance().registerTimedItem(this);
-        this.timeElapsed = 0;
+
     }
 
     @Override
@@ -48,7 +49,7 @@ public abstract class TimedSensor implements TimedItem, Sensor{
     public void elapseOneMinute(){
         timeElapsed++;
         int remainder = (this.getTimeElapsed()) % (this.getUpdateFrequency());
-        if(remainder == 0){
+        if(remainder == 0 && timeElapsed!= 0){
             if(currentPosition == (sensorReadings.length -1)){
                 currentPosition = 0;
             }else{
