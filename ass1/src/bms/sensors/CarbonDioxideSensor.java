@@ -40,8 +40,9 @@ public class CarbonDioxideSensor extends TimedSensor implements HazardSensor{
         else if(2000 <= this.getCurrentReading() &&
                 this.getCurrentReading() < 5000){
             return 50;
+        }else{
+            return 100;
         }
-        return 100;
     }
 
     @Override
