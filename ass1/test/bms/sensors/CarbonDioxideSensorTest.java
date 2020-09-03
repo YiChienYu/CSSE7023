@@ -113,4 +113,12 @@ public class CarbonDioxideSensorTest {
         assertEquals(100, sensor.getHazardLevel());
     }
 
+    @Test
+    public void toStringTest(){
+        sensor = new CarbonDioxideSensor(readings,2, 15, 7);
+        assertEquals("TimedSensor: freq=2, readings=100,1500,4000,5000, " +
+                "type=CarbonDioxideSensor, idealPPM=15, varLimit=7",
+                sensor.toString());
+    }
+
 }
