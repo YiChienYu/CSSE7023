@@ -76,41 +76,21 @@ public class CarbonDioxideSensorTest {
     }
 
     @Test
-    public void getHazardLevelZero(){
+    public void getHazardLevel(){
         sensor = new CarbonDioxideSensor(readings, 2, 11, 7);
         assertEquals(0, sensor.getHazardLevel());
-    }
-
-    @Test
-    public void getHazardLevelTwentyFive(){
-        sensor = new CarbonDioxideSensor(readings, 2, 11, 7);
         sensor.elapseOneMinute();
         sensor.elapseOneMinute();
         assertEquals(25, sensor.getHazardLevel());
-    }
-
-    @Test
-    public void getHazardLevelFifty(){
-        sensor = new CarbonDioxideSensor(readings, 3, 11, 7);
-        sensor.elapseOneMinute();
-        sensor.elapseOneMinute();
-        sensor.elapseOneMinute();
-        sensor.elapseOneMinute();
         sensor.elapseOneMinute();
         sensor.elapseOneMinute();
         assertEquals(50, sensor.getHazardLevel());
-    }
-
-    @Test
-    public void getHazardLevelHundred(){
-        sensor = new CarbonDioxideSensor(readings, 2, 11, 7);
-        sensor.elapseOneMinute();
-        sensor.elapseOneMinute();
-        sensor.elapseOneMinute();
-        sensor.elapseOneMinute();
         sensor.elapseOneMinute();
         sensor.elapseOneMinute();
         assertEquals(100, sensor.getHazardLevel());
+        sensor.elapseOneMinute();
+        sensor.elapseOneMinute();
+        assertEquals(0, sensor.getHazardLevel());
     }
 
     @Test
