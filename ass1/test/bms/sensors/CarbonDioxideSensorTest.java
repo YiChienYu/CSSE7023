@@ -9,15 +9,18 @@ public class CarbonDioxideSensorTest {
 
     private int[] readings;
     private CarbonDioxideSensor sensor;
+    private CarbonDioxideSensor sensor1;
 
     @Before
     public void setSensor(){
         readings = new int[]{100,1500,4000,5000};
+        sensor1 = new CarbonDioxideSensor(readings, 2, 11, 7);
     }
 
     @After
-    public void tearDown(){
+    public void tearDown() throws Exception{
         sensor = null;
+        sensor1 = null;
         readings = null;
     }
 
@@ -65,40 +68,37 @@ public class CarbonDioxideSensorTest {
 
     @Test
     public void getVariationLimit(){
-        sensor = new CarbonDioxideSensor(readings, 2,11,7);
-        assertEquals(7, sensor.getVariationLimit());
+        assertEquals(7, sensor1.getVariationLimit());
     }
 
     @Test
     public void getIdealValue(){
-        sensor = new CarbonDioxideSensor(readings, 2,11,7);
-        assertEquals(11, sensor.getIdealValue());
+        assertEquals(11, sensor1.getIdealValue());
     }
 
     @Test
     public void getHazardLevel(){
-        sensor = new CarbonDioxideSensor(readings, 2, 11, 7);
-        assertEquals(0, sensor.getHazardLevel());
-        sensor.elapseOneMinute();
-        sensor.elapseOneMinute();
-        assertEquals(25, sensor.getHazardLevel());
-        sensor.elapseOneMinute();
-        sensor.elapseOneMinute();
-        assertEquals(50, sensor.getHazardLevel());
-        sensor.elapseOneMinute();
-        sensor.elapseOneMinute();
-        assertEquals(100, sensor.getHazardLevel());
-        sensor.elapseOneMinute();
-        sensor.elapseOneMinute();
-        assertEquals(0, sensor.getHazardLevel());
+        assertEquals(0, sensor1.getHazardLevel());
+        sensor1.elapseOneMinute();
+        sensor1.elapseOneMinute();
+        assertEquals(25, sensor1.getHazardLevel());
+        sensor1.elapseOneMinute();
+        sensor1.elapseOneMinute();
+        assertEquals(50, sensor1.getHazardLevel());
+        sensor1.elapseOneMinute();
+        sensor1.elapseOneMinute();
+        assertEquals(100, sensor1.getHazardLevel());
+        sensor1.elapseOneMinute();
+        sensor1.elapseOneMinute();
+        assertEquals(0, sensor1.getHazardLevel());
     }
 
     @Test
     public void toStringTest(){
-        sensor = new CarbonDioxideSensor(readings,2, 15, 7);
-        assertEquals("TimedSensor: freq=2, readings=100,1500,4000,5000, " +
-                "type=CarbonDioxideSensor, idealPPM=15, varLimit=7",
-                sensor.toString());
+        assertEquals("TimedSensor: freq=2, readings=100,1500,4000," +
+                        "5000, type=CarbonDioxideSensor, idealPPM=11," +
+                        " varLimit=7",
+                sensor1.toString());
     }
 
 }
