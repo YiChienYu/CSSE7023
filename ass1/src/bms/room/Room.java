@@ -65,7 +65,7 @@ public class Room{
             }else{
                 for(int i=0; i< sensors.size();i++){
                     if(sensor.getClass().getSimpleName().compareTo
-                            (sensors.get(i).getClass().getCanonicalName()) < 0){
+                            (sensors.get(i).getClass().getSimpleName()) < 0){
                         sensors.add(i, sensor);
                         break;
                     }else{
