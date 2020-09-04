@@ -83,11 +83,11 @@ public class Floor implements FireDrill{
     }
 
     @Override
-    public void fireDrill(RoomType roomType) throws FireDrillException {
+    public void fireDrill(RoomType roomType){
         for(int i = 0; i<rooms.size();i++) {
             if (roomType == null) {
                 rooms.get(i).setFireDrill(true);
-            }else if (roomType.equals(rooms.get(i).getClass().getSimpleName())){
+            }else if (roomType == rooms.get(i).getType()){
                 rooms.get(i).setFireDrill(true);
             }
         }
