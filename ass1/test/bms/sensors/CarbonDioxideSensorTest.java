@@ -62,8 +62,8 @@ public class CarbonDioxideSensorTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void sensorReadingsNegativeElement(){
-        int[] noSensorReadings = new int[]{100, 200, -1000, 6000};
-        sensor = new CarbonDioxideSensor(noSensorReadings, 2,11,7);
+        int[] negativeSensorReadings = new int[]{100, 200, -1000, 6000};
+        sensor = new CarbonDioxideSensor(negativeSensorReadings, 2,11,7);
     }
 
     @Test
