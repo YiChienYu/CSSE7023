@@ -80,6 +80,23 @@ public class CarbonDioxideSensor extends TimedSensor implements HazardSensor {
         }
     }
 
+    /**
+     * Returns the human-readable string representation of this CO2 sensor.
+     * <p>
+     * The format of the string to return is "TimedSensor:
+     * freq='updateFrequency', readings='sensorReadings',
+     * type=CarbonDioxideSensor, idealPPM='idealValue',
+     * varLimit='variationLimit'" without the single quotes, where
+     * 'updateFrequency' is this sensor's update frequency (in minutes),
+     * 'sensorReadings' is a comma-separated list of this sensor's readings,
+     * 'idealValue' is this sensor's ideal CO2 concentration, and
+     * 'variationLimit' is this sensor's variation limit.
+     * <p>
+     * For example: "TimedSensor: freq=5, readings=702,694,655,680,711,
+     * type=CarbonDioxideSensor, idealPPM=600, varLimit=250"
+     *
+     * @return string representation of this sensor
+     */
     @Override
     public String toString() {
         return super.toString() + String.format(", type=CarbonDioxideSensor, " +
