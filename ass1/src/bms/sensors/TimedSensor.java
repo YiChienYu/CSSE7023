@@ -9,7 +9,7 @@ public abstract class TimedSensor implements TimedItem, Sensor{
     private int updateFrequency;
     private int[] sensorReadings;
     private int currentReading;
-    private int currentPosition = 0;
+    private int currentPosition;
     private int timeElapsed;
 
 
@@ -25,8 +25,9 @@ public abstract class TimedSensor implements TimedItem, Sensor{
         }
         this.updateFrequency = updateFrequency;
         this.sensorReadings = sensorReadings;
+        this.currentPosition = 0;
         this.currentReading = sensorReadings[currentPosition];
-        this.timeElapsed = -1;
+        this.timeElapsed = 0;
         TimedItemManager.getInstance().registerTimedItem(this);
 
     }

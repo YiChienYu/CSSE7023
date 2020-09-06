@@ -10,7 +10,6 @@ public class TimedItemManager implements TimedItem{
 
     public void registerTimedItem(TimedItem timedItem){
         itemManager.add(timedItem);
-        timedItem.elapseOneMinute();
     }
 
 

@@ -159,6 +159,9 @@ public class FloorTest {
             fail();
         }
         floor.fireDrill(null);
+        assertEquals(true, room1.fireDrillOngoing());
+        assertEquals(true, room2.fireDrillOngoing());
+        assertEquals(true, room3.fireDrillOngoing());
     }
 
     @Test
@@ -170,8 +173,10 @@ public class FloorTest {
         }catch (Exception e){
             fail();
         }
-        floor.fireDrill(RoomType.OFFICE);
         floor.fireDrill(RoomType.STUDY);
+        assertEquals(true, room1.fireDrillOngoing());
+        assertEquals(false, room2.fireDrillOngoing());
+        assertEquals(false, room3.fireDrillOngoing());
     }
 
     @Test
@@ -184,7 +189,11 @@ public class FloorTest {
             fail();
         }
         floor.fireDrill(RoomType.STUDY);
+        assertEquals(true, room1.fireDrillOngoing());
         floor.cancelFireDrill();
+        assertEquals(false, room1.fireDrillOngoing());
+        assertEquals(false, room2.fireDrillOngoing());
+        assertEquals(false, room3.fireDrillOngoing());
     }
 
     @Test
