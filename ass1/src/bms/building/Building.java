@@ -7,7 +7,6 @@ import bms.exceptions.*;
 import java.util.List;
 import java.util.ArrayList;
 
-
 public class Building implements FireDrill {
 
     private String name;

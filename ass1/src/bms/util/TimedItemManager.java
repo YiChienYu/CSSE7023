@@ -1,4 +1,5 @@
 package bms.util;
+
 import java.util.ArrayList;
 
 public class TimedItemManager implements TimedItem{
@@ -11,7 +12,6 @@ public class TimedItemManager implements TimedItem{
     public void registerTimedItem(TimedItem timedItem){
         itemManager.add(timedItem);
     }
-
 
     public static TimedItemManager getInstance(){
         if(singleton == null){

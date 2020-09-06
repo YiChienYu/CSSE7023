@@ -1,7 +1,7 @@
 package bms.sensors;
+
 import bms.util.TimedItem;
 import bms.util.TimedItemManager;
-
 import java.util.Arrays;
 
 public abstract class TimedSensor implements TimedItem, Sensor{

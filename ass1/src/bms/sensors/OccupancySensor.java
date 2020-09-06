@@ -1,7 +1,5 @@
 package bms.sensors;
 
-import java.util.Arrays;
-
 public class OccupancySensor extends TimedSensor implements HazardSensor{
 
     private int capacity;

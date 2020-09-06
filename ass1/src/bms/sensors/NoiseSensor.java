@@ -1,6 +1,6 @@
 package bms.sensors;
+
 import java.lang.Math;
-import java.util.Arrays;
 
 public class NoiseSensor extends TimedSensor implements HazardSensor{
 

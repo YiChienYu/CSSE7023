@@ -1,7 +1,5 @@
 package bms.sensors;
 
-import java.util.Arrays;
-
 public class TemperatureSensor extends TimedSensor implements HazardSensor{
 
     public TemperatureSensor(int[] sensorReadings){

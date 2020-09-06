@@ -1,7 +1,5 @@
 package bms.sensors;
 
-import java.util.Arrays;
-
 public class CarbonDioxideSensor extends TimedSensor implements HazardSensor{
 
     private int idealValue;
