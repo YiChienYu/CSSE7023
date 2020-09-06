@@ -11,6 +11,7 @@ public interface FireDrill {
 
     /**
      * Set firedrill to given roomtype, null for all type.
+     *
      * @param roomType
      * @throws FireDrillException
      */

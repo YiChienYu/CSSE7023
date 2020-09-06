@@ -7,11 +7,12 @@ import java.util.ArrayList;
  * All classes that implement TimedItem must be registered with this manager,
  * which will allow their elapseOneMinute() method to be called at regular time
  * intervals.
+ * <p>
  * Once a class is registered with the timed item manager by calling
  * registerTimedItem(TimedItem) ()} and passing itself, the manager will ensure
  * that its elapseOneMinute() method is called at regular intervals.
  */
-public class TimedItemManager implements TimedItem{
+public class TimedItemManager implements TimedItem {
     /*
      * singleton instance of TimedItemManager
      */
@@ -25,17 +26,18 @@ public class TimedItemManager implements TimedItem{
     /*
      * private constructor
      */
-    private TimedItemManager(){ }
+    private TimedItemManager() { }
 
     /**
      * Returns the singleton instance of the timed item manager.
      *
      * @return singleton instance
      */
-    public static TimedItemManager getInstance(){
-        if(singleton == null){
+    public static TimedItemManager getInstance() {
+        if (singleton == null) {
             singleton = new TimedItemManager();
-        }return singleton;
+        }
+        return singleton;
     }
 
     /**
@@ -45,13 +47,13 @@ public class TimedItemManager implements TimedItem{
      *
      * @param timedItem a timed item to register with the manager
      */
-    public void registerTimedItem(TimedItem timedItem){
+    public void registerTimedItem(TimedItem timedItem) {
         itemManager.add(timedItem);
     }
 
     @Override
-    public void elapseOneMinute(){
-        for(int i=0;i<itemManager.size();i++){
+    public void elapseOneMinute() {
+        for (int i = 0; i < itemManager.size(); i++) {
             itemManager.get(i).elapseOneMinute();
         }
     }
