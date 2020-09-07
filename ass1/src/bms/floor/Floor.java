@@ -179,6 +179,9 @@ public class Floor implements FireDrill {
         }
     }
 
+    /**
+     *
+     */
     public void cancelFireDrill(){
         for (int i = 0; i < rooms.size(); i++) {
             rooms.get(i).setFireDrill(false);

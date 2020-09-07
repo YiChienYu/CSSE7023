@@ -36,9 +36,9 @@ public class Building implements FireDrill {
     public void addFloor(Floor newFloor) throws IllegalArgumentException,
             DuplicateFloorException, NoFloorBelowException,
             FloorTooSmallException{
-        if(newFloor.getFloorNumber() <= 0 ||
-                newFloor.getWidth() < Floor.getMinWidth() ||
-                newFloor.getLength() < Floor.getMinLength()){
+        if(newFloor.getFloorNumber() <= 0
+                || newFloor.getWidth() < Floor.getMinWidth()
+                || newFloor.getLength() < Floor.getMinLength()){
             throw new IllegalArgumentException();
         }
         for(int i=0; i<floors.size(); i++){

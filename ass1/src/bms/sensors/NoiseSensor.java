@@ -62,8 +62,8 @@ public class NoiseSensor extends TimedSensor implements HazardSensor {
      */
     @Override
     public int getHazardLevel() {
-        float relativeLoudness = ((float)this.calculateRelativeLoudness()) *
-                100;
+        float relativeLoudness = ((float)this.calculateRelativeLoudness())
+                * 100;
         int roundRelativeLoudness = (int) Math.floor(relativeLoudness);
         if (roundRelativeLoudness > 100) {
             return 100;
