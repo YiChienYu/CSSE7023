@@ -108,7 +108,7 @@ public abstract class TimedSensor implements TimedItem, Sensor {
     public void elapseOneMinute() {
         timeElapsed++;
         int remainder = (this.getTimeElapsed()) % (this.getUpdateFrequency());
-        if(remainder == 0 && timeElapsed != 0) {
+        if (remainder == 0 && timeElapsed != 0) {
             if (currentPosition == (sensorReadings.length -1)) {
                 currentPosition = 0;
             } else {
