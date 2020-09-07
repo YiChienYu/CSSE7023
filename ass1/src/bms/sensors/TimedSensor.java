@@ -49,9 +49,9 @@ public abstract class TimedSensor implements TimedItem, Sensor {
      * in sensorReadings is less than zero
      */
     public TimedSensor(int[] sensorReadings, int updateFrequency) throws
-            IllegalArgumentException { if (updateFrequency > 5 ||
-            updateFrequency < 1 || sensorReadings == null ||
-            sensorReadings.length < 1) {
+            IllegalArgumentException { if (updateFrequency > 5
+            || updateFrequency < 1 || sensorReadings == null
+            || sensorReadings.length < 1) {
             throw new IllegalArgumentException();
         }
         for (int i = 0; i < sensorReadings.length; i++) {
