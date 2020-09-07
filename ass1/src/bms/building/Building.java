@@ -27,7 +27,7 @@ public class Building implements FireDrill {
      *
      * @param name  name of this building, eg. "General Purpose South"
      */
-    public Building(String name){
+    public Building(String name) {
         this.name = name;
         this.floors = new ArrayList<Floor>();
     }
@@ -37,7 +37,7 @@ public class Building implements FireDrill {
      *
      * @return name of this building
      */
-    public String getName(){
+    public String getName() {
         return name;
     }
 
@@ -49,7 +49,7 @@ public class Building implements FireDrill {
      *
      * @return new list containing all floors in the building
      */
-    public List<Floor> getFloors(){
+    public List<Floor> getFloors() {
         return ((ArrayList<Floor>) floors.clone());
     }
 
@@ -62,12 +62,13 @@ public class Building implements FireDrill {
      * @param floorNumber floor number of floor to search for
      * @return floor with the given number if found; null if not found
      */
-    public Floor getFloorByNumber(int floorNumber){
-        for(int i=0; i<floors.size(); i++){
-            if(floors.get(i).getFloorNumber() == floorNumber){
+    public Floor getFloorByNumber(int floorNumber) {
+        for (int i = 0; i < floors.size(); i++) {
+            if (floors.get(i).getFloorNumber() == floorNumber) {
                 return floors.get(i);
             }
-        }return null;
+        }
+        return null;
     }
 
     /**
@@ -89,23 +90,23 @@ public class Building implements FireDrill {
      */
     public void addFloor(Floor newFloor) throws IllegalArgumentException,
             DuplicateFloorException, NoFloorBelowException,
-            FloorTooSmallException{
-        if(newFloor.getFloorNumber() <= 0
+            FloorTooSmallException {
+        if (newFloor.getFloorNumber() <= 0
                 || newFloor.getWidth() < Floor.getMinWidth()
-                || newFloor.getLength() < Floor.getMinLength()){
+                || newFloor.getLength() < Floor.getMinLength()) {
             throw new IllegalArgumentException();
         }
-        for(int i=0; i<floors.size(); i++){
-            if(floors.get(i).getFloorNumber() == newFloor.getFloorNumber()){
+        for (int i=0; i<floors.size(); i++) {
+            if (floors.get(i).getFloorNumber() == newFloor.getFloorNumber()) {
                 throw new DuplicateFloorException();
             }
         }
-        if(newFloor.getFloorNumber() > 1){
-            if(floors.size()!=newFloor.getFloorNumber()-1){
+        if (newFloor.getFloorNumber() > 1) {
+            if (floors.size() != newFloor.getFloorNumber() - 1) {
                 throw new NoFloorBelowException();
             }
-            else if(newFloor.calculateArea() >
-                    floors.get(newFloor.getFloorNumber() -2).calculateArea()){
+            else if (newFloor.calculateArea() >
+                    floors.get(newFloor.getFloorNumber() -2).calculateArea()) {
                 throw new FloorTooSmallException();
             }
         }
@@ -113,15 +114,14 @@ public class Building implements FireDrill {
     }
 
     @Override
-    public void fireDrill(RoomType roomType) throws FireDrillException{
-        if(floors.size() == 0){
+    public void fireDrill(RoomType roomType) throws FireDrillException {
+        if (floors.size() == 0) {
             throw new FireDrillException();
         }
-        for(int i=0; i < floors.size(); i++){
+        for (int i=0; i < floors.size(); i++) {
             if(floors.get(i).getRooms().size() == 0){
                 throw new FireDrillException();
-            }
-            else{
+            } else {
                 floors.get(i).fireDrill(roomType);
             }
         }
@@ -132,8 +132,8 @@ public class Building implements FireDrill {
      * <p>
      * All rooms must have their fire alarm cancelled regardless of room type.
      */
-    public void cancelFireDrill(){
-        for(int i=0; i<floors.size(); i++){
+    public void cancelFireDrill() {
+        for (int i = 0; i < floors.size(); i++) {
             floors.get(i).cancelFireDrill();
         }
     }
@@ -144,7 +144,7 @@ public class Building implements FireDrill {
      * @return string representation of this building
      */
     @Override
-    public String toString(){
+    public String toString() {
         return String.format( "Building: name=\"%s\", floors=%d", name,
                 floors.size());
     }
