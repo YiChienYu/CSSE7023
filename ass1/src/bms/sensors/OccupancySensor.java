@@ -20,7 +20,7 @@ public class OccupancySensor extends TimedSensor implements HazardSensor {
      * @throws IllegalArgumentException if capacity is less than zero
      */
     public OccupancySensor(int[] sensorReadings, int updateFrequency,
-                           int capacity) throws IllegalArgumentException {
+            int capacity) throws IllegalArgumentException {
         super(sensorReadings, updateFrequency);
         if (capacity < 0) {
             throw new IllegalArgumentException();

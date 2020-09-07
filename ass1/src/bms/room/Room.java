@@ -140,7 +140,7 @@ public class Room {
      */
     public void addSensor(Sensor sensor) throws DuplicateSensorException {
         if (this.getSensor(sensor.getClass().getSimpleName()) != null) {
-            throw new DuplicateSensorException();
+                throw new DuplicateSensorException();
         } else {
             if (sensors.size() == 0) {
                 sensors.add(sensor);

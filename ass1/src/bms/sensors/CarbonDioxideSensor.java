@@ -31,8 +31,8 @@ public class CarbonDioxideSensor extends TimedSensor implements HazardSensor {
      * <= 0; or if (idealValue - variationLimit) < 0
      */
     public CarbonDioxideSensor(int[] sensorReadings, int updateFrequency,
-                               int idealValue, int variationLimit)
-            throws IllegalArgumentException {
+            int idealValue, int variationLimit) throws
+            IllegalArgumentException {
         super(sensorReadings, updateFrequency);
         if (idealValue <= 0 || variationLimit <= 0 ||
                 (idealValue - variationLimit) < 0) {
