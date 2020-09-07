@@ -12,72 +12,72 @@ public class CarbonDioxideSensorTest {
     private CarbonDioxideSensor sensor1;
 
     @Before
-    public void setSensor(){
+    public void setSensor() {
         readings = new int[]{100,1500,4000,5000};
         sensor1 = new CarbonDioxideSensor(readings, 2, 11, 7);
     }
 
     @After
-    public void tearDown() throws Exception{
+    public void tearDown() throws Exception {
         sensor = null;
         sensor1 = null;
         readings = null;
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void negativeVariationLimit(){
+    public void negativeVariationLimit() {
         sensor = new CarbonDioxideSensor(readings, 2,11,-7);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void negativeIdealValue(){
+    public void negativeIdealValue() {
         sensor = new CarbonDioxideSensor(readings, 2,-11,7);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void negativeDifference(){
+    public void negativeDifference() {
     sensor = new CarbonDioxideSensor(readings, 2,1,7);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void updateFrequencyLessThan0(){
+    public void updateFrequencyLessThan0() {
         sensor = new CarbonDioxideSensor(readings, 0,11,7);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void updateFrequencyLargerThan5(){
+    public void updateFrequencyLargerThan5() {
         sensor = new CarbonDioxideSensor(readings, 6,11,7);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void nullSensorReadings(){
+    public void nullSensorReadings() {
         sensor = new CarbonDioxideSensor(null, 2,11,7);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void sensorReadingsNoElement(){
+    public void sensorReadingsNoElement() {
         int[] noSensorReadings = new int[]{};
         sensor = new CarbonDioxideSensor(noSensorReadings, 2,11,7);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void sensorReadingsNegativeElement(){
+    public void sensorReadingsNegativeElement() {
         int[] negativeSensorReadings = new int[]{100, 200, -1000, 6000};
-        sensor = new CarbonDioxideSensor(negativeSensorReadings, 2,11,7);
+        sensor = new CarbonDioxideSensor(negativeSensorReadings, 2, 11, 7);
     }
 
     @Test
-    public void getVariationLimit(){
+    public void getVariationLimit() {
         assertEquals(7, sensor1.getVariationLimit());
     }
 
     @Test
-    public void getIdealValue(){
+    public void getIdealValue() {
         assertEquals(11, sensor1.getIdealValue());
     }
 
     @Test
-    public void getHazardLevel(){
+    public void getHazardLevel() {
         assertEquals(0, sensor1.getHazardLevel());
         sensor1.elapseOneMinute();
         sensor1.elapseOneMinute();
@@ -94,7 +94,7 @@ public class CarbonDioxideSensorTest {
     }
 
     @Test
-    public void toStringTest(){
+    public void toStringTest() {
         assertEquals("TimedSensor: freq=2, readings=100,1500,4000," +
                         "5000, type=CarbonDioxideSensor, idealPPM=11," +
                         " varLimit=7",

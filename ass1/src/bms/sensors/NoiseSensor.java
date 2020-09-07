@@ -73,15 +73,6 @@ public class NoiseSensor extends TimedSensor implements HazardSensor {
 
     /**
      * Returns the human-readable string representation of this noise sensor.
-     * <p>
-     * The format of the string to return is "TimedSensor: freq=
-     * 'updateFrequency', readings='sensorReadings', type=NoiseSensor" without
-     * the single quotes, where 'updateFrequency' is this sensor's update
-     * frequency (in minutes) and 'sensorReadings' is a comma-separated list of
-     * this sensor's readings.
-     * <p>
-     * For example: "TimedSensor: freq=3, readings=55,57,50,52,61,64,58,
-     * type=NoiseSensor"
      *
      * @return string representation of this sensor
      */

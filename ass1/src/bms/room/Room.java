@@ -165,16 +165,6 @@ public class Room {
 
     /**
      * Returns the human-readable string representation of this room.
-     * <p>
-     * The format of the string to return is "Room #'roomNumber':
-     * type='roomType', area='roomArea'm^2, sensors='numSensors'" without the
-     * single quotes, where 'roomNumber' is the room's unique number, 'roomType'
-     * is the room's type, 'area' is the room's type, 'numSensors' is the number
-     * of sensors in the room.
-     * <p>
-     * The room's area should be formatted to two (2) decimal places.
-     * <p>
-     * For example: "Room #42: type=STUDY, area=22.50m^2, sensors=2"
      *
      * @return string representation of this room
      */

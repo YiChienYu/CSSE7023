@@ -180,7 +180,9 @@ public class Floor implements FireDrill {
     }
 
     /**
-     *
+     * Cancels any ongoing fire drill in rooms on the floor.
+     * <p>
+     * All rooms must have their fire alarm cancelled regardless of room type.
      */
     public void cancelFireDrill(){
         for (int i = 0; i < rooms.size(); i++) {
@@ -188,6 +190,11 @@ public class Floor implements FireDrill {
         }
     }
 
+    /**
+     * Returns the human-readable string representation of this floor.
+     *
+     * @return string representation of this floor
+     */
     @Override
     public String toString() {
         return String.format("Floor #%d: width=%.2fm, length=%.2fm, rooms=%d",

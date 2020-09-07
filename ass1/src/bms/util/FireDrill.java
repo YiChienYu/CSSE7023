@@ -10,7 +10,7 @@ import bms.exceptions.FireDrillException;
 public interface FireDrill {
 
     /**
-     * Set firedrill to given roomtype, null for all type.
+     * Set firedrill to given roomType, null for all type.
      *
      * @param roomType
      * @throws FireDrillException

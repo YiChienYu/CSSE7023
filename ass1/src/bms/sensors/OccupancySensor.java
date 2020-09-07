@@ -68,16 +68,6 @@ public class OccupancySensor extends TimedSensor implements HazardSensor {
     /**
      * Returns the human-readable string representation of this occupancy
      * sensor.
-     * <p>
-     * The format of the string to return is "TimedSensor: freq=
-     * 'updateFrequency', readings='sensorReadings', type=OccupancySensor,
-     * capacity='sensorCapacity'" without the single quotes, where
-     * 'updateFrequency' is this sensor's update frequency (in minutes),
-     * 'sensorReadings' is a comma-separated list of this sensor's readings,
-     * and 'sensorCapacity' is this sensor's maximum capacity.
-     * <p>
-     * For example: "TimedSensor: freq=5, readings=27,28,28,25,3,1,
-     * type=OccupancySensor, capacity=30"
      *
      * @return string representation of this sensor
      */

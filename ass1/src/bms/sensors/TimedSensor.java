@@ -67,11 +67,6 @@ public abstract class TimedSensor implements TimedItem, Sensor {
         TimedItemManager.getInstance().registerTimedItem(this);
     }
 
-    /**
-     * Returns the current sensor reading observed by the sensor.
-     *
-     * @return the current sensor reading
-     */
     @Override
     public int getCurrentReading() {
         return currentReading;
