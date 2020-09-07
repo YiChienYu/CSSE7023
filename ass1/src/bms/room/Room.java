@@ -145,7 +145,7 @@ public class Room {
             if (sensors.size() == 0) {
                 sensors.add(sensor);
             } else {
-                for(int i = 0; i < sensors.size(); i++) {
+                for (int i = 0; i < sensors.size(); i++) {
                     if (sensor.getClass().getSimpleName().compareTo
                             (sensors.get(i).getClass().getSimpleName()) < 0) {
                         sensors.add(i, sensor);

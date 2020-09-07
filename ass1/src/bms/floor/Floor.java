@@ -30,7 +30,7 @@ public class Floor implements FireDrill {
      * @param width the width of the floor in metres
      * @param length the length of the floor in metres
      */
-    public Floor(int floorNumber, double width, double length){
+    public Floor(int floorNumber, double width, double length) {
         this.floorNumber = floorNumber;
         this.width = width;
         this.length = length;
@@ -184,7 +184,7 @@ public class Floor implements FireDrill {
      * <p>
      * All rooms must have their fire alarm cancelled regardless of room type.
      */
-    public void cancelFireDrill(){
+    public void cancelFireDrill() {
         for (int i = 0; i < rooms.size(); i++) {
             rooms.get(i).setFireDrill(false);
         }

@@ -26,7 +26,7 @@ public class TimedItemManager implements TimedItem {
     /*
      * private constructor
      */
-    private TimedItemManager() { }
+    private TimedItemManager() {}
 
     /**
      * Returns the singleton instance of the timed item manager.

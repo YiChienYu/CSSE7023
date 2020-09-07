@@ -7,12 +7,12 @@ package bms.exceptions;
  * In other words, the floor does not have the required supporting structure
  * underneath (note that no overhanging floors are allowed).
  */
-public class FloorTooSmallException extends Exception{
+public class FloorTooSmallException extends Exception {
 
     /**
      * Constructs a normal FloorBelowTooSmallException with no error message
      * or cause.
      */
-    public FloorTooSmallException(){}
+    public FloorTooSmallException() {}
 
 }
