@@ -1,6 +1,7 @@
 package bms.building;
 
 import bms.util.FireDrill;
+import java.lang.IllegalArgumentException;
 import bms.room.RoomType;
 import bms.floor.Floor;
 import bms.exceptions.*;
