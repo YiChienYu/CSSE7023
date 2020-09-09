@@ -3,6 +3,7 @@ package bms.floor;
 import bms.exceptions.*;
 import bms.room.*;
 import bms.util.FireDrill;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,8 +28,8 @@ public class Floor implements FireDrill {
      *
      * @param floorNumber a unique floor number, corresponds to how many floors
      *                    above ground floor (inclusive)
-     * @param width the width of the floor in metres
-     * @param length the length of the floor in metres
+     * @param width       the width of the floor in metres
+     * @param length      the length of the floor in metres
      */
     public Floor(int floorNumber, double width, double length) {
         this.floorNumber = floorNumber;
@@ -57,6 +58,7 @@ public class Floor implements FireDrill {
 
     /**
      * Returns the minimum length for all floors.
+     *
      * @return 5
      */
     public static int getMinLength() {
@@ -121,7 +123,7 @@ public class Floor implements FireDrill {
      * @return area of the floor in square metres
      */
     public double calculateArea() {
-        return this.getWidth()*this.getLength();
+        return this.getWidth() * this.getLength();
     }
 
     /**
@@ -133,7 +135,7 @@ public class Floor implements FireDrill {
     public float occupiedArea() {
         float totalArea = 0;
         for (int i = 0; i < rooms.size(); i++) {
-                totalArea += (float) rooms.get(i).getArea();
+            totalArea += (float) rooms.get(i).getArea();
         }
         return totalArea;
     }
@@ -146,10 +148,11 @@ public class Floor implements FireDrill {
      * <p>
      *
      * @param newRoom object representing the new room
-     * @throws DuplicateRoomException if the room number on this floor is
-     * already taken
+     * @throws DuplicateRoomException     if the room number on this floor is
+     *                                    already taken
      * @throws InsufficientSpaceException if there is insufficient space
-     * available on the floor to be able to add the room
+     *                                    available on the floor to be able to
+     *                                    add the room
      */
     public void addRoom(Room newRoom) throws DuplicateRoomException,
             InsufficientSpaceException {

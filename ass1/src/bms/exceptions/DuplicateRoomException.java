@@ -10,5 +10,6 @@ public class DuplicateRoomException extends Exception {
      * Constructs a normal DuplicateRoomException with no error message
      * or cause.
      */
-    public DuplicateRoomException() { }
+    public DuplicateRoomException() {
+    }
 }

@@ -22,13 +22,15 @@ public class CarbonDioxideSensor extends TimedSensor implements HazardSensor {
      * the ideal value and variation limit must be greater than zero. These two
      * values must be such that (idealValue - variationLimit) >= 0.
      *
-     * @param sensorReadings array of CO2 sensor readings in ppm
+     * @param sensorReadings  array of CO2 sensor readings in ppm
      * @param updateFrequency indicates how often the sensor readings update,
      *                        in minutes
-     * @param idealValue ideal CO2 value in ppm
-     * @param variationLimit acceptable range above and below ideal value in ppm
+     * @param idealValue      ideal CO2 value in ppm
+     * @param variationLimit  acceptable range above and below ideal value
+     *                        in ppm
      * @throws IllegalArgumentException if idealValue <= 0; or if variationLimit
-     * <= 0; or if (idealValue - variationLimit) < 0
+     *                                  <= 0;
+     *                                  or if (idealValue - variationLimit) < 0
      */
     public CarbonDioxideSensor(int[] sensorReadings, int updateFrequency,
             int idealValue, int variationLimit) throws

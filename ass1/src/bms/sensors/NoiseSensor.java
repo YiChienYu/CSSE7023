@@ -11,7 +11,7 @@ public class NoiseSensor extends TimedSensor implements HazardSensor {
      * Creates a new noise sensor with the given sensor readings and update
      * frequency.
      *
-     * @param sensorReadings array of noise sensor readings in decibels
+     * @param sensorReadings  array of noise sensor readings in decibels
      * @param updateFrequency indicates how often the sensor readings update,
      *                        in minutes
      */
@@ -62,7 +62,7 @@ public class NoiseSensor extends TimedSensor implements HazardSensor {
      */
     @Override
     public int getHazardLevel() {
-        float relativeLoudness = ((float)this.calculateRelativeLoudness())
+        float relativeLoudness = ((float) this.calculateRelativeLoudness())
                 * 100;
         int roundRelativeLoudness = (int) Math.floor(relativeLoudness);
         if (roundRelativeLoudness > 100) {

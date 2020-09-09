@@ -9,5 +9,6 @@ public class FireDrillException extends Exception {
     /**
      * Constructs a normal FireDrillException with no error message or cause.
      */
-    public FireDrillException() {}
+    public FireDrillException() {
+    }
 }

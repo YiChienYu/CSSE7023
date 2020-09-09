@@ -10,5 +10,6 @@ public class InsufficientSpaceException extends Exception {
      * Constructs a normal InsufficientSpaceException with no error message
      * or cause.
      */
-    public InsufficientSpaceException() {}
+    public InsufficientSpaceException() {
+    }
 }

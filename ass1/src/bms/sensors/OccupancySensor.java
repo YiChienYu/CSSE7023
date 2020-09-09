@@ -13,10 +13,10 @@ public class OccupancySensor extends TimedSensor implements HazardSensor {
      * <p>
      * The given capacity must be greater than or equal to zero.
      *
-     * @param sensorReadings a non-empty array of sensor readings
+     * @param sensorReadings  a non-empty array of sensor readings
      * @param updateFrequency indicates how often the sensor readings update,
      *                        in minutes
-     * @param capacity maximum allowable number of people in the room
+     * @param capacity        maximum allowable number of people in the room
      * @throws IllegalArgumentException if capacity is less than zero
      */
     public OccupancySensor(int[] sensorReadings, int updateFrequency,

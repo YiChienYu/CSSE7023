@@ -13,6 +13,7 @@ public class FloorTooSmallException extends Exception {
      * Constructs a normal FloorBelowTooSmallException with no error message
      * or cause.
      */
-    public FloorTooSmallException() {}
+    public FloorTooSmallException() {
+    }
 
 }

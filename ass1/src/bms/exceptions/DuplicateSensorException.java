@@ -10,5 +10,6 @@ public class DuplicateSensorException extends Exception {
      * Constructs a normal DuplicateSensorException with no error message
      * or cause.
      */
-    public DuplicateSensorException() {}
+    public DuplicateSensorException() {
+    }
 }

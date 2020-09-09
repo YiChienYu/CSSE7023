@@ -1,9 +1,10 @@
 package bms.room;
 
 import java.util.ArrayList;
+import java.util.List;
+
 import bms.sensors.Sensor;
 import bms.exceptions.*;
-import java.util.List;
 
 /**
  * Represents a room on a floor of a building.
@@ -28,8 +29,8 @@ public class Room {
      * Creates a new room with the given room number.
      *
      * @param roomNumber the unique room number of the room on this floor
-     * @param type the type of room
-     * @param area the area of the room in square metres
+     * @param type       the type of room
+     * @param area       the area of the room in square metres
      */
     public Room(int roomNumber, RoomType type, double area) {
         this.roomNumber = roomNumber;
@@ -136,11 +137,11 @@ public class Room {
      *
      * @param sensor the sensor to add to the room
      * @throws DuplicateSensorException if the sensor to add is of the same
-     * type as a sensor already in this room
+     *                                  type as a sensor already in this room
      */
     public void addSensor(Sensor sensor) throws DuplicateSensorException {
         if (this.getSensor(sensor.getClass().getSimpleName()) != null) {
-                throw new DuplicateSensorException();
+            throw new DuplicateSensorException();
         } else {
             if (sensors.size() == 0) {
                 sensors.add(sensor);
@@ -154,13 +155,11 @@ public class Room {
                         if (i == (sensors.size() - 1)) {
                             sensors.add(sensor);
                             break;
-                        } else {
-                            continue;
-                            }
                         }
                     }
                 }
             }
+        }
     }
 
     /**

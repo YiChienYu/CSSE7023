@@ -2,6 +2,7 @@ package bms.sensors;
 
 import bms.util.TimedItem;
 import bms.util.TimedItemManager;
+
 import java.util.Arrays;
 
 /**
@@ -14,14 +15,10 @@ public abstract class TimedSensor implements TimedItem, Sensor {
     private int[] sensorReadings;
     private int currentReading;
 
-    /*
-     * the position of currentReading
-     */
+    // the position of currentReading
     private int currentPosition;
 
-    /*
-     * the number of times elapseOneMinute() got called
-     */
+    // the number of times elapseOneMinute() has been called
     private int timeElapsed;
 
     /**
@@ -41,17 +38,20 @@ public abstract class TimedSensor implements TimedItem, Sensor {
      * The sensor should be registered as a timed item, see
      * TimedItemManager.registerTimedItem(TimedItem).
      *
-     * @param sensorReadings a non-empty array of sensor readings
+     * @param sensorReadings  a non-empty array of sensor readings
      * @param updateFrequency indicates how often the sensor readings updates,
      *                        in minutes
      * @throws IllegalArgumentException if updateFrequency is < 1 or > 5; or
-     * if sensorReadings is null; if sensorReadings is empty; or if any value
-     * in sensorReadings is less than zero
+     *                                  if sensorReadings is null;
+     *                                  if sensorReadings is empty;
+     *                                  or if any value in sensorReadings is
+     *                                  less than zero
      */
     public TimedSensor(int[] sensorReadings, int updateFrequency) throws
-            IllegalArgumentException { if (updateFrequency > 5
-            || updateFrequency < 1 || sensorReadings == null
-            || sensorReadings.length < 1) {
+            IllegalArgumentException {
+        if (updateFrequency > 5
+                || updateFrequency < 1 || sensorReadings == null
+                || sensorReadings.length < 1) {
             throw new IllegalArgumentException();
         }
         for (int i = 0; i < sensorReadings.length; i++) {
@@ -109,10 +109,10 @@ public abstract class TimedSensor implements TimedItem, Sensor {
         timeElapsed++;
         int remainder = (this.getTimeElapsed()) % (this.getUpdateFrequency());
         if (remainder == 0 && timeElapsed != 0) {
-            if (currentPosition == (sensorReadings.length -1)) {
+            if (currentPosition == (sensorReadings.length - 1)) {
                 currentPosition = 0;
             } else {
-                currentPosition+=1;
+                currentPosition += 1;
             }
             currentReading = sensorReadings[currentPosition];
         }

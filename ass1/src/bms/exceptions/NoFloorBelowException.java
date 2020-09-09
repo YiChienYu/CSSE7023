@@ -11,5 +11,6 @@ public class NoFloorBelowException extends Exception {
      * Constructs a normal NoFloorBelowException with no error message
      * or cause.
      */
-    public NoFloorBelowException() {}
+    public NoFloorBelowException() {
+    }
 }

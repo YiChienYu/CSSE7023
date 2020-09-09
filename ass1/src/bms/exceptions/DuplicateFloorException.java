@@ -10,5 +10,6 @@ public class DuplicateFloorException extends Exception {
      * Constructs a normal DuplicateFloorException with no error message
      * or cause.
      */
-    public DuplicateFloorException() {}
+    public DuplicateFloorException() {
+    }
 }

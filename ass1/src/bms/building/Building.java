@@ -1,10 +1,13 @@
 package bms.building;
 
 import bms.util.FireDrill;
+
 import java.lang.IllegalArgumentException;
+
 import bms.room.RoomType;
 import bms.floor.Floor;
 import bms.exceptions.*;
+
 import java.util.List;
 import java.util.ArrayList;
 
@@ -25,7 +28,7 @@ public class Building implements FireDrill {
     /**
      * Creates a new empty building with no rooms.
      *
-     * @param name  name of this building, eg. "General Purpose South"
+     * @param name name of this building, eg. "General Purpose South"
      */
     public Building(String name) {
         this.name = name;
@@ -80,13 +83,16 @@ public class Building implements FireDrill {
      *
      * @param newFloor object representing the new floor
      * @throws IllegalArgumentException if floor number is <= 0, width
-     * < Floor.getMinWidth(), or length < Floor.getMinLength()
+     *                                  < Floor.getMinWidth(), or length
+     *                                  < Floor.getMinLength()
      * @throws DuplicateFloorException  if a floor at this level already exists
-     * in the building
-     * @throws NoFloorBelowException if this is at level 2 or above and there is
-     * no floor below to support this new floor
-     * @throws FloorTooSmallException if this is at level 2 or above and the
-     * floor below is not big enough to support this new floor
+     *                                  in the building
+     * @throws NoFloorBelowException    if this is at level 2 or above and there
+     *                                  is no floor below to support this new
+     *                                  floor
+     * @throws FloorTooSmallException   if this is at level 2 or above and the
+     *                                  floor below is not big enough to support
+     *                                  this new floor
      */
     public void addFloor(Floor newFloor) throws IllegalArgumentException,
             DuplicateFloorException, NoFloorBelowException,
@@ -96,7 +102,7 @@ public class Building implements FireDrill {
                 || newFloor.getLength() < Floor.getMinLength()) {
             throw new IllegalArgumentException();
         }
-        for (int i=0; i<floors.size(); i++) {
+        for (int i = 0; i < floors.size(); i++) {
             if (floors.get(i).getFloorNumber() == newFloor.getFloorNumber()) {
                 throw new DuplicateFloorException();
             }
@@ -104,9 +110,8 @@ public class Building implements FireDrill {
         if (newFloor.getFloorNumber() > 1) {
             if (floors.size() != newFloor.getFloorNumber() - 1) {
                 throw new NoFloorBelowException();
-            }
-            else if (newFloor.calculateArea() >
-                    floors.get(newFloor.getFloorNumber() -2).calculateArea()) {
+            } else if (newFloor.calculateArea() >
+                    floors.get(newFloor.getFloorNumber() - 2).calculateArea()) {
                 throw new FloorTooSmallException();
             }
         }
@@ -118,8 +123,8 @@ public class Building implements FireDrill {
         if (floors.size() == 0) {
             throw new FireDrillException();
         }
-        for (int i=0; i < floors.size(); i++) {
-            if(floors.get(i).getRooms().size() == 0){
+        for (int i = 0; i < floors.size(); i++) {
+            if (floors.get(i).getRooms().size() == 0) {
                 throw new FireDrillException();
             } else {
                 floors.get(i).fireDrill(roomType);
@@ -145,7 +150,7 @@ public class Building implements FireDrill {
      */
     @Override
     public String toString() {
-        return String.format( "Building: name=\"%s\", floors=%d", name,
+        return String.format("Building: name=\"%s\", floors=%d", name,
                 floors.size());
     }
 

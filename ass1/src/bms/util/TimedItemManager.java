@@ -13,20 +13,17 @@ import java.util.ArrayList;
  * that its elapseOneMinute() method is called at regular intervals.
  */
 public class TimedItemManager implements TimedItem {
-    /*
-     * singleton instance of TimedItemManager
-     */
+
+    // singleton instance of TimedItemManager
     private static TimedItemManager singleton = null;
 
-    /*
-     * the dynamic array to store objects belong to TimedItem class
-     */
+    // the dynamic array to store objects belong to TimedItem class
     private ArrayList<TimedItem> itemManager = new ArrayList<TimedItem>();
 
-    /*
-     * private constructor
-     */
-    private TimedItemManager() {}
+
+    // private constructor
+    private TimedItemManager() {
+    }
 
     /**
      * Returns the singleton instance of the timed item manager.
@@ -42,7 +39,7 @@ public class TimedItemManager implements TimedItem {
 
     /**
      * Registers a timed item with the manager.
-     *After calling this method, the manager will call the given timed item's
+     * After calling this method, the manager will call the given timed item's
      * elapseOneMinute() method at regular intervals.
      *
      * @param timedItem a timed item to register with the manager
