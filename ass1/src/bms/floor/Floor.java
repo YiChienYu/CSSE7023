@@ -20,6 +20,8 @@ public class Floor implements FireDrill {
     private int floorNumber;
     private double width;
     private double length;
+
+    // remaining space
     private double area = width * length;
     private ArrayList<Room> rooms;
 
@@ -168,6 +170,8 @@ public class Floor implements FireDrill {
             throw new InsufficientSpaceException();
         }
         rooms.add(newRoom);
+
+        // calculate remaining space
         area -= newRoom.getArea();
     }
 

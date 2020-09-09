@@ -122,6 +122,8 @@ public class Building implements FireDrill {
         if (floors.size() == 0) {
             throw new FireDrillException();
         }
+
+        // check each floors' situation and set fire drill
         for (int i = 0; i < floors.size(); i++) {
             if (floors.get(i).getRooms().size() == 0) {
                 throw new FireDrillException();

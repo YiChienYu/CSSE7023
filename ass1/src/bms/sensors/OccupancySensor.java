@@ -59,6 +59,8 @@ public class OccupancySensor extends TimedSensor implements HazardSensor {
         if (this.getCurrentReading() >= capacity) {
             return 100;
         }
+
+        // current occupancy divided by maximum capacity and then rounds down
         float ratio = ((float) this.getCurrentReading()) / capacity;
         int roundRatio = (int) Math.floor(ratio);
         return roundRatio;

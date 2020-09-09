@@ -108,6 +108,8 @@ public abstract class TimedSensor implements TimedItem, Sensor {
         timeElapsed++;
         int remainder = (this.getTimeElapsed()) % (this.getUpdateFrequency());
         if (remainder == 0 && timeElapsed != 0) {
+
+            // wraps around when the position is the last one.
             if (currentPosition == (sensorReadings.length - 1)) {
                 currentPosition = 0;
             } else {
@@ -131,6 +133,8 @@ public abstract class TimedSensor implements TimedItem, Sensor {
      */
     @Override
     public String toString() {
+
+        // get desired string format of the array.
         String commaSeparated = Arrays.toString(sensorReadings);
         commaSeparated = commaSeparated.substring
                 (1, commaSeparated.length() - 1);

@@ -121,6 +121,8 @@ public class Room {
      */
     public Sensor getSensor(String sensorType) {
         for (int i = 0; i < sensors.size(); i++) {
+
+            // check if a sensor with the given sensorType already exists
             if (sensors.get(i).getClass().getSimpleName().equals(sensorType)) {
                 return sensors.get(i);
             }
@@ -140,12 +142,16 @@ public class Room {
      *                                  type as a sensor already in this room
      */
     public void addSensor(Sensor sensor) throws DuplicateSensorException {
+
+        // check if a sensor with the given sensorType already exists
         if (this.getSensor(sensor.getClass().getSimpleName()) != null) {
             throw new DuplicateSensorException();
         } else {
             if (sensors.size() == 0) {
                 sensors.add(sensor);
             } else {
+
+                // insertion sort, according to alphabetical order
                 for (int i = 0; i < sensors.size(); i++) {
                     if (sensor.getClass().getSimpleName().compareTo
                             (sensors.get(i).getClass().getSimpleName()) < 0) {
