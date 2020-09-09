@@ -15,6 +15,7 @@ import java.util.ArrayList;
 public class TimedItemManager implements TimedItem {
     // singleton instance of TimedItemManager
     private static TimedItemManager singleton = null;
+
     // the dynamic array to store objects belong to TimedItem class
     private ArrayList<TimedItem> itemManager = new ArrayList<TimedItem>();
 
