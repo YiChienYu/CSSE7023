@@ -21,7 +21,6 @@ import java.util.ArrayList;
  * building to be evacuated.
  */
 public class Building implements FireDrill {
-
     private String name;
     private ArrayList<Floor> floors;
 

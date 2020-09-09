@@ -4,7 +4,6 @@ package bms.sensors;
  * A sensor that measures the number of people in a room.
  */
 public class OccupancySensor extends TimedSensor implements HazardSensor {
-
     private int capacity;
 
     /**

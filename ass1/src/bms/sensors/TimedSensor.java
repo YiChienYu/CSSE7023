@@ -10,14 +10,11 @@ import java.util.Arrays;
  * on a timer.
  */
 public abstract class TimedSensor implements TimedItem, Sensor {
-
     private int updateFrequency;
     private int[] sensorReadings;
     private int currentReading;
-
     // the position of currentReading
     private int currentPosition;
-
     // the number of times elapseOneMinute() has been called
     private int timeElapsed;
 
