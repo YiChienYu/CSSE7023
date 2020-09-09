@@ -120,7 +120,7 @@ public class Room {
      */
     public Sensor getSensor(String sensorType) {
         for (int i = 0; i < sensors.size(); i++) {
-            if (sensors.get(i).getClass().getSimpleName() == sensorType) {
+            if (sensors.get(i).getClass().getSimpleName().equals(sensorType)) {
                 return sensors.get(i);
             }
         }
