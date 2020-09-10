@@ -98,7 +98,7 @@ public class Room {
      * @return list of all sensors in alphabetical order of class name
      */
     public List<Sensor> getSensors() {
-        return (ArrayList<Sensor>) sensors.clone();
+        return new ArrayList<Sensor>(sensors);
     }
 
     /**

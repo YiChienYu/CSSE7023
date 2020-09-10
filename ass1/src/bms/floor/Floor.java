@@ -76,7 +76,7 @@ public class Floor implements FireDrill {
      * @return new list containing all rooms on the floor
      */
     public List<Room> getRooms() {
-        return (ArrayList<Room>) rooms.clone();
+        return new ArrayList<Room>(rooms);
     }
 
     /**

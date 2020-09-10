@@ -52,7 +52,7 @@ public class Building implements FireDrill {
      * @return new list containing all floors in the building
      */
     public List<Floor> getFloors() {
-        return ((ArrayList<Floor>) floors.clone());
+        return new ArrayList<Floor>(floors);
     }
 
     /**
