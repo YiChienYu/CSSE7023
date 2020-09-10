@@ -1,10 +1,11 @@
 package bms.floor;
 
-import bms.exceptions.DuplicateRoomException;
 import bms.room.Room;
 import bms.room.RoomType;
 import org.junit.After;
+
 import static org.junit.Assert.*;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,8 +21,8 @@ public class FloorTest {
     public void setFloor() throws Exception {
         floor = new Floor(1, 10.5, 11);
         room1 = new Room(1, RoomType.STUDY, 50);
-        room2 = new Room(2,RoomType.OFFICE, 40);
-        room3 = new Room(3,RoomType.LABORATORY, 10);
+        room2 = new Room(2, RoomType.OFFICE, 40);
+        room3 = new Room(3, RoomType.LABORATORY, 10);
     }
 
     @After
@@ -54,12 +55,13 @@ public class FloorTest {
         rooms.add(room1);
         rooms.add(room2);
         rooms.add(room3);
-        try{
+        try {
             floor.addRoom(room1);
             floor.addRoom(room2);
             floor.addRoom(room3);
             assertEquals(rooms, floor.getRooms());
-        } catch (Exception e){}
+        } catch (Exception e) {
+        }
     }
 
     @Test
@@ -75,7 +77,7 @@ public class FloorTest {
     @Test
     public void getRoomByNumber() {
         assertEquals(null, floor.getRoomByNumber(5));
-        try{
+        try {
             floor.addRoom(room1);
         } catch (Exception e) {
         }
@@ -91,17 +93,18 @@ public class FloorTest {
 
     @Test
     public void occupiedArea() {
-        try{
+        try {
             floor.addRoom(room1);
             floor.addRoom(room2);
             floor.addRoom(room3);
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
         assertEquals(100, floor.occupiedArea(), 0.01);
     }
 
     @Test
     public void addRoom() {
-        try{
+        try {
             floor.addRoom(room1);
             floor.addRoom(room2);
         } catch (Exception e) {
@@ -112,11 +115,12 @@ public class FloorTest {
     @Test
     public void addIllegalRoom() {
         Room illegalRoom = new Room(3, RoomType.OFFICE, 4);
-        try{
+        try {
             floor.addRoom(illegalRoom);
         } catch (Exception e) {
-            if(e.getClass().getName() != "java.lang.IllegalArgumentException") {
-                fail();
+            if (e.getClass().getName() !=
+                    "java.lang.IllegalArgumentException") {
+                    fail();
             }
         }
     }
@@ -124,12 +128,13 @@ public class FloorTest {
     @Test
     public void addDuplicateRoom() {
         Room duplicateRoom = new Room(2, RoomType.OFFICE, 16);
-        try{
+        try {
             floor.addRoom(room2);
             floor.addRoom(duplicateRoom);
         } catch (Exception e) {
-            if(e.getClass().getName()!= "bms.exceptions.DuplicateRoomException")
-                    { fail();
+            if (e.getClass().getName() !=
+                    "bms.exceptions.DuplicateRoomException") {
+                    fail();
             }
         }
     }
@@ -137,14 +142,14 @@ public class FloorTest {
     @Test
     public void addRoomNoSpace() {
         Room roomBiggerThanLimit = new Room(4, RoomType.OFFICE, 16);
-        try{
+        try {
             floor.addRoom(room1);
             floor.addRoom(room2);
             floor.addRoom(room3);
             floor.addRoom(roomBiggerThanLimit);
         } catch (Exception e) {
-            if(e.getClass().getName() !=
-                    "bms.exceptions.InsufficientSpaceException"){
+            if (e.getClass().getName() !=
+                    "bms.exceptions.InsufficientSpaceException") {
                 fail();
             }
         }
@@ -152,7 +157,7 @@ public class FloorTest {
 
     @Test
     public void fireDrillNull() {
-        try{
+        try {
             floor.addRoom(room1);
             floor.addRoom(room2);
             floor.addRoom(room3);
@@ -167,11 +172,11 @@ public class FloorTest {
 
     @Test
     public void fireDrill() {
-        try{
+        try {
             floor.addRoom(room1);
             floor.addRoom(room2);
             floor.addRoom(room3);
-        } catch (Exception e){
+        } catch (Exception e) {
             fail();
         }
         floor.fireDrill(RoomType.STUDY);
@@ -182,7 +187,7 @@ public class FloorTest {
 
     @Test
     public void cancelFireDrill() {
-        try{
+        try {
             floor.addRoom(room1);
             floor.addRoom(room2);
             floor.addRoom(room3);
@@ -199,7 +204,7 @@ public class FloorTest {
 
     @Test
     public void toStringTest() {
-        try{
+        try {
             floor.addRoom(room1);
             floor.addRoom(room2);
             floor.addRoom(room3);

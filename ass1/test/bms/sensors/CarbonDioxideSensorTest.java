@@ -1,6 +1,7 @@
 package bms.sensors;
 
 import static org.junit.Assert.*;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,7 +14,7 @@ public class CarbonDioxideSensorTest {
 
     @Before
     public void setSensor() {
-        readings = new int[]{100,1500,4000,5000};
+        readings = new int[]{100, 1500, 4000, 5000};
         sensor1 = new CarbonDioxideSensor(readings, 2, 11, 7);
     }
 
@@ -26,38 +27,38 @@ public class CarbonDioxideSensorTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void negativeVariationLimit() {
-        sensor = new CarbonDioxideSensor(readings, 2,11,-7);
+        sensor = new CarbonDioxideSensor(readings, 2, 11, -7);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void negativeIdealValue() {
-        sensor = new CarbonDioxideSensor(readings, 2,-11,7);
+        sensor = new CarbonDioxideSensor(readings, 2, -11, 7);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void negativeDifference() {
-    sensor = new CarbonDioxideSensor(readings, 2,1,7);
+        sensor = new CarbonDioxideSensor(readings, 2, 1, 7);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void updateFrequencyLessThan0() {
-        sensor = new CarbonDioxideSensor(readings, 0,11,7);
+        sensor = new CarbonDioxideSensor(readings, 0, 11, 7);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void updateFrequencyLargerThan5() {
-        sensor = new CarbonDioxideSensor(readings, 6,11,7);
+        sensor = new CarbonDioxideSensor(readings, 6, 11, 7);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void nullSensorReadings() {
-        sensor = new CarbonDioxideSensor(null, 2,11,7);
+        sensor = new CarbonDioxideSensor(null, 2, 11, 7);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void sensorReadingsNoElement() {
         int[] noSensorReadings = new int[]{};
-        sensor = new CarbonDioxideSensor(noSensorReadings, 2,11,7);
+        sensor = new CarbonDioxideSensor(noSensorReadings, 2, 11, 7);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -77,7 +78,39 @@ public class CarbonDioxideSensorTest {
     }
 
     @Test
-    public void getHazardLevel() {
+    public void getHazardLevel0() {
+        assertEquals(0, sensor1.getHazardLevel());
+    }
+
+    @Test
+    public void getHazardLevel25() {
+        sensor1.elapseOneMinute();
+        sensor1.elapseOneMinute();
+        assertEquals(25, sensor1.getHazardLevel());
+    }
+
+    @Test
+    public void getHazardLevel50() {
+        sensor1.elapseOneMinute();
+        sensor1.elapseOneMinute();
+        sensor1.elapseOneMinute();
+        sensor1.elapseOneMinute();
+        assertEquals(50, sensor1.getHazardLevel());
+    }
+
+    @Test
+    public void getHazardLevel100() {
+        sensor1.elapseOneMinute();
+        sensor1.elapseOneMinute();
+        sensor1.elapseOneMinute();
+        sensor1.elapseOneMinute();
+        sensor1.elapseOneMinute();
+        sensor1.elapseOneMinute();
+        assertEquals(100, sensor1.getHazardLevel());
+    }
+
+    @Test
+    public void getHazardLevelBackTo0() {
         assertEquals(0, sensor1.getHazardLevel());
         sensor1.elapseOneMinute();
         sensor1.elapseOneMinute();
