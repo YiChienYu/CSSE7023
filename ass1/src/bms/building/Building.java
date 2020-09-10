@@ -107,7 +107,7 @@ public class Building implements FireDrill {
             }
         }
         if (newFloor.getFloorNumber() > 1) {
-            if (floors.size() != newFloor.getFloorNumber() - 1) {
+            if (floors.size() != (newFloor.getFloorNumber() - 1)) {
                 throw new NoFloorBelowException();
             } else if (newFloor.calculateArea() >
                     floors.get(newFloor.getFloorNumber() - 2).calculateArea()) {
