@@ -1,5 +1,6 @@
 package bms.sensors;
 
+import bms.util.Encodable;
 import bms.util.TimedItem;
 import bms.util.TimedItemManager;
 
@@ -9,7 +10,7 @@ import java.util.Arrays;
  * An abstract class to represent a sensor that iterates through observed values
  * on a timer.
  */
-public abstract class TimedSensor implements TimedItem, Sensor {
+public abstract class TimedSensor implements TimedItem, Sensor, Encodable {
 
     /**
      * Data array representing the readings observed by the sensor.
@@ -167,5 +168,73 @@ public abstract class TimedSensor implements TimedItem, Sensor {
                 String.join(",", Arrays.stream(this.sensorReadings)
                         .mapToObj(String::valueOf)
                         .toArray(String[]::new)));
+    }
+
+    private int[] getSensorReadings() {
+        return sensorReadings;
+    }
+
+    /**
+     * Returns true if and only if this timed sensor is equal to the other
+     * given sensor.
+     *
+     * @param obj other object to compare equality
+     * @return true if equal, false otherwise
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this.getClass().getSimpleName() != obj.getClass().getSimpleName()) {
+            return false;
+        }
+        TimedSensor sensorToCompare = (TimedSensor) obj;
+        if (this.updateFrequency != sensorToCompare.getUpdateFrequency()){
+            return false;
+        }
+        if (this.getSensorReadings().length !=
+                sensorToCompare.getSensorReadings().length) {
+            return false;
+        }
+        for (int i = 0; i < this.getSensorReadings().length; i++) {
+            if (this.getSensorReadings()[i] !=
+                    sensorToCompare.getSensorReadings()[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Returns the hash code of this timed sensor.
+     * <p>
+     * Two timed sensors that are equal according to equals(Object) should have
+     * the same hash code.
+     *
+     * @return hash code of this sensor
+     */
+    @Override
+    public int hashCode() {
+        int temp = 0;
+        for (int i = 0; i < this.getSensorReadings().length; i++) {
+            temp += this.getSensorReadings()[i];
+        }
+        return this.getClass().getSimpleName().hashCode() +
+                this.getCurrentReading() + temp;
+    }
+
+    /**
+     * Returns the machine-readable string representation of this timed sensor.
+     *
+     * @return encoded string representation of this timed sensor
+     */
+    public String encode() {
+        String temp = "";
+        for (int i = 1; i <= this.getSensorReadings().length; i++) {
+            if (i == this.getSensorReadings().length) {
+                temp += String.format("sensorReading%s", i);
+            } else {
+                temp += String.format("sensorReading%s,", i);
+            }
+        }
+        return temp;
     }
 }

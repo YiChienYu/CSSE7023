@@ -4,7 +4,8 @@ package bms.sensors;
  * A sensor that measures the number of people in a room.
  * @ass1
  */
-public class OccupancySensor extends TimedSensor implements HazardSensor {
+public class OccupancySensor extends TimedSensor implements HazardSensor,
+        ComfortSensor{
     /**
      * Maximum capacity of the space the sensor is monitoring.
      */
@@ -98,5 +99,67 @@ public class OccupancySensor extends TimedSensor implements HazardSensor {
         return String.format("%s, type=OccupancySensor, capacity=%d",
                 super.toString(),
                 this.capacity);
+    }
+
+    /**
+     * Returns the current comfort level as observed by the sensor.
+     * <p>
+     * The comfort level is calculated as the complement of the percentage given
+     * by the current sensor reading divided by the maximum capacity.
+     * <p>
+     * If the current reading is above the capacity, the comfort level is 0.
+     *
+     * @return the current comfort level as an integer between 0 and 100
+     */
+    @Override
+    public int getComfortLevel() {
+        int capacity = this.getCapacity();
+        int currentReading = this.getCurrentReading();
+        double comfortLevel = ((capacity - currentReading) / capacity) * 100;
+
+        if (currentReading >= capacity) {
+            return 0;
+        }
+        return (int) comfortLevel;
+    }
+
+    /**
+     * Returns true if and only if this occupancy sensor is equal to the other
+     * given sensor.
+     *
+     * @param obj other object to compare equality
+     * @return true if equal, false otherwise
+     */
+    public boolean equals(Object obj) {
+        if (!super.equals(obj)) {
+            return false;
+        }
+
+        OccupancySensor sensor = (OccupancySensor) obj;
+        if (this.getCapacity() != sensor.getCapacity()) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Returns the hash code of this occupancy sensor.
+     *
+     * @return hash code of this sensor
+     */
+    @Override
+    public int hashCode() {
+        return super.hashCode() + this.getCapacity();
+    }
+
+    /**
+     * Returns the machine-readable string representation of this occupancy
+     * sensor.
+     *
+     * @return encoded string representation of this occupancy sensor
+     */
+    @Override
+    public String encode() {
+        return "OccupancySensor:" + super.encode();
     }
 }

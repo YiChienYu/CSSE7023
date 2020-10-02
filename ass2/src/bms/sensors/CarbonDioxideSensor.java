@@ -5,7 +5,8 @@ package bms.sensors;
  * per million (ppm).
  * @ass1
  */
-public class CarbonDioxideSensor extends TimedSensor implements HazardSensor {
+public class CarbonDioxideSensor extends TimedSensor implements HazardSensor,
+        ComfortSensor {
 
     /**
      * The ideal value for this sensor, where the comfort level is highest.
@@ -147,4 +148,65 @@ public class CarbonDioxideSensor extends TimedSensor implements HazardSensor {
                 this.idealValue,
                 this.variationLimit);
     }
+
+    /**
+     * Returns the comfort level as detected by this sensor.
+     * <p>
+     * The comfort level is calculated as the complement of the percentage
+     * given by: the (absolute) difference between the ideal CO2 value and
+     * the current sensor reading, all divided by getVariationLimit().
+     *
+     * @return the current comfort level as an integer between 0 and 100
+     */
+    public int getComfortLevel() {
+        int difference = Math.abs(this.getIdealValue() -
+                this.getCurrentReading());
+        int comfortLevel = (int) (1 - ((difference) / this.getVariationLimit()))
+                * 100;
+        return comfortLevel;
+    }
+
+    /**
+     * Returns true if and only if this CO2 sensor is equal to the
+     * other given sensor.
+     *
+     * @param obj other object to compare equality
+     * @return true if equal, false otherwise
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (!super.equals(obj)) {
+            return false;
+        }
+
+        CarbonDioxideSensor sensor = (CarbonDioxideSensor) obj;
+
+        if (this.getIdealValue() != sensor.getIdealValue() ||
+                this.getVariationLimit() != sensor.getVariationLimit()) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Returns the hash code of this CO2 sensor.
+     *
+     * @return hash code of this sensor
+     */
+    @Override
+    public int hashCode() {
+        return super.hashCode() + this.getVariationLimit() +
+                this.getIdealValue();
+    }
+
+    /**
+     * Returns the machine-readable string representation of
+     * this carbon dioxide sensor.
+     *
+     * @return encoded string representation of this carbon dioxide sensor
+     */
+    public String encode() {
+        return "CarbonDioxideSensor:" + super.encode();
+    }
+
 }

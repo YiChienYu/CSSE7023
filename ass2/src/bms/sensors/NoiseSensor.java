@@ -4,7 +4,8 @@ package bms.sensors;
  * A sensor that measures the noise levels in a room.
  * @ass1
  */
-public class NoiseSensor extends TimedSensor implements HazardSensor {
+public class NoiseSensor extends TimedSensor implements HazardSensor,
+        ComfortSensor {
 
     /**
      * Threshold sound level for evaluating hazard and comfort levels.
@@ -95,5 +96,32 @@ public class NoiseSensor extends TimedSensor implements HazardSensor {
     @Override
     public String toString() {
         return String.format("%s, type=NoiseSensor", super.toString());
+    }
+
+    /**
+     * Returns the current comfort level observed by the sensor, based on
+     * the current loudness reading.
+     * <p>
+     *
+     *
+     * @return level of comfort at sensor location, 0 to 100
+     */
+    @Override
+    public int getComfortLevel() {
+        int comfortLevel = (int) ((1 - this.calculateRelativeLoudness()) * 100);
+
+        if (comfortLevel < 0) {
+            return 0;
+        }
+        return comfortLevel;
+    }
+
+    /**
+     * Returns the machine-readable string representation of this noise sensor.
+     *
+     * @return encoded string representation of this noise sensor
+     */
+    public String encode() {
+        return "NoiseSensor:" + super.encode();
     }
 }
