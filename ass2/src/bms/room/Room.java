@@ -2,6 +2,9 @@ package bms.room;
 
 import bms.exceptions.DuplicateSensorException;
 import bms.sensors.Sensor;
+import bms.sensors.TemperatureSensor;
+import bms.sensors.TimedSensor;
+import bms.util.Encodable;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -21,7 +24,7 @@ import java.util.List;
  * in the room.
  * @ass1
  */
-public class Room {
+public class Room implements Encodable {
 
     /**
      * Unique room number for this floor.
@@ -58,6 +61,21 @@ public class Room {
     private boolean fireDrill;
 
     /**
+     * Records whether there is currently a maintenance.
+     */
+    private boolean maintenance;
+
+    /**
+     * Hazard evaluator of the room
+     */
+    private HazardEvaluator hazardEvaluator;
+
+    /**
+     * The current state of the room
+     */
+    private RoomState state;
+
+    /**
      * Creates a new room with the given room number.
      *
      * @param roomNumber the unique room number of the room on this floor
@@ -72,6 +90,8 @@ public class Room {
 
         this.sensors = new ArrayList<>();
         this.fireDrill = false;
+        this.maintenance = false;
+        this.hazardEvaluator = null;
     }
 
     /**
@@ -177,6 +197,8 @@ public class Room {
      * <p>
      * The list of sensors should be sorted after adding the new sensor, in
      * alphabetical order by simple class name ({@link Class#getSimpleName()}).
+     * <p>
+     * Adding a sensor should remove any hazard evaluator currently in the room.
      *
      * @param sensor the sensor to add to the room
      * @throws DuplicateSensorException if the sensor to add is of the
@@ -194,6 +216,7 @@ public class Room {
         }
         sensors.add(sensor);
         sensors.sort(Comparator.comparing(s -> s.getClass().getSimpleName()));
+        this.hazardEvaluator = null;
     }
 
     /**
@@ -221,5 +244,147 @@ public class Room {
                 this.type,
                 this.area,
                 this.sensors.size());
+    }
+
+    /**
+     * Returns whether there is currently maintenance in progress.
+     *
+     * @return current status of maintenance
+     */
+    public boolean maintenanceOngoing() {
+        return maintenance;
+    }
+
+    /**
+     * Change the status of maintenance to the given value.
+     *
+     * @param maintenance whether there is maintenance ongoing
+     */
+    public void setMaintenance(boolean maintenance) {
+        this.maintenance = maintenance;
+    }
+
+    /**
+     * Returns this room's hazard evaluator, or null if none exists.
+     *
+     * @return room's hazard evaluator
+     */
+    public HazardEvaluator getHazardEvaluator() {
+        return hazardEvaluator;
+    }
+
+    /**
+     * Sets the room's hazard evaluator to a new hazard evaluator.
+     *
+     * @param hazardEvaluator new hazard evaluator for the room to use
+     */
+    public void setHazardEvaluator(HazardEvaluator hazardEvaluator) {
+        this.hazardEvaluator = hazardEvaluator;
+    }
+
+    /**
+     * Evaluates the room status based upon current information.
+     *
+     * @return current room status
+     */
+    public RoomState evaluateRoomState() {
+        if (this.getSensor("TemperatureSensor") != null) {
+            TemperatureSensor sensor =
+                    (TemperatureSensor) this.getSensor("TemperatureSensor");
+            if (sensor.getHazardLevel() == 100) {
+                state = RoomState.EVACUATE;
+            }
+        } else if (this.fireDrillOngoing()) {
+            state = RoomState.EVACUATE;
+        } else if (this.maintenanceOngoing() && !(this.fireDrillOngoing())) {
+            state = RoomState.MAINTENANCE;
+        } else {
+            state = RoomState.OPEN;
+        }
+        return state;
+    }
+
+    /**
+     * Returns true if and only if this room is equal to the other given room.
+     *
+     * @param obj other object to compare equality
+     * @return true if equal, false otherwise
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (obj.getClass().getSimpleName() == "Room") {
+            Room room = (Room) obj;
+            if (this.getRoomNumber() == room.getRoomNumber() &&
+                    this.getType() == room.getType() &&
+                    Math.abs(this.getArea() - room.getArea()) <= 0.001 &&
+                    this.getSensors().size() == room.getSensors().size()) {
+                for (int i = 0; i < this.getSensors().size(); i++) {
+                    String name = this.getSensors().get(i).getClass()
+                            .getSimpleName();
+                    if (room.getSensor(name) == null) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns the hash code of this room.
+     *
+     * @return hash code of this room
+     */
+    @Override
+    public int hashCode() {
+        int roundedArea = (int) (Math.round(this.getArea() * 100));
+        int sensorsHashCode = 0;
+
+        for (int i = 0; i < this.getSensors().size(); i++) {
+            sensorsHashCode +=
+                    sensors.get(i).getClass().getSimpleName().hashCode();
+        }
+        return roomNumber + type.hashCode() + roundedArea + sensors.size() +
+                sensorsHashCode;
+    }
+
+    /**
+     * Returns the machine-readable string representation of this room and
+     * all of its sensors.
+     *
+     * @return encoded string representation of this room
+     */
+    @Override
+    public String encode() {
+        String begin = String.format("%s:%s:%s:%s", roomNumber, type, area,
+                sensors.size());
+        String encodedSensors = "";
+
+        for (int i = 0; i < sensors.size(); i++) {
+            TimedSensor temp = (TimedSensor) sensors.get(i);
+            encodedSensors += temp.encode();
+
+            if (hazardEvaluator != null &&
+                    hazardEvaluator.getClass().getSimpleName() ==
+                            "WeightingBasedHazardEvaluator") {
+                WeightingBasedHazardEvaluator evaluator =
+                        (WeightingBasedHazardEvaluator) hazardEvaluator;
+
+                encodedSensors +=
+                        String.format("@%s", evaluator.getWeightings().get(i));
+            }
+
+
+            if (i != (sensors.size() -1)) {
+                encodedSensors += System.lineSeparator();
+            }
+        }
+
+        if (this.getHazardEvaluator() != null) {
+            begin += String.format(":%s", hazardEvaluator.toString());
+        }
+
+        return begin + System.lineSeparator() + encodedSensors;
     }
 }
