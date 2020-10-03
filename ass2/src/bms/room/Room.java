@@ -88,6 +88,7 @@ public class Room implements Encodable {
         this.roomNumber = roomNumber;
         this.type = type;
         this.area = area;
+        this.state = RoomState.OPEN;
 
         this.sensors = new ArrayList<>();
         this.fireDrill = false;

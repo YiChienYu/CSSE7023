@@ -1,9 +1,11 @@
 package bms.floor;
 
 import bms.exceptions.DuplicateRoomException;
+import bms.exceptions.FloorTooSmallException;
 import bms.exceptions.InsufficientSpaceException;
 import bms.room.Room;
 import bms.room.RoomType;
+import bms.util.Encodable;
 import bms.util.FireDrill;
 
 import java.util.ArrayList;
@@ -19,7 +21,7 @@ import java.util.List;
  * evacuated.
  * @ass1
  */
-public class Floor implements FireDrill {
+public class Floor implements FireDrill, Encodable {
     /**
      * Unique floor number for this floor. Corresponds to how many floors above
      * ground floor (inclusive).
@@ -52,6 +54,11 @@ public class Floor implements FireDrill {
     private static final int MIN_LENGTH = 5;
 
     /**
+     * Maintenance schedule
+     */
+    private MaintenanceSchedule maintenanceSchedule;
+
+    /**
      * Creates a new floor with the given floor number.
      *
      * @param floorNumber a unique floor number, corresponds to how many floors
@@ -64,6 +71,7 @@ public class Floor implements FireDrill {
         this.floorNumber = floorNumber;
         this.width = width;
         this.length = length;
+        this.maintenanceSchedule = null;
 
         this.rooms = new ArrayList<>();
     }
@@ -280,5 +288,178 @@ public class Floor implements FireDrill {
                 this.width,
                 this.length,
                 this.rooms.size());
+    }
+
+    /**
+     * Returns the floor's maintenance schedule, or null if it does not exist.
+     *
+     * @return maintenance schedule
+     */
+    public MaintenanceSchedule getMaintenanceSchedule() {
+        return maintenanceSchedule;
+    }
+
+    /**
+     * Changes the width and height of this floor.
+     * <p>
+     * The new dimensions must be greater than or equal to the minimum width and
+     * height for all floors.
+     * <p>
+     * Additionally, the new dimensions of the floor must be such that the
+     * new total area is greater than or equal to the current occupied area of
+     * the floor. This ensures that all the rooms currently on the floor
+     * can still fit on the floor.
+     *
+     * @param newWidth new width dimension for the floor
+     * @param newLength new length dimension for the floor
+     * @throws IllegalArgumentException if newWidth < Floor.getMinWidth();
+     * or newLength < Floor.getMinLength()
+     * @throws FloorTooSmallException if the total size of the current rooms
+     * could not be supported by decreased dimensions
+     */
+    public void changeDimensions(double newWidth, double newLength)
+            throws IllegalArgumentException, FloorTooSmallException {
+        if (newWidth < Floor.getMinWidth() ||
+                newLength < Floor.getMinLength()) {
+            throw new IllegalArgumentException();
+        }
+        if ((newLength * newLength) < this.occupiedArea()) {
+            throw new FloorTooSmallException();
+        }
+    }
+
+    /**
+     * Adds a maintenance schedule to this floor with the given room order.
+     * <p>
+     * Maintenance will be undertaken on rooms on the floor in the given order,
+     * with maintenance wrapping back to the start of the order once
+     * all the rooms in the order have been visited.
+     * <p>
+     * The given room order must not be null and must contain at least one room.
+     * All rooms in the given order must be rooms on this floor,
+     * i.e. elements of getRooms(). The given order does not need to contain
+     * all rooms on the floor, and it can contain duplicates of the same room.
+     * However, if the order contains more than one room, it cannot contain
+     * the same room twice or more consecutively, where the start of the list
+     * and the end of the list are also considered consecutive.
+     * <p>
+     * If this floor already has a maintenance schedule, it should be replaced
+     * with the newly created schedule. The room currently being maintained
+     * according to the old schedule should have its maintenance status
+     * set to false.
+     *
+     * @param roomOrder rooms on which to perform maintenance, in order
+     * @throws IllegalArgumentException if the given order is null or empty,
+     * if a room in the order is not on this floor, or if a room appears twice
+     * or more consecutively (the start of the list and the end of the list are
+     * also considered consecutive) in an order with at least two rooms.
+     */
+    public void createMaintenanceSchedule(List<Room> roomOrder)
+            throws IllegalArgumentException {
+        if (roomOrder == null || roomOrder.size() < 1) {
+            throw new IllegalArgumentException();
+        }
+
+        for (int i = 0; i < roomOrder.size(); i ++) {
+            if (this.getRoomByNumber(roomOrder.get(i).getRoomNumber()) ==
+                    null) {
+                throw new IllegalArgumentException();
+            }
+
+            if (i == roomOrder.size() -1) {
+                if (roomOrder.get(i).getRoomNumber() ==
+                        roomOrder.get(0).getRoomNumber()) {
+                    throw new IllegalArgumentException();
+                } else {
+                    if (roomOrder.get(i).getRoomNumber() ==
+                            roomOrder.get(i+1).getRoomNumber()) {
+                        throw new IllegalArgumentException();
+                    }
+                }
+            }
+        }
+
+        if (maintenanceSchedule != null) {
+            maintenanceSchedule.getCurrentRoom().setMaintenance(false);
+        }
+
+        maintenanceSchedule = new MaintenanceSchedule(roomOrder);
+    }
+
+    /**
+     * Returns true if and only if this floor is equal to the other given floor.
+     *
+     * @param obj other object to compare equality
+     * @return true if equal, false otherwise
+     */
+    @Override
+    public boolean equals(Object obj) {
+        Floor floor = (Floor) obj;;
+
+        double widthDifference = Math.abs(this.width - floor.getWidth());
+        double lengthDifference = Math.abs(this.length - floor.getLength());
+
+        if (this.floorNumber == floor.floorNumber && widthDifference <= 0.001 &&
+                lengthDifference <= 0.001 && this.rooms.size() ==
+                floor.rooms.size()) {
+            for (int i = 0; i < this.rooms.size(); i++) {
+                if (floor.getRoomByNumber(this.rooms.get(i).getRoomNumber()) !=
+                        null) {
+                    if (!floor.getRoomByNumber(this.rooms.get(i).
+                            getRoomNumber()).equals(this.rooms.get(i))) {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Returns the hash code of this floor.
+     *
+     * @return hash code of this floor
+     */
+    @Override
+    public int hashCode() {
+        int width = (int) this.width * 100;
+        int lenght = (int) this.length * 100;
+        int roomsHashCode = 0;
+
+        for(Room r : rooms) {
+            roomsHashCode += r.hashCode();
+        }
+
+        return floorNumber + width + lenght + rooms.size() + roomsHashCode;
+    }
+
+    /**
+     * Returns the machine-readable string representation of this floor and
+     * all of its rooms and sensors.
+     *
+     * @return encoded string representation of this floor
+     */
+    @Override
+    public String encode() {
+        String begin = String.format("%s:%s:%s:%s", floorNumber, width, length,
+                rooms.size());
+        String encodedRooms = "";
+
+        for (int i = 0; i < rooms.size(); i++) {
+            encodedRooms += String.format("%s", rooms.get(i).encode());
+
+            if (i != rooms.size() - 1) {
+                encodedRooms += System.lineSeparator();
+            }
+        }
+
+        if (maintenanceSchedule != null) {
+            begin += String.format(":%s", maintenanceSchedule.encode());
+        }
+
+        return begin + System.lineSeparator() + encodedRooms;
     }
 }

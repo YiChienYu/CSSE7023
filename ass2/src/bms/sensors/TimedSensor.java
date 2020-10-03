@@ -196,6 +196,7 @@ public abstract class TimedSensor implements TimedItem, Sensor, Encodable {
                 return false;
             }
         }
+
         return true;
     }
 
@@ -210,9 +211,11 @@ public abstract class TimedSensor implements TimedItem, Sensor, Encodable {
     @Override
     public int hashCode() {
         int temp = 0;
+
         for (int i = 0; i < sensorReadings.length; i++) {
             temp += this.sensorReadings[i];
         }
+
         return this.getClass().getSimpleName().hashCode() +
                 this.getCurrentReading() + temp;
     }
@@ -231,6 +234,7 @@ public abstract class TimedSensor implements TimedItem, Sensor, Encodable {
                 temp += String.format("%s,", sensorReadings[i]);
             }
         }
+
         return temp;
     }
 }
