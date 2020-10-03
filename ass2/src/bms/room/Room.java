@@ -1,6 +1,7 @@
 package bms.room;
 
 import bms.exceptions.DuplicateSensorException;
+import bms.hazardevaluation.*;
 import bms.sensors.Sensor;
 import bms.sensors.TemperatureSensor;
 import bms.sensors.TimedSensor;
