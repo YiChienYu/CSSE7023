@@ -70,6 +70,16 @@ public class ViewModel {
      */
     public void accept(KeyCode keyCode) {
         // TODO implement for assignment 2
+        switch (keyCode) {
+            case P :
+                this.togglePause();
+            case Q:
+                System.exit(0);
+            case S:
+                try {
+                    this.save("saves/quicksave.txt");
+                } catch (IOException e) {}
+        }
     }
 
     /**
@@ -86,6 +96,13 @@ public class ViewModel {
      */
     public void togglePause() {
         // TODO implement for assignment 2
+        boolean value = paused.getValue();
+        if (value == true) {
+            pauseButtonText.setValue("Unpause");
+        } else {
+            pauseButtonText.setValue("Pause");
+        }
+        paused.setValue(!value);
     }
 
     /**
@@ -106,6 +123,21 @@ public class ViewModel {
      */
     public void save(String filename) throws IOException {
         // TODO implement for assignment 2
+        try (FileWriter writer = new FileWriter(filename)) {
+            BufferedWriter bufferedWriter = new BufferedWriter(writer);
+            String temp = "";
+            for (int i = 0; i < buildings.size(); i++) {
+                temp = buildings.get(i).encode();
+
+                if (i != buildings.size() - 1) {
+                    temp += System.lineSeparator();
+                }
+                bufferedWriter.write(temp);
+                bufferedWriter.flush();
+            }
+        } catch (IOException e) {
+            throw new IOException();
+        }
     }
 
     /**
@@ -126,6 +158,14 @@ public class ViewModel {
      */
     public void tick() {
         // TODO implement for assignment 2
+        if (paused.getValue() != true) {
+            int value = ticks.getValue();
+            ticks.setValue(value+1);
+            TimedItemManager.getInstance().elapseOneMinute();
+            String temp = ticks.getValue() + " minutes elapsed";
+            timeElapsed.setValue(temp);
+            this.registerChange();
+        }
     }
 
     /**
