@@ -170,10 +170,6 @@ public abstract class TimedSensor implements TimedItem, Sensor, Encodable {
                         .toArray(String[]::new)));
     }
 
-    private int[] getSensorReadings() {
-        return sensorReadings;
-    }
-
     /**
      * Returns true if and only if this timed sensor is equal to the other
      * given sensor.
@@ -190,13 +186,13 @@ public abstract class TimedSensor implements TimedItem, Sensor, Encodable {
         if (this.updateFrequency != sensorToCompare.getUpdateFrequency()){
             return false;
         }
-        if (this.getSensorReadings().length !=
-                sensorToCompare.getSensorReadings().length) {
+        if (sensorReadings.length !=
+                sensorToCompare.sensorReadings.length) {
             return false;
         }
-        for (int i = 0; i < this.getSensorReadings().length; i++) {
-            if (this.getSensorReadings()[i] !=
-                    sensorToCompare.getSensorReadings()[i]) {
+        for (int i = 0; i < sensorReadings.length; i++) {
+            if (sensorReadings[i] !=
+                    sensorToCompare.sensorReadings[i]) {
                 return false;
             }
         }
@@ -214,8 +210,8 @@ public abstract class TimedSensor implements TimedItem, Sensor, Encodable {
     @Override
     public int hashCode() {
         int temp = 0;
-        for (int i = 0; i < this.getSensorReadings().length; i++) {
-            temp += this.getSensorReadings()[i];
+        for (int i = 0; i < sensorReadings.length; i++) {
+            temp += this.sensorReadings[i];
         }
         return this.getClass().getSimpleName().hashCode() +
                 this.getCurrentReading() + temp;
@@ -228,8 +224,8 @@ public abstract class TimedSensor implements TimedItem, Sensor, Encodable {
      */
     public String encode() {
         String temp = "";
-        for (int i = 1; i <= this.getSensorReadings().length; i++) {
-            if (i == this.getSensorReadings().length) {
+        for (int i = 1; i <= sensorReadings.length; i++) {
+            if (i == sensorReadings.length) {
                 temp += String.format("sensorReading%s", i);
             } else {
                 temp += String.format("sensorReading%s,", i);
