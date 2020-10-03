@@ -326,6 +326,9 @@ public class Floor implements FireDrill, Encodable {
         if ((newLength * newLength) < this.occupiedArea()) {
             throw new FloorTooSmallException();
         }
+
+        this.width = newWidth;
+        this.length = newLength;
     }
 
     /**

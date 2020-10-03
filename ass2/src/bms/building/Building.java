@@ -6,6 +6,7 @@ import bms.exceptions.FloorTooSmallException;
 import bms.exceptions.NoFloorBelowException;
 import bms.floor.Floor;
 import bms.room.RoomType;
+import bms.util.Encodable;
 import bms.util.FireDrill;
 
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ import java.util.List;
  * the building to be evacuated.
  * @ass1
  */
-public class Building implements FireDrill {
+public class Building implements FireDrill, Encodable {
 
     /**
      * The name of the building.
@@ -211,5 +212,138 @@ public class Building implements FireDrill {
     public String toString() {
         return String.format("Building: name=\"%s\", floors=%d",
                 this.name, this.floors.size());
+    }
+
+    /**
+     * Renovate the given floor by changing the width and length.
+     * <p>
+     * If the floor is increasing in size, all floors below need to have
+     * sufficient dimensions to support the changes to this floor.
+     * <p>
+     * If the floor is decreasing in size, all floors above need to have
+     * dimensions small enough so that this reduced floor can
+     * still support them.
+     * <p>
+     * If the floor is decreasing in size, it is essential that it will remain
+     * large enough to be able to accomodate all the rooms on the floor
+     * (with their respective areas).
+     *
+     * @param floorNumber the floor which is to be renovated
+     * @param newWidth the new width dimension for the floor
+     * @param newLength the new length dimension for the floor
+     * @throws IllegalArgumentException if the given floor does not exist
+     * (i.e. getFloorByNumber() is null), or if newWidth < Floor.getMinWidth(),
+     * or newLength < Floor.getMinLength()
+     * @throws FloorTooSmallException if the floor below is too small to support
+     * increased dimensions, if the floor above is too large to be supported
+     * by decreased dimensions, or if the total size of the current rooms
+     * could not be supported by decreased dimensions
+     */
+    public void renovateFloor(int floorNumber, double newWidth,
+                              double newLength) throws IllegalArgumentException,
+                              FloorTooSmallException {
+        if (this.getFloorByNumber(floorNumber) == null ||
+                newWidth < Floor.getMinWidth() ||
+                newLength < Floor.getMinLength()) {
+            throw new IllegalArgumentException();
+        }
+
+        Floor floor = this.getFloorByNumber(floorNumber);
+        int indexOfFloor = 0;
+
+        for (int i = 0; i < floors.size(); i++) {
+            if (floors.get(i).getFloorNumber() == floorNumber) {
+                indexOfFloor = i;
+            }
+        }
+
+        if ((newWidth * newLength) > floor.calculateArea()) {
+            for (int i = 0; i < indexOfFloor; i++){
+                if (floors.get(i).calculateArea() < (newWidth * newLength)) {
+                    throw new FloorTooSmallException();
+                }
+            }
+        } else if ((newWidth * newLength) < floor.calculateArea()) {
+            if ((newWidth * newLength) < floor.occupiedArea()) {
+                throw new FloorTooSmallException();
+            }
+            for (int i = indexOfFloor + 1; i < floors.size(); i++) {
+                if (floors.get(i).calculateArea() > (newWidth * newLength)) {
+                    throw new FloorTooSmallException();
+                }
+            }
+        }
+        floor.changeDimensions(newWidth, newLength);
+    }
+
+    /**
+     * Returns true if and only if this building is equal to
+     * the other given building.
+     *
+     * @param obj other object to compare equality
+     * @return true if equal, false otherwise
+     */
+    @Override
+    public boolean equals(Object obj) {
+        Building building = (Building) obj;
+
+        if (this.name != building.name ||
+                this.floors.size() != building.floors.size()) {
+            return false;
+        }
+
+        for (int i = 0; i < floors.size(); i++) {
+            if (building.getFloorByNumber(floors.get(i).getFloorNumber()) ==
+                    null) {
+                return false;
+            }
+
+            Floor floor = building.getFloorByNumber(floors.get(i).
+                    getFloorNumber());
+
+            if (!floor.equals(floors.get(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Returns the hash code of this building.
+     *
+     * @return hash code of this building
+     */
+    @Override
+    public int hashCode() {
+        int floorHashCode = 0;
+
+        for (Floor f : floors) {
+            floorHashCode += f.hashCode();
+        }
+
+        return name.hashCode() + floors.size() + floorHashCode;
+    }
+
+    /**
+     * Returns the machine-readable string representation of this building and
+     * all of its floors, rooms and sensors.
+     *
+     * @return encoded string representation of this building
+     */
+    @Override
+    public String encode() {
+        String begin = String.format("%s", name) + System.lineSeparator() +
+                String.format("%s", floors.size());
+        String encodedFloors = "";
+
+        for (int i = 0; i < floors.size(); i++) {
+            encodedFloors += floors.get(i).encode();
+
+            if (i != floors.size() - 1) {
+                encodedFloors += System.lineSeparator();
+            }
+        }
+
+        return begin + System.lineSeparator() + encodedFloors;
     }
 }
