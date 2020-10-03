@@ -224,11 +224,11 @@ public abstract class TimedSensor implements TimedItem, Sensor, Encodable {
      */
     public String encode() {
         String temp = "";
-        for (int i = 1; i <= sensorReadings.length; i++) {
-            if (i == sensorReadings.length) {
-                temp += String.format("sensorReading%s", i);
+        for (int i = 0; i < sensorReadings.length; i++) {
+            if (i == sensorReadings.length - 1) {
+                temp += String.format("%s", sensorReadings[i]);
             } else {
-                temp += String.format("sensorReading%s,", i);
+                temp += String.format("%s,", sensorReadings[i]);
             }
         }
         return temp;
