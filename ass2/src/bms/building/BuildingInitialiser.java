@@ -32,137 +32,109 @@ public class BuildingInitialiser {
     }
 
 
-    private static Room readRoom(BufferedReader r) throws IOException,
+    private static Room readRoom (BufferedReader r) throws IOException,
             FileFormatException {
-
-        BufferedReader reader = r;
-
-
-        String[] temp = {RoomType.LABORATORY.toString(),
-                RoomType.OFFICE.toString(), RoomType.STUDY.toString()};
-        List<String> concreteType = Arrays.asList(temp);
 
         try {
-            Room room = null;
-            String informationString = reader.readLine();
-            String[] roomInformation = informationString.split(":");
-            int number = Integer.parseInt(roomInformation[0]);
-            String type = roomInformation[1];
-            RoomType roomType= null;
-            int area = Integer.parseInt(roomInformation[2]);
-            int sensorNumber = Integer.parseInt(roomInformation[3]);
+            String temp = r.readLine();
+            String[] information = temp.split(":");
+            RoomType type = null;
+            int numner = Integer.parseInt(information[0]);
+            int area = Integer.parseInt(information[2]);
+            int sensorNumber = Integer.parseInt(information[3]);
 
-            if (!concreteType.contains(type)) {
-                throw new FileFormatException();
+            if (information[1] == "STUDY") {
+                type = RoomType.STUDY;
+            } else if (information[1] == "LABORATORY") {
+                type = RoomType.LABORATORY;
+            } else if (information[1] == "OFFICE") {
+                type = RoomType.OFFICE;
             }
 
-            if (type == "LABORATORY") {
-                roomType = RoomType.LABORATORY;
-            } else if (type == "OFFICE") {
-                roomType = RoomType.OFFICE;
-            } else if (type == "STUDY") {
-                roomType = RoomType.STUDY;
-            }
-
-            room = new Room(number, roomType, area);
+            Room room = new Room(numner, type, area);
+            List<HazardSensor> hazardSensors = new ArrayList<>();
 
             for (int i = 0; i < sensorNumber; i++) {
-                Sensor sensor = BuildingInitialiser.readSensor(reader);
-                room.addSensor(sensor);
-            }
+                String[] sensorInfo = BuildingInitialiser.readSensor(r);
+                Sensor sensor = null;
 
-            if (roomInformation.length == 5) {
-                String evaluatorType = roomInformation[4];
-                List<Sensor> sensors = room.getSensors();
-                HazardEvaluator evaluator = null;
 
-                if (evaluatorType == "RuleBased") {
-                    List<HazardSensor> hazardSensors = new ArrayList<>();
-                    for (Sensor s : sensors) {
-                        hazardSensors.add((HazardSensor) s);
+
+
+
+
+
+
+
+
+
+                String[] readingString = sensorInfo[1].split(",");
+                int[] readings = new int[readingString.length];
+
+                if (information.length == 4 || (information.length == 5 &&
+                        information[4] == "RuleBased")) {
+
+                    for (int j = 0; j < readingString.length; j++) {
+                        readings[j] = Integer.parseInt(readingString[j]);
                     }
 
-                    evaluator = new RuleBasedHazardEvaluator(hazardSensors);
-                } else if (evaluatorType == "WeightingBased") {
-                    Map<HazardSensor, Integer> mapOfsensors = new HashMap<>();
+                    if (sensorInfo[0] == "TemperatureSensor") {
+                        sensor = new TemperatureSensor(readings);
+                    } else if (sensorInfo[0] == "NoiseSensor") {
+                        int updateFrequency = Integer.parseInt(sensorInfo[2]);
+                        sensor = new NoiseSensor(readings, updateFrequency);
+                    } else if (sensorInfo[0] == "OccupancySensor") {
+                        int updateFrequency = Integer.parseInt(sensorInfo[2]);
+                        int capacity = Integer.parseInt(sensorInfo[3]);
+                        sensor = new OccupancySensor(readings, updateFrequency,
+                                capacity);
+                    } else if (sensorInfo[0] == "CarbonDioxideSensor") {
+                        int updateFrequency = Integer.parseInt(sensorInfo[2]);
+                        int idealValue = Integer.parseInt(sensorInfo[3]);
+                        int variationLimit = Integer.parseInt(sensorInfo[4]);
+                        sensor = new CarbonDioxideSensor(readings,
+                                updateFrequency, idealValue, variationLimit);
+                    } else {
+                        throw new FileFormatException();
+                    }
+                    room.addSensor(sensor);
+                    if (information.length == 5 &&
+                            information[4] == "RuleBased") {
+                        HazardSensor hazardSensor = (HazardSensor) sensor;
+                        hazardSensors.add(hazardSensor);
+                    }
+
+                } else {
+
                 }
             }
 
+            if ((information.length == 5 &&
+                    information[4] == "RuleBased")) {
+                HazardEvaluator evaluator =
+                        new RuleBasedHazardEvaluator(hazardSensors);
+                room.setHazardEvaluator(evaluator);
+            }
+
+
+
         } catch (IOException e) {
             throw new IOException();
-        } catch (Exception e) {
+        } catch (Exception exception) {
             throw new FileFormatException();
         }
+    }
 
-
+    private static String[] readSensor(BufferedReader r) throws IOException {
+        try {
+            String temp = r.readLine();
+            String[] information = temp.split(":");
+            return information;
+        } catch (IOException e) {
+            throw new IOException();
+        }
 
     }
 
 
-    private static Sensor readSensor(BufferedReader reader) throws IOException,
-            FileFormatException {
-
-        String[] temp = {"NoiseSensor", "OccupancySensor",
-                "CarbonDioxideSensor", "TemperatureSensor"};
-        List<String> concreteType = Arrays.asList(temp);
-
-        try{
-            Sensor sensor = null;
-            String informationString = reader.readLine();
-            String[] sensorInformation = informationString.split(":");
-
-            String last = sensorInformation[sensorInformation.length - 1];
-
-            if (last.contains("@")) {
-                int index = last.indexOf("@");
-                StringBuilder builder = new StringBuilder("");
-
-                for (int i = 0; i < index; i++) {
-                    builder.append(last.charAt(i));
-                }
-
-                String trueLast = builder.toString();
-
-                sensorInformation[sensorInformation.length - 1] = trueLast;
-            }
-
-            String readingString = sensorInformation[1];
-            String[] splitReading = readingString.split(",");
-            int[] readings = new int[splitReading.length];
-
-            for (int i = 0; i < splitReading.length; i++) {
-                int tempInt = Integer.parseInt(splitReading[i]);
-                readings[i] = tempInt;
-            }
-
-
-            if (!concreteType.contains(sensorInformation[0])) {
-                throw new FileFormatException();
-            }
-
-            if (sensorInformation[0] == "TemperatureSensor") {
-                sensor = new TemperatureSensor(readings);
-            } else if (sensorInformation[0] == "NoiseSensor") {
-                int updateFrequency = Integer.parseInt(sensorInformation[2]);
-                sensor = new NoiseSensor(readings, updateFrequency);
-            } else if (sensorInformation[0] == "OccupancySensor") {
-                int updateFrequency = Integer.parseInt(sensorInformation[2]);
-                int capacity = Integer.parseInt(sensorInformation[3]);
-                sensor = new OccupancySensor(readings, updateFrequency,
-                        capacity);
-            } else if (sensorInformation[0] == "CarbonDioxideSensor") {
-                int updateFrequency = Integer.parseInt(sensorInformation[2]);
-                int idealValue = Integer.parseInt(sensorInformation[3]);
-                int variation = Integer.parseInt(sensorInformation[4]);
-                sensor = new CarbonDioxideSensor(readings, updateFrequency,
-                        idealValue, variation);
-            }
-
-            return sensor;
-        } catch (IOException e) {
-            throw new IOException();
-        } catch (Exception e) {
-            throw new FileFormatException();
-        }
-    }
 }
