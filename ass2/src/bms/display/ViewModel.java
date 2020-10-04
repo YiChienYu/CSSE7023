@@ -97,7 +97,7 @@ public class ViewModel {
     public void togglePause() {
         // TODO implement for assignment 2
         boolean value = paused.getValue();
-        if (value == true) {
+        if (value == false) {
             pauseButtonText.setValue("Unpause");
         } else {
             pauseButtonText.setValue("Pause");
