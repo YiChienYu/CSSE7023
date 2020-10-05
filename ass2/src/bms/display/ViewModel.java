@@ -367,7 +367,7 @@ public class ViewModel {
      * @ass2_given
      */
     public void createInfoDialog(String titleText, String headerText,
-            String contentText) {
+                                 String contentText) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(titleText);
         alert.setHeaderText(headerText);
@@ -380,7 +380,7 @@ public class ViewModel {
      * @ass2_given
      */
     public void takeInstruction(ButtonOptions option,
-            List<Optional<String>> args) {
+                                List<Optional<String>> args) {
         for (Optional<String> arg : args) {
             if (arg.isEmpty()) {
                 return;
