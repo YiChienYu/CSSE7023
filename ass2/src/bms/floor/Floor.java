@@ -412,9 +412,8 @@ public class Floor implements FireDrill, Encodable {
                             getRoomNumber()).equals(this.rooms.get(i))) {
                         return false;
                     }
-                } else {
-                    return false;
                 }
+                    return false;
             }
             return true;
         }

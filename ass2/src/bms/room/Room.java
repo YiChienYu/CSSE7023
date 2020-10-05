@@ -325,6 +325,13 @@ public class Room implements Encodable {
                             .getSimpleName();
                     if (room.getSensor(name) == null) {
                         return false;
+                    } else {
+                        int index = room.getSensors().
+                                indexOf(room.getSensor(name));
+                        if (!this.getSensors().get(i).
+                                equals(room.getSensors().get(index))) {
+                            return false;
+                        }
                     }
                 }
                 return true;
