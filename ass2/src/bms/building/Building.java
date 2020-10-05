@@ -285,27 +285,31 @@ public class Building implements FireDrill, Encodable {
      */
     @Override
     public boolean equals(Object obj) {
-        Building building = (Building) obj;
+        if (obj instanceof Building) {
+            Building building = (Building) obj;
 
-        if (this.name != building.name ||
-                this.floors.size() != building.floors.size()) {
-            return false;
-        }
-
-        for (int i = 0; i < floors.size(); i++) {
-            if (building.getFloorByNumber(floors.get(i).getFloorNumber()) ==
-                    null) {
+            if (this.name != building.name ||
+                    this.floors.size() != building.floors.size()) {
                 return false;
             }
 
-            Floor floor = building.getFloorByNumber(floors.get(i).
-                    getFloorNumber());
+            for (int i = 0; i < floors.size(); i++) {
+                if (building.getFloorByNumber(floors.get(i).getFloorNumber()) ==
+                        null) {
+                    return false;
+                }
 
-            if (!floor.equals(floors.get(i))) {
-                return false;
+                Floor floor = building.getFloorByNumber(floors.get(i).
+                        getFloorNumber());
+
+                if (!floor.equals(floors.get(i))) {
+                    return false;
+                }
             }
+            return true;
         }
-        return true;
+
+        return false;
     }
 
     /**

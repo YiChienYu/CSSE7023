@@ -314,7 +314,7 @@ public class Room implements Encodable {
      */
     @Override
     public boolean equals(Object obj) {
-        if (obj.getClass().getSimpleName() == "Room") {
+        if (obj instanceof Room) {
             Room room = (Room) obj;
             if (this.getRoomNumber() == room.getRoomNumber() &&
                     this.getType() == room.getType() &&

@@ -397,25 +397,26 @@ public class Floor implements FireDrill, Encodable {
      */
     @Override
     public boolean equals(Object obj) {
-        Floor floor = (Floor) obj;;
+        if (obj instanceof Floor) {
+            Floor floor = (Floor) obj;
 
-        double widthDifference = Math.abs(this.width - floor.getWidth());
-        double lengthDifference = Math.abs(this.length - floor.getLength());
+            double widthDifference = Math.abs((this.width - floor.getWidth()));
+            double lengthDifference = Math.abs(this.length - floor.getLength());
 
-        if (this.floorNumber == floor.floorNumber && widthDifference <= 0.001 &&
-                lengthDifference <= 0.001 && this.rooms.size() ==
-                floor.rooms.size()) {
-            for (int i = 0; i < this.rooms.size(); i++) {
-                if (floor.getRoomByNumber(this.rooms.get(i).getRoomNumber()) !=
-                        null) {
-                    if (!floor.getRoomByNumber(this.rooms.get(i).
-                            getRoomNumber()).equals(this.rooms.get(i))) {
-                        return false;
+            if (this.floorNumber == floor.floorNumber && widthDifference <= 0.001 &&
+                    lengthDifference <= 0.001 && this.rooms.size() ==
+                    floor.rooms.size()) {
+                for (int i = 0; i < this.rooms.size(); i++) {
+                    if (floor.getRoomByNumber(this.rooms.get(i).getRoomNumber()) !=
+                            null) {
+                        if (!floor.getRoomByNumber(this.rooms.get(i).
+                                getRoomNumber()).equals(this.rooms.get(i))) {
+                            return false;
+                        }
                     }
                 }
-                    return false;
+                return true;
             }
-            return true;
         }
         return false;
     }

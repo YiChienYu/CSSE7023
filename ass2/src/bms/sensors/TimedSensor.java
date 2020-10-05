@@ -179,25 +179,31 @@ public abstract class TimedSensor implements TimedItem, Sensor, Encodable {
      */
     @Override
     public boolean equals(Object obj) {
+        if (obj instanceof TimedSensor) {
+            TimedSensor sensorToCompare = (TimedSensor) obj;
+            if (this.updateFrequency != sensorToCompare.getUpdateFrequency()){
+                return false;
+            }
+            if (sensorReadings.length !=
+                    sensorToCompare.sensorReadings.length) {
+                return false;
+            }
+            for (int i = 0; i < sensorReadings.length; i++) {
+                if (sensorReadings[i] !=
+                        sensorToCompare.sensorReadings[i]) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+        /*
         if (this.getClass().getSimpleName() != obj.getClass().getSimpleName()) {
             return false;
         }
-        TimedSensor sensorToCompare = (TimedSensor) obj;
-        if (this.updateFrequency != sensorToCompare.getUpdateFrequency()){
-            return false;
-        }
-        if (sensorReadings.length !=
-                sensorToCompare.sensorReadings.length) {
-            return false;
-        }
-        for (int i = 0; i < sensorReadings.length; i++) {
-            if (sensorReadings[i] !=
-                    sensorToCompare.sensorReadings[i]) {
-                return false;
-            }
-        }
 
-        return true;
+         */
+
     }
 
     /**
