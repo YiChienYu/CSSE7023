@@ -111,8 +111,8 @@ public class BuildingInitialiser {
         int roomNumber;
         RoomType type;
         double area;
-        int numberOfSensor = 0;
-        Room room = null;
+        int numberOfSensor;
+        Room room;
         HazardEvaluator evaluator = null;
         Sensor sensor;
         HazardSensor hazardSensor;
@@ -133,7 +133,7 @@ public class BuildingInitialiser {
         for (int i = 0; i < numberOfSensor; i++) {
             String[] sensorInformation = BuildingInitialiser.loadSensor(r);
 
-            if (lengthOfInformation == 4 || (lengthOfInformation == 5 && roomInfo[4] == "RuleBased")) {
+            if (lengthOfInformation == 4 || (lengthOfInformation == 5 && roomInfo[4].equals("RuleBased"))) {
                 String[] readingString = sensorInformation[1].split(",");
                 int[] reading = new int[readingString.length];
 
@@ -152,7 +152,7 @@ public class BuildingInitialiser {
                         int variationLimit = Integer.parseInt(sensorInformation[4]);
                         sensor = new CarbonDioxideSensor(reading, updateFrequency, idealValue, variationLimit);
                         room.addSensor(sensor);
-                        if (lengthOfInformation == 5 && roomInfo[4] == "RuleBased") {
+                        if (lengthOfInformation == 5 && roomInfo[4].equals("RuleBased")) {
                             hazardSensor = new CarbonDioxideSensor(reading, updateFrequency, idealValue, variationLimit);
                             forRuleBase.add(hazardSensor);
                         }
@@ -167,7 +167,7 @@ public class BuildingInitialiser {
                         int capacity = Integer.parseInt(sensorInformation[3]);
                         sensor = new OccupancySensor(reading, updateFrequency, capacity);
                         room.addSensor(sensor);
-                        if (lengthOfInformation == 5 && roomInfo[4] == "RuleBased") {
+                        if (lengthOfInformation == 5 && roomInfo[4].equals("RuleBased")) {
                             hazardSensor = new OccupancySensor(reading, updateFrequency, capacity);
                             forRuleBase.add(hazardSensor);
                         }
@@ -180,7 +180,7 @@ public class BuildingInitialiser {
                         int updateFrequency = Integer.parseInt(sensorInformation[2]);
                         sensor = new NoiseSensor(reading, updateFrequency);
                         room.addSensor(sensor);
-                        if (lengthOfInformation == 5 && roomInfo[4] == "RuleBased") {
+                        if (lengthOfInformation == 5 && roomInfo[4].equals("RuleBased")) {
                             hazardSensor = new NoiseSensor(reading, updateFrequency);
                             forRuleBase.add(hazardSensor);
                         }
@@ -191,7 +191,7 @@ public class BuildingInitialiser {
                     try {
                         sensor = new TemperatureSensor(reading);
                         room.addSensor(sensor);
-                        if (lengthOfInformation == 5 && roomInfo[4] == "RuleBased") {
+                        if (lengthOfInformation == 5 && roomInfo[4].equals("RuleBased")) {
                             hazardSensor = new TemperatureSensor(reading);
                             forRuleBase.add(hazardSensor);
                         }
@@ -200,9 +200,7 @@ public class BuildingInitialiser {
                     }
                 }
 
-            }
-
-            else if (lengthOfInformation == 5 && roomInfo[4] == "WeightingBased") {
+            } else if (lengthOfInformation == 5 && roomInfo[4].equals("WeightingBased")) {
                 String[] lastElementSplit = sensorInformation[sensorInformation.length - 1].split("@");
 
                 if (sensorInformation.length != 2) {
@@ -283,9 +281,9 @@ public class BuildingInitialiser {
         }
 
         if (lengthOfInformation == 5) {
-            if (roomInfo[4] == "RuleBased") {
+            if (roomInfo[4].equals("RuleBased")) {
                 evaluator = new RuleBasedHazardEvaluator(forRuleBase);
-            } else if (roomInfo[4] == "WeightingBased") {
+            } else if (roomInfo[4].equals("WeightingBased")) {
                 evaluator = new WeightingBasedHazardEvaluator(forWeightBase);
             }
             room.setHazardEvaluator(evaluator);
@@ -300,6 +298,4 @@ public class BuildingInitialiser {
         String[] sensorInfo = temp.split(":");
         return sensorInfo;
     }
-
-
 }
