@@ -35,7 +35,8 @@ public class WeightingBasedHazardEvaluator implements HazardEvaluator {
                 sensors.entrySet().iterator();
 
         while (iterator.hasNext()) {
-            int value = iterator.next().getValue();
+            Map.Entry<HazardSensor, Integer> entry = iterator.next();
+            int value = entry.getValue();
             if (value < 0 || value > 100) {
                 throw new IllegalArgumentException();
             }
@@ -67,8 +68,9 @@ public class WeightingBasedHazardEvaluator implements HazardEvaluator {
                 sensors.entrySet().iterator();
 
         while (iterator.hasNext()) {
-            average += ((iterator.next().getKey().getHazardLevel() *
-                    iterator.next().getValue()) / 100);
+            Map.Entry<HazardSensor, Integer> entry = iterator.next();
+            average += (entry.getKey().getHazardLevel() *
+                    entry.getValue() / 100);
         }
         return Math.round(average);
     }
@@ -86,7 +88,8 @@ public class WeightingBasedHazardEvaluator implements HazardEvaluator {
                 sensors.entrySet().iterator();
 
         while (iterator.hasNext()) {
-            weightings.add(iterator.next().getValue());
+            Map.Entry<HazardSensor, Integer> entry = iterator.next();
+            weightings.add(entry.getValue());
         }
         return weightings;
     }
