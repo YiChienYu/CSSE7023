@@ -1,5 +1,7 @@
 package bms.sensors;
 
+import java.util.StringJoiner;
+
 /**
  * A sensor that measures levels of carbon dioxide (CO2) in the air, in parts
  * per million (ppm).
@@ -206,7 +208,13 @@ public class CarbonDioxideSensor extends TimedSensor implements HazardSensor,
      * @return encoded string representation of this carbon dioxide sensor
      */
     public String encode() {
-        return "CarbonDioxideSensor:" + super.encode();
+        StringJoiner joiner = new StringJoiner(":");
+        joiner.add("CarbonDioxideSensor");
+        joiner.add(super.encode());
+        joiner.add(String.valueOf(this.getUpdateFrequency()));
+        joiner.add(String.valueOf(this.idealValue));
+        joiner.add(String.valueOf(this.variationLimit));
+        return joiner.toString();
     }
 
 }

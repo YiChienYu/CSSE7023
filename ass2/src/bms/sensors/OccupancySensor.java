@@ -1,5 +1,7 @@
 package bms.sensors;
 
+import java.util.StringJoiner;
+
 /**
  * A sensor that measures the number of people in a room.
  * @ass1
@@ -160,6 +162,11 @@ public class OccupancySensor extends TimedSensor implements HazardSensor,
      */
     @Override
     public String encode() {
-        return "OccupancySensor:" + super.encode();
+        StringJoiner joiner = new StringJoiner(":");
+        joiner.add("OccupancySensor");
+        joiner.add(super.encode());
+        joiner.add(String.valueOf(this.getUpdateFrequency()));
+        joiner.add(String.valueOf(capacity));
+        return joiner.toString();
     }
 }

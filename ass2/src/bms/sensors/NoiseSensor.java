@@ -1,5 +1,7 @@
 package bms.sensors;
 
+import java.util.StringJoiner;
+
 /**
  * A sensor that measures the noise levels in a room.
  * @ass1
@@ -122,6 +124,11 @@ public class NoiseSensor extends TimedSensor implements HazardSensor,
      * @return encoded string representation of this noise sensor
      */
     public String encode() {
-        return "NoiseSensor:" + super.encode();
+        StringJoiner joiner = new StringJoiner(":");
+        joiner.add("NoiseSensor");
+        joiner.add(super.encode());
+        joiner.add(String.valueOf(this.getUpdateFrequency()));
+
+        return joiner.toString();
     }
 }

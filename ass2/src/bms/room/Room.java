@@ -10,6 +10,7 @@ import bms.util.Encodable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.StringJoiner;
 
 /**
  * Represents a room on a floor of a building.
@@ -368,32 +369,18 @@ public class Room implements Encodable {
     public String encode() {
         String begin = String.format("%s:%s:%s:%s", roomNumber, type, area,
                 sensors.size());
-        String encodedSensors = "";
+        StringJoiner joiner = new StringJoiner(System.lineSeparator());
+
+        joiner.add(begin);
+
 
         for (int i = 0; i < sensors.size(); i++) {
             TimedSensor temp = (TimedSensor) sensors.get(i);
-            encodedSensors += temp.encode();
-
-            if (hazardEvaluator != null &&
-                    hazardEvaluator.getClass().getSimpleName() ==
-                            "WeightingBasedHazardEvaluator") {
-                WeightingBasedHazardEvaluator evaluator =
-                        (WeightingBasedHazardEvaluator) hazardEvaluator;
-
-                encodedSensors +=
-                        String.format("@%s", evaluator.getWeightings().get(i));
-            }
-
-
-            if (i != (sensors.size() -1)) {
-                encodedSensors += System.lineSeparator();
-            }
+            joiner.add(temp.encode());
         }
 
-        if (this.getHazardEvaluator() != null) {
-            begin += String.format(":%s", hazardEvaluator.toString());
-        }
 
-        return begin + System.lineSeparator() + encodedSensors;
+
+        return joiner.toString();
     }
 }

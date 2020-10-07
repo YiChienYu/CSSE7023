@@ -10,6 +10,7 @@ import bms.util.FireDrill;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringJoiner;
 
 /**
  * Represents a floor of a building.
@@ -449,20 +450,15 @@ public class Floor implements FireDrill, Encodable {
     public String encode() {
         String begin = String.format("%s:%s:%s:%s", floorNumber, width, length,
                 rooms.size());
-        String encodedRooms = "";
+        StringJoiner joiner = new StringJoiner(System.lineSeparator());
+
+        joiner.add(begin);
 
         for (int i = 0; i < rooms.size(); i++) {
-            encodedRooms += String.format("%s", rooms.get(i).encode());
-
-            if (i != rooms.size() - 1) {
-                encodedRooms += System.lineSeparator();
-            }
+           joiner.add(rooms.get(i).encode());
         }
 
-        if (maintenanceSchedule != null) {
-            begin += String.format(":%s", maintenanceSchedule.encode());
-        }
 
-        return begin + System.lineSeparator() + encodedRooms;
+        return joiner.toString();
     }
 }

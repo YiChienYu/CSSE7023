@@ -40,26 +40,31 @@ public class StudyRoomRecommender {
             List<Integer> levels = new ArrayList<>();
             List<Room> rooms = floors.get(i).getRooms();
 
-            for (Room r : rooms) {
-                int comfortLevel = 0;
-                List<Sensor> sensors = r.getSensors();
+            if (rooms.size() != 0) {
+                for (Room r : rooms) {
+                    int comfortLevel = 0;
+                    List<Sensor> sensors = r.getSensors();
 
-                if (r.evaluateRoomState() != RoomState.EVACUATE &&
-                        r.evaluateRoomState() != RoomState.MAINTENANCE &&
-                        r.evaluateRoomState() == RoomState.OPEN &&
-                        r.getType() == RoomType.STUDY) {
-                    rooms.add(r);
-                }
-
-                for (Sensor s : sensors) {
-                    if (s instanceof ComfortSensor) {
-                        comfortLevel += ((ComfortSensor) s).getComfortLevel();
+                    if (r.evaluateRoomState() != RoomState.EVACUATE &&
+                            r.evaluateRoomState() != RoomState.MAINTENANCE &&
+                            r.evaluateRoomState() == RoomState.OPEN &&
+                            r.getType() == RoomType.STUDY) {
+                        rooms.add(r);
                     }
-                }
 
-                comfortLevel = (int) (currentLevel / sensors.size());
-                levels.add(comfortLevel);
+                    for (Sensor s : sensors) {
+                        if (s instanceof ComfortSensor) {
+                            comfortLevel += ((ComfortSensor) s).getComfortLevel();
+                        }
+                    }
+
+                    if (sensors.size() != 0) {
+                        comfortLevel = (int) (currentLevel / sensors.size());
+                    }
+                    levels.add(comfortLevel);
+                }
             }
+
 
             if (rooms.size() == 0) {
                 currentRoom = null;

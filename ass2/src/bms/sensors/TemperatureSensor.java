@@ -1,5 +1,7 @@
 package bms.sensors;
 
+import java.util.StringJoiner;
+
 /**
  * A sensor that measures ambient temperature in a room.
  * @ass1
@@ -92,6 +94,9 @@ public class TemperatureSensor extends TimedSensor implements HazardSensor,
      * @return encoded string representation of this temperature sensor
      */
     public String encode() {
-        return "TemperatureSensor:" + super.encode();
+        StringJoiner joiner = new StringJoiner(":");
+        joiner.add("TemperatureSensor");
+        joiner.add(super.encode());
+        return joiner.toString();
     }
 }

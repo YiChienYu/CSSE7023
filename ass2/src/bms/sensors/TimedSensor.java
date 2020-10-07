@@ -5,6 +5,7 @@ import bms.util.TimedItem;
 import bms.util.TimedItemManager;
 
 import java.util.Arrays;
+import java.util.StringJoiner;
 
 /**
  * An abstract class to represent a sensor that iterates through observed values
@@ -197,12 +198,6 @@ public abstract class TimedSensor implements TimedItem, Sensor, Encodable {
             return true;
         }
         return false;
-        /*
-        if (this.getClass().getSimpleName() != obj.getClass().getSimpleName()) {
-            return false;
-        }
-
-         */
 
     }
 
@@ -232,15 +227,12 @@ public abstract class TimedSensor implements TimedItem, Sensor, Encodable {
      * @return encoded string representation of this timed sensor
      */
     public String encode() {
+        StringJoiner joiner = new StringJoiner(",");
         String temp = "";
         for (int i = 0; i < sensorReadings.length; i++) {
-            if (i == sensorReadings.length - 1) {
-                temp += String.format("%s", sensorReadings[i]);
-            } else {
-                temp += String.format("%s,", sensorReadings[i]);
-            }
+            joiner.add(String.valueOf(sensorReadings[i]));
         }
 
-        return temp;
+        return joiner.toString();
     }
 }
