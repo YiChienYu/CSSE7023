@@ -16,15 +16,6 @@ public class WeightingBasedHazardEvaluator implements HazardEvaluator {
      */
     private Map<HazardSensor,Integer> sensors = new LinkedHashMap<>();
 
-    private List<HazardSensor> sortedSensor = new ArrayList<>();
-    private List<HazardSensor> unSortedSensor = new ArrayList<>();
-
-    private List<String> sortedName = new ArrayList<>();
-    private List<String> unSortedName = new ArrayList<>();
-
-    private List<Integer> sortedValue = new ArrayList<>();
-    private List<Integer> unsortedValue = new ArrayList<>();
-
     /**
      * Creates a new weighting-based hazard evaluator with the given sensors
      * and weightings.
@@ -42,35 +33,19 @@ public class WeightingBasedHazardEvaluator implements HazardEvaluator {
 
         while (iterator.hasNext()) {
             Map.Entry<HazardSensor, Integer> entry = iterator.next();
-            HazardSensor sensor = entry.getKey();
             int value = entry.getValue();
-            unSortedName.add(sensor.getClass().getSimpleName());
-            sortedName.add(sensor.getClass().getSimpleName());
-            unsortedValue.add(value);
-            unSortedSensor.add(sensor);
+
             if (value < 0 || value > 100) {
                 throw new IllegalArgumentException();
             }
             total += value;
         }
 
-        Collections.sort(sortedName);
-
-        for (int i = 0; i < sortedName.size(); i++) {
-            int indexOfElement = unSortedName.indexOf(sortedName.get(i));
-            sortedValue.add(unsortedValue.get(indexOfElement));
-            sortedSensor.add(unSortedSensor.get(indexOfElement));
-        }
-
-        for (int i = 0; i < sortedSensor.size(); i++) {
-            this.sensors.put(sortedSensor.get(i), sortedValue.get(i));
-        }
-
         if (total != 100) {
             throw new IllegalArgumentException();
         }
 
-
+        this.sensors = sensors;
     }
 
     /**
@@ -106,14 +81,30 @@ public class WeightingBasedHazardEvaluator implements HazardEvaluator {
      */
     public List<Integer> getWeightings() {
         List<Integer> weightings = new ArrayList<Integer>();
+        List<Integer> unSortedWeights = new ArrayList<>();
+        List<String> sortedName = new ArrayList<>();
+        List<String> unSortedName = new ArrayList<>();
 
         Iterator<Map.Entry<HazardSensor,Integer>> iterator =
                 sensors.entrySet().iterator();
 
         while (iterator.hasNext()) {
             Map.Entry<HazardSensor, Integer> entry = iterator.next();
-            weightings.add(entry.getValue());
+            HazardSensor sensor = entry.getKey();
+            int value = entry.getValue();
+            unSortedName.add(sensor.getClass().getSimpleName());
+            sortedName.add(sensor.getClass().getSimpleName());
+            unSortedWeights.add(value);
         }
+
+        Collections.sort(sortedName);
+
+        for (int i = 0; i < sortedName.size(); i++) {
+            int indexOfElement = unSortedName.indexOf(sortedName.get(i));
+            weightings.add(unSortedWeights.get(indexOfElement));
+        }
+
+
         return weightings;
     }
 
