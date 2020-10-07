@@ -375,7 +375,7 @@ public class Floor implements FireDrill, Encodable {
                         roomOrder.get(0).getRoomNumber()) {
                     throw new IllegalArgumentException();
                 } else {
-                    if (roomOrder.get(i).getRoomNumber() ==
+                    if ((i != roomOrder.size() - 1) && roomOrder.get(i).getRoomNumber() ==
                             roomOrder.get(i+1).getRoomNumber()) {
                         throw new IllegalArgumentException();
                     }
