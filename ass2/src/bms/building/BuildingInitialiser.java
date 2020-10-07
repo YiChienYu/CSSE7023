@@ -290,7 +290,7 @@ public class BuildingInitialiser {
 
                     try {
                         for (int j = 0; j < readingString.length; j++) {
-                            reading[i] = Integer.parseInt(readingString[i]);
+                            reading[j] = Integer.parseInt(readingString[j]);
                         }
                     } catch (Exception e) {
                         throw new FileFormatException();

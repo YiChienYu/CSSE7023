@@ -369,6 +369,10 @@ public class Room implements Encodable {
     public String encode() {
         String begin = String.format("%s:%s:%s:%s", roomNumber, type, area,
                 sensors.size());
+        if (this.hazardEvaluator != null) {
+            begin += String.format(":%s", this.hazardEvaluator.toString());
+        }
+
         StringJoiner joiner = new StringJoiner(System.lineSeparator());
 
         joiner.add(begin);
@@ -376,10 +380,16 @@ public class Room implements Encodable {
 
         for (int i = 0; i < sensors.size(); i++) {
             TimedSensor temp = (TimedSensor) sensors.get(i);
-            joiner.add(temp.encode());
+            String tempString = temp.encode();
+            if (this.hazardEvaluator instanceof WeightingBasedHazardEvaluator) {
+                List<Integer> weights = ((WeightingBasedHazardEvaluator)
+                        this.hazardEvaluator).getWeightings();
+                if (weights.size() != 0) {
+                    tempString += String.format("@%s", String.valueOf(weights.get(i)));
+                }
+            }
+            joiner.add(tempString);
         }
-
-
 
         return joiner.toString();
     }
