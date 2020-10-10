@@ -71,14 +71,16 @@ public class ViewModel {
     public void accept(KeyCode keyCode) {
         // TODO implement for assignment 2
         switch (keyCode) {
-            case P :
-                this.togglePause();
             case Q:
                 System.exit(0);
             case S:
                 try {
                     this.save("saves/quicksave.txt");
-                } catch (IOException e) {}
+                } catch (IOException e) {
+
+                }
+            case P :
+                this.togglePause();
         }
     }
 

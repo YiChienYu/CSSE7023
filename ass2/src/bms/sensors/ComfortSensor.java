@@ -15,4 +15,6 @@ public interface ComfortSensor {
      * @return level of comfort at sensor location, 0 to 100
      */
     int getComfortLevel();
+
+    int getCurrentReading();
 }
