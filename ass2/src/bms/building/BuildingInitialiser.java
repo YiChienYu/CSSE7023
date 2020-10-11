@@ -5,6 +5,7 @@ import bms.exceptions.FileFormatException;
 import bms.exceptions.FloorTooSmallException;
 import bms.exceptions.NoFloorBelowException;
 import bms.floor.Floor;
+import bms.floor.MaintenanceSchedule;
 import bms.hazardevaluation.HazardEvaluator;
 import bms.hazardevaluation.RuleBasedHazardEvaluator;
 import bms.hazardevaluation.WeightingBasedHazardEvaluator;
@@ -79,10 +80,25 @@ public class BuildingInitialiser {
             FileFormatException {
         String temp = r.readLine();
         String[] floorInformation = temp.split(":");
+        List<Integer> numberOfMaintainance = new ArrayList<>();
+        List<Room> roomsToMaintance = new ArrayList<>();
+        List<Room> rooms = new ArrayList<>();
         int floorNumber = 0;
         double width = 0;
         double length = 0;
         int numberOfRoom = 0;
+
+        if (floorInformation.length == 5) {
+            String[] lastelement = floorInformation[4].split(",");
+            for (int i = 0; i < lastelement.length; i++) {
+                try {
+                    numberOfMaintainance.add(Integer.parseInt(lastelement[i]));
+                } catch (Exception e) {
+                    throw new FileFormatException();
+                }
+            }
+        }
+
         try {
             floorNumber = Integer.parseInt(floorInformation[0]);
             width = Double.parseDouble(floorInformation[1]);
@@ -96,10 +112,22 @@ public class BuildingInitialiser {
         for (int i = 0; i < numberOfRoom; i++) {
             try{
                 Room room = BuildingInitialiser.readRoom(r);
+                rooms.add(room);
                 floor.addRoom(room);
             } catch (Exception e) {
                 throw new FileFormatException();
             }
+        }
+
+        if (floorInformation.length == 5) {
+            for (int i : numberOfMaintainance) {
+                for (int j = 0; j < rooms.size(); j ++) {
+                    if (rooms.get(j).getRoomNumber() == i) {
+                        roomsToMaintance.add(rooms.get(j));
+                    }
+                }
+            }
+            floor.createMaintenanceSchedule(roomsToMaintance);
         }
         return floor;
     }
