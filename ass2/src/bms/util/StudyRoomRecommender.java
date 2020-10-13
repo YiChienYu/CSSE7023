@@ -56,19 +56,18 @@ public class StudyRoomRecommender {
                             r.evaluateRoomState() == RoomState.OPEN &&
                             r.getType() == RoomType.STUDY) {
                         roomsAvailable.add(r);
-                    }
-
-                    for (Sensor s : sensors) {
-                        if (s instanceof ComfortSensor) {
-                            ComfortSensor comfortSensor = (ComfortSensor) s;
-                            comfortLevel += comfortSensor.getComfortLevel();
+                        for (Sensor s : sensors) {
+                            if (s instanceof ComfortSensor) {
+                                ComfortSensor comfortSensor = (ComfortSensor) s;
+                                comfortLevel += comfortSensor.getComfortLevel();
+                            }
                         }
-                    }
 
-                    if (sensors.size() != 0) {
-                        comfortLevel = (int) (currentLevel / sensors.size());
+                        if (sensors.size() != 0) {
+                            comfortLevel = (int) (currentLevel / sensors.size());
+                        }
+                        levels.add(comfortLevel);
                     }
-                    levels.add(comfortLevel);
                 }
             }
 
