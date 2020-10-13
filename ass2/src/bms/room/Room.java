@@ -173,6 +173,12 @@ public class Room implements Encodable {
      */
     public void setFireDrill(boolean fireDrill) {
         this.fireDrill = fireDrill;
+
+        if (fireDrill) {
+            state = RoomState.EVACUATE;
+        } else {
+            state = RoomState.OPEN;
+        }
     }
 
     /**
@@ -265,12 +271,6 @@ public class Room implements Encodable {
      */
     public void setMaintenance(boolean maintenance) {
         this.maintenance = maintenance;
-        if (maintenance) {
-            state = RoomState.MAINTENANCE;
-        } else {
-            state = RoomState.OPEN;
-        }
-
     }
 
     /**
@@ -303,9 +303,11 @@ public class Room implements Encodable {
             if (sensor.getHazardLevel() == 100) {
                 state = RoomState.EVACUATE;
             }
-        } else if (this.fireDrillOngoing()) {
+        }
+
+        if (this.fireDrill) {
             state = RoomState.EVACUATE;
-        } else if (this.maintenanceOngoing() && !(this.fireDrillOngoing())) {
+        } else if (!(this.fireDrillOngoing()) && this.maintenanceOngoing()) {
             state = RoomState.MAINTENANCE;
         } else {
             state = RoomState.OPEN;
