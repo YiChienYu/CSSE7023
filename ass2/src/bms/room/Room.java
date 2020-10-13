@@ -265,6 +265,12 @@ public class Room implements Encodable {
      */
     public void setMaintenance(boolean maintenance) {
         this.maintenance = maintenance;
+        if (maintenance) {
+            state = RoomState.MAINTENANCE;
+        } else {
+            state = RoomState.OPEN;
+        }
+
     }
 
     /**
