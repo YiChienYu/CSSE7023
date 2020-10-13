@@ -25,6 +25,9 @@ public class StudyRoomRecommender {
         Room previousRoom = null;
         int previousLevel = -1;
 
+        if (floors.size() == 0) {
+            return null;
+        }
 
         for (Floor f : floors) {
             for (Room r : f.getRooms()) {
@@ -37,8 +40,11 @@ public class StudyRoomRecommender {
         }
 
         for (int i = 0; i < floors.size(); i++) {
+            previousLevel = currentLevel;
+            previousRoom = currentRoom;
             List<Integer> levels = new ArrayList<>();
             List<Room> rooms = floors.get(i).getRooms();
+            List<Room> roomsAvailable = new ArrayList<>();
 
             if (rooms.size() != 0) {
                 for (Room r : rooms) {
@@ -49,12 +55,13 @@ public class StudyRoomRecommender {
                             r.evaluateRoomState() != RoomState.MAINTENANCE &&
                             r.evaluateRoomState() == RoomState.OPEN &&
                             r.getType() == RoomType.STUDY) {
-                        rooms.add(r);
+                        roomsAvailable.add(r);
                     }
 
                     for (Sensor s : sensors) {
                         if (s instanceof ComfortSensor) {
-                            comfortLevel += ((ComfortSensor) s).getComfortLevel();
+                            ComfortSensor comfortSensor = (ComfortSensor) s;
+                            comfortLevel += comfortSensor.getComfortLevel();
                         }
                     }
 
@@ -66,14 +73,14 @@ public class StudyRoomRecommender {
             }
 
 
-            if (rooms.size() == 0) {
+            if (roomsAvailable.size() == 0) {
                 currentRoom = null;
                 currentLevel = -1;
             } else {
                 int max = Collections.max(levels);
                 int index = levels.indexOf(max);
                 currentLevel = max;
-                currentRoom = rooms.get(index);
+                currentRoom = roomsAvailable.get(index);
             }
 
             if (i == 0 && currentRoom == null) {
