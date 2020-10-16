@@ -82,8 +82,8 @@ public class WeightingBasedHazardEvaluator implements HazardEvaluator {
     public List<Integer> getWeightings() {
         List<Integer> weightings = new ArrayList<Integer>();
         List<Integer> unSortedWeights = new ArrayList<>();
-        List<String> sortedName = new ArrayList<>();
-        List<String> unSortedName = new ArrayList<>();
+        List<String> sortedNames = new ArrayList<>();
+        List<String> unSortedNames = new ArrayList<>();
 
         Iterator<Map.Entry<HazardSensor,Integer>> iterator =
                 sensors.entrySet().iterator();
@@ -92,15 +92,15 @@ public class WeightingBasedHazardEvaluator implements HazardEvaluator {
             Map.Entry<HazardSensor, Integer> entry = iterator.next();
             HazardSensor sensor = entry.getKey();
             int value = entry.getValue();
-            unSortedName.add(sensor.getClass().getSimpleName());
-            sortedName.add(sensor.getClass().getSimpleName());
+            unSortedNames.add(sensor.getClass().getSimpleName());
+            sortedNames.add(sensor.getClass().getSimpleName());
             unSortedWeights.add(value);
         }
 
-        Collections.sort(sortedName);
+        Collections.sort(sortedNames);
 
-        for (int i = 0; i < sortedName.size(); i++) {
-            int indexOfElement = unSortedName.indexOf(sortedName.get(i));
+        for (int i = 0; i < sortedNames.size(); i++) {
+            int indexOfElement = unSortedNames.indexOf(sortedNames.get(i));
             weightings.add(unSortedWeights.get(indexOfElement));
         }
 
