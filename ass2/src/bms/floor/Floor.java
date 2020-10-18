@@ -364,25 +364,27 @@ public class Floor implements FireDrill, Encodable {
             throw new IllegalArgumentException();
         }
 
-        for (int i = 0; i < roomOrder.size(); i ++) {
-            if (this.getRoomByNumber(roomOrder.get(i).getRoomNumber()) ==
-                    null) {
-                throw new IllegalArgumentException();
-            }
-
-            if (i == roomOrder.size() -1) {
-                if (roomOrder.get(i).getRoomNumber() ==
-                        roomOrder.get(0).getRoomNumber()) {
+        if (roomOrder.size() != 1) {
+            for (int i = 0; i < roomOrder.size(); i ++) {
+                if (this.getRoomByNumber(roomOrder.get(i).getRoomNumber()) ==
+                        null) {
                     throw new IllegalArgumentException();
+                }
+
+                if (i == (roomOrder.size() -1)) {
+                    if (roomOrder.get(i).getRoomNumber() ==
+                            roomOrder.get(0).getRoomNumber()) {
+                        throw new IllegalArgumentException();
+                    }
                 } else {
-                    if ((i != roomOrder.size() - 1) &&
-                            roomOrder.get(i).getRoomNumber() ==
+                    if (roomOrder.get(i).getRoomNumber() ==
                             roomOrder.get(i+1).getRoomNumber()) {
                         throw new IllegalArgumentException();
                     }
                 }
             }
         }
+
 
         if (maintenanceSchedule != null) {
             maintenanceSchedule.getCurrentRoom().setMaintenance(false);

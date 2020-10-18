@@ -121,10 +121,14 @@ public class BuildingInitialiser {
 
         if (floorInformation.length == 5) {
             for (int i : numberOfMaintainance) {
+                List<Integer> numbers = new ArrayList<>();
                 for (int j = 0; j < rooms.size(); j ++) {
+                    numbers.add(rooms.get(j).getRoomNumber());
                     if (rooms.get(j).getRoomNumber() == i) {
                         roomsToMaintance.add(rooms.get(j));
                     }
+                } if (numbers.contains(i) != true) {
+                    throw new FileFormatException();
                 }
             }
             floor.createMaintenanceSchedule(roomsToMaintance);

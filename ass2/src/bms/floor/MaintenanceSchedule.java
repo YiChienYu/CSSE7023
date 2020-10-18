@@ -112,7 +112,11 @@ public class MaintenanceSchedule implements TimedItem, Encodable {
                 currentRoom.evaluateRoomState() != RoomState.EVACUATE) {
             if (this.timeElapsed >= getMaintenanceTime(currentRoom)) {
                 currentRoom.setMaintenance(false);
-                currentRoom = rooms.get(indexOfNextRoom);
+                if (rooms.size() != 1) {
+                    currentRoom = rooms.get(indexOfNextRoom);
+                } else {
+                    currentRoom = rooms.get(0);
+                }
                 if (indexOfNextRoom == (rooms.size() -1)) {
                     indexOfNextRoom = 0;
                 } else {
@@ -132,7 +136,11 @@ public class MaintenanceSchedule implements TimedItem, Encodable {
      */
     public void skipCurrentMaintenance() {
         currentRoom.setMaintenance(false);
-        currentRoom = rooms.get(indexOfNextRoom);
+        if (rooms.size() != 1) {
+            currentRoom = rooms.get(indexOfNextRoom);
+        } else {
+            currentRoom = rooms.get(0);
+        }
         if (indexOfNextRoom == (rooms.size() -1)) {
             indexOfNextRoom = 0;
         } else {
