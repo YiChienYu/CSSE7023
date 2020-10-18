@@ -45,6 +45,9 @@ public class BuildingInitialiser {
         String line = "";
 
         while ((line = tempReader.readLine()) != null) {
+            if ("".equals(line)) {
+                throw new FileFormatException();
+            }
             try {
                 int i = Integer.parseInt(line);
                 numberOfBuilding += 1;
