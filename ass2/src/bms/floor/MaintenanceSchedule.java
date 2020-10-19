@@ -174,9 +174,9 @@ public class MaintenanceSchedule implements TimedItem, Encodable {
 
         for (int i = 0; i < rooms.size(); i++) {
             if (i == rooms.size() -1) {
-                temp += String.format("%s", rooms.get(i).getRoomNumber());
+                temp += String.format("%d", rooms.get(i).getRoomNumber());
             } else {
-                temp += String.format("%s,", rooms.get(i).getRoomNumber());
+                temp += String.format("%d,", rooms.get(i).getRoomNumber());
             }
         }
 

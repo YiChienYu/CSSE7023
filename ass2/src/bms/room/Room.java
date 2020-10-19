@@ -375,7 +375,7 @@ public class Room implements Encodable {
      */
     @Override
     public String encode() {
-        String begin = String.format("%s:%s:%s:%s", roomNumber, type, area,
+        String begin = String.format("%d:%s:%.2f:%d", roomNumber, type, area,
                 sensors.size());
         if (this.hazardEvaluator != null) {
             begin += String.format(":%s", this.hazardEvaluator.toString());
@@ -393,7 +393,7 @@ public class Room implements Encodable {
                 List<Integer> weights = ((WeightingBasedHazardEvaluator)
                         this.hazardEvaluator).getWeightings();
                 if (weights.size() != 0) {
-                    tempString += String.format("@%s", String.valueOf(weights.get(i)));
+                    tempString += String.format("@%d", weights.get(i));
                 }
             }
             joiner.add(tempString);

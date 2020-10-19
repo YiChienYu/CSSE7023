@@ -338,7 +338,7 @@ public class Building implements FireDrill, Encodable {
     @Override
     public String encode() {
         String begin = String.format("%s", name) + System.lineSeparator() +
-                String.format("%s", floors.size());
+                String.format("%d", floors.size());
         StringJoiner joiner = new StringJoiner(System.lineSeparator());
 
         joiner.add(begin);

@@ -451,7 +451,8 @@ public class Floor implements FireDrill, Encodable {
      */
     @Override
     public String encode() {
-        String begin = String.format("%s:%s:%s:%s", floorNumber, width, length,
+        String begin = String.format("%d:%.2f:%.2f:%d", floorNumber, width,
+                length,
                 rooms.size());
         if (maintenanceSchedule != null) {
             begin += String.format(":%s", maintenanceSchedule.encode());
