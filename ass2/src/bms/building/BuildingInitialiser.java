@@ -1,11 +1,7 @@
 package bms.building;
 
-import bms.exceptions.DuplicateFloorException;
 import bms.exceptions.FileFormatException;
-import bms.exceptions.FloorTooSmallException;
-import bms.exceptions.NoFloorBelowException;
 import bms.floor.Floor;
-import bms.floor.MaintenanceSchedule;
 import bms.hazardevaluation.HazardEvaluator;
 import bms.hazardevaluation.RuleBasedHazardEvaluator;
 import bms.hazardevaluation.WeightingBasedHazardEvaluator;
@@ -14,7 +10,6 @@ import bms.room.RoomType;
 import bms.sensors.*;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
@@ -42,7 +37,7 @@ public class BuildingInitialiser {
         BufferedReader reader = new BufferedReader(new FileReader(filename));
         int numberOfBuilding = 0;
         int numberOfFloor = 0;
-        String line = "";
+        String line;
 
         while ((line = tempReader.readLine()) != null) {
             if ("".equals(line)) {
@@ -89,8 +84,8 @@ public class BuildingInitialiser {
             FileFormatException {
         String temp = r.readLine();
         String[] floorInformation = temp.split(":");
-        List<Integer> numberOfMaintainance = new ArrayList<>();
-        List<Room> roomsToMaintance = new ArrayList<>();
+        List<Integer> numberOfMaintenance = new ArrayList<>();
+        List<Room> roomsToMaintenance = new ArrayList<>();
         List<Room> rooms = new ArrayList<>();
         int floorNumber = 0;
         double width = 0;
@@ -101,7 +96,7 @@ public class BuildingInitialiser {
             String[] lastelement = floorInformation[4].split(",");
             for (int i = 0; i < lastelement.length; i++) {
                 try {
-                    numberOfMaintainance.add(Integer.parseInt(lastelement[i]));
+                    numberOfMaintenance.add(Integer.parseInt(lastelement[i]));
                 } catch (Exception e) {
                     throw new FileFormatException();
                 }
@@ -129,18 +124,18 @@ public class BuildingInitialiser {
         }
 
         if (floorInformation.length == 5) {
-            for (int i : numberOfMaintainance) {
+            for (int i : numberOfMaintenance) {
                 List<Integer> numbers = new ArrayList<>();
                 for (int j = 0; j < rooms.size(); j ++) {
                     numbers.add(rooms.get(j).getRoomNumber());
                     if (rooms.get(j).getRoomNumber() == i) {
-                        roomsToMaintance.add(rooms.get(j));
+                        roomsToMaintenance.add(rooms.get(j));
                     }
                 } if (numbers.contains(i) != true) {
                     throw new FileFormatException();
                 }
             }
-            floor.createMaintenanceSchedule(roomsToMaintance);
+            floor.createMaintenanceSchedule(roomsToMaintenance);
         }
         return floor;
     }
@@ -156,8 +151,8 @@ public class BuildingInitialiser {
         int numberOfSensor;
         Room room;
         HazardEvaluator evaluator = null;
-        Sensor sensor;
-        HazardSensor hazardSensor;
+        Sensor sensor = null;
+        HazardSensor hazardSensor = null;
 
         List<HazardSensor> forRuleBase = new ArrayList<>();
         Map<HazardSensor, Integer> forWeightBase = new HashMap<>();
@@ -177,193 +172,267 @@ public class BuildingInitialiser {
 
             if (lengthOfInformation == 4 || (lengthOfInformation == 5 &&
                     roomInfo[4].equals("RuleBased"))) {
-                String[] readingString = sensorInformation[1].split(",");
-                int[] reading = new int[readingString.length];
-
                 try {
-                    for (int j = 0; j < readingString.length; j++) {
-                        reading[j] = Integer.parseInt(readingString[j]);
-                    }
+                    sensor = BuildingInitialiser.readSensor(sensorInformation);
+                    room.addSensor(sensor);
                 } catch (Exception e) {
                     throw new FileFormatException();
                 }
-
                 if (sensorInformation.length == 5) {
                     try {
-                        int updateFrequency =
-                                Integer.parseInt(sensorInformation[2]);
-                        int idealValue = Integer.parseInt(sensorInformation[3]);
-                        int variationLimit =
-                                Integer.parseInt(sensorInformation[4]);
-                        sensor = new CarbonDioxideSensor(reading,
-                                updateFrequency, idealValue, variationLimit);
-                        room.addSensor(sensor);
-                        if (lengthOfInformation == 5 &&
-                                roomInfo[4].equals("RuleBased")) {
-                            hazardSensor = new CarbonDioxideSensor(reading,
-                                    updateFrequency,
-                                    idealValue, variationLimit);
-                            forRuleBase.add(hazardSensor);
-                        }
-
-                    } catch (Exception e) {
-                        throw new FileFormatException();
-                    }
-
-                } else if (sensorInformation.length == 4) {
-                    try {
-                        int updateFrequency =
-                                Integer.parseInt(sensorInformation[2]);
-                        int capacity = Integer.parseInt(sensorInformation[3]);
-                        sensor = new OccupancySensor(reading, updateFrequency,
-                                capacity);
-                        room.addSensor(sensor);
-                        if (lengthOfInformation == 5 &&
-                                roomInfo[4].equals("RuleBased")) {
-                            hazardSensor = new OccupancySensor(reading,
-                                    updateFrequency, capacity);
-                            forRuleBase.add(hazardSensor);
-                        }
-
-                    } catch (Exception e) {
-                        throw new FileFormatException();
-                    }
-                } else if (sensorInformation.length == 3) {
-                    try {
-                        int updateFrequency =
-                                Integer.parseInt(sensorInformation[2]);
-                        sensor = new NoiseSensor(reading, updateFrequency);
-                        room.addSensor(sensor);
-                        if (lengthOfInformation == 5 &&
-                                roomInfo[4].equals("RuleBased")) {
-                            hazardSensor = new NoiseSensor(reading,
-                                    updateFrequency);
-                            forRuleBase.add(hazardSensor);
-                        }
-                    } catch (Exception e) {
-                        throw new FileFormatException();
-                    }
-                } else if (sensorInformation.length == 2) {
-                    try {
-                        sensor = new TemperatureSensor(reading);
-                        room.addSensor(sensor);
-                        if (lengthOfInformation == 5 &&
-                                roomInfo[4].equals("RuleBased")) {
-                            hazardSensor = new TemperatureSensor(reading);
-                            forRuleBase.add(hazardSensor);
-                        }
+                        hazardSensor =
+                                BuildingInitialiser.
+                                        readSensorForRuleBase
+                                                (sensorInformation);
+                        forRuleBase.add(hazardSensor);
                     } catch (Exception e) {
                         throw new FileFormatException();
                     }
                 }
-
             } else if (lengthOfInformation == 5 &&
                     roomInfo[4].equals("WeightingBased")) {
-                String[] lastElementSplit =
-                        sensorInformation[sensorInformation.length - 1].
-                                split("@");
-
-                if (sensorInformation.length != 2) {
-                    String[] readingString = sensorInformation[1].split(",");
-                    int[] reading = new int[readingString.length];
-
-                    try {
-                        for (int j = 0; j < readingString.length; j++) {
-                            reading[j] = Integer.parseInt(readingString[j]);
-                        }
-                    } catch (Exception e) {
-                        throw new FileFormatException();
-                    }
-
-                    if (sensorInformation.length == 5) {
-                        try {
-                            int updateFrequency =
-                                    Integer.parseInt(sensorInformation[2]);
-                            int idealValue =
-                                    Integer.parseInt(sensorInformation[3]);
-                            int variationLimit =
-                                    Integer.parseInt(lastElementSplit[0]);
-                            int weight = Integer.parseInt(lastElementSplit[1]);
-                            sensor = new CarbonDioxideSensor(reading,
-                                    updateFrequency,
-                                    idealValue, variationLimit);
-                            room.addSensor(sensor);
-                            hazardSensor = new CarbonDioxideSensor(reading,
-                                    updateFrequency,
-                                    idealValue, variationLimit);
-                            forWeightBase.put(hazardSensor, weight);
-                        } catch (Exception e) {
-                            throw new FileFormatException();
-                        }
-                    } else if (sensorInformation.length == 4) {
-                        try {
-                            int updateFrequency =
-                                    Integer.parseInt(sensorInformation[2]);
-                            int capacity =
-                                    Integer.parseInt(lastElementSplit[0]);
-                            int weight = Integer.parseInt(lastElementSplit[1]);
-                            sensor = new OccupancySensor(reading,
-                                    updateFrequency, capacity);
-                            room.addSensor(sensor);
-                            hazardSensor = new OccupancySensor(reading,
-                                    updateFrequency, capacity);
-                            forWeightBase.put(hazardSensor, weight);
-                        } catch (Exception e) {
-                            throw new FileFormatException();
-                        }
-                    } else if (sensorInformation.length == 3) {
-                        try {
-                            int updateFrequency =
-                                    Integer.parseInt(lastElementSplit[0]);
-                            int weight = Integer.parseInt(lastElementSplit[1]);
-                            sensor = new NoiseSensor(reading, updateFrequency);
-                            room.addSensor(sensor);
-                            hazardSensor =
-                                    new NoiseSensor(reading, updateFrequency);
-                            forWeightBase.put(hazardSensor, weight);
-                        } catch (Exception e) {
-                            throw new FileFormatException();
-                        }
-                    }
-                } else {
-                    String[] readingString = lastElementSplit[0].split(",");
-                    int[] reading = new int[readingString.length];
-
-                    try {
-                        for (int j = 0; j < readingString.length; j++) {
-                            reading[j] = Integer.parseInt(readingString[j]);
-                        }
-                    } catch (Exception e) {
-                        throw new FileFormatException();
-                    }
-
-                    try {
-                        int weight = Integer.parseInt(lastElementSplit[1]);
-                        sensor = new TemperatureSensor(reading);
-                        room.addSensor(sensor);
-                        hazardSensor = new TemperatureSensor(reading);
-                        forWeightBase.put(hazardSensor, weight);
-                    } catch (Exception e) {
-                        throw new FileFormatException();
-                    }
-
+                try {
+                    forWeightBase =
+                            BuildingInitialiser.readSensorForWeightBase
+                                    (sensorInformation,
+                                            forWeightBase, room);
+                } catch (Exception e) {
+                    throw new FileFormatException();
                 }
-
             }
 
         }
-
-        if (lengthOfInformation == 5) {
-            if (roomInfo[4].equals("RuleBased")) {
-                evaluator = new RuleBasedHazardEvaluator(forRuleBase);
-            } else if (roomInfo[4].equals("WeightingBased")) {
-                evaluator = new WeightingBasedHazardEvaluator(forWeightBase);
+            if (lengthOfInformation == 5) {
+                if (roomInfo[4].equals("RuleBased")) {
+                    evaluator = new RuleBasedHazardEvaluator(forRuleBase);
+                } else if (roomInfo[4].equals("WeightingBased")) {
+                    evaluator = new WeightingBasedHazardEvaluator(forWeightBase);
+                }
+                room.setHazardEvaluator(evaluator);
             }
-            room.setHazardEvaluator(evaluator);
-        }
+
         return room;
     }
 
+    private static Map<HazardSensor, Integer> readSensorForWeightBase
+            (String[] sensorInformation,
+             Map<HazardSensor, Integer> forWeightBase, Room r)
+            throws FileFormatException {
+        String[] lastElementSplit =
+                sensorInformation[sensorInformation.length - 1].
+                        split("@");
+        HazardSensor hazardSensor;
+        Sensor sensor;
+        Room room = r;
+        if (sensorInformation.length != 2) {
+            String[] readingString = sensorInformation[1].split(",");
+            int[] reading = new int[readingString.length];
+
+            try {
+                for (int j = 0; j < readingString.length; j++) {
+                    reading[j] = Integer.parseInt(readingString[j]);
+                }
+            } catch (Exception e) {
+                throw new FileFormatException();
+            }
+
+            if (sensorInformation.length == 5) {
+                try {
+                    int updateFrequency =
+                            Integer.parseInt(sensorInformation[2]);
+                    int idealValue =
+                            Integer.parseInt(sensorInformation[3]);
+                    int variationLimit =
+                            Integer.parseInt(lastElementSplit[0]);
+                    int weight = Integer.parseInt(lastElementSplit[1]);
+                    sensor = new CarbonDioxideSensor(reading,
+                            updateFrequency,
+                            idealValue, variationLimit);
+                    room.addSensor(sensor);
+                    hazardSensor = new CarbonDioxideSensor(reading,
+                            updateFrequency,
+                            idealValue, variationLimit);
+                    forWeightBase.put(hazardSensor, weight);
+                } catch (Exception e) {
+                    throw new FileFormatException();
+                }
+            } else if (sensorInformation.length == 4) {
+                try {
+                    int updateFrequency =
+                            Integer.parseInt(sensorInformation[2]);
+                    int capacity =
+                            Integer.parseInt(lastElementSplit[0]);
+                    int weight = Integer.parseInt(lastElementSplit[1]);
+                    sensor = new OccupancySensor(reading,
+                            updateFrequency, capacity);
+                    room.addSensor(sensor);
+                    hazardSensor = new OccupancySensor(reading,
+                            updateFrequency, capacity);
+                    forWeightBase.put(hazardSensor, weight);
+                } catch (Exception e) {
+                    throw new FileFormatException();
+                }
+            } else if (sensorInformation.length == 3) {
+                try {
+                    int updateFrequency =
+                            Integer.parseInt(lastElementSplit[0]);
+                    int weight = Integer.parseInt(lastElementSplit[1]);
+                    sensor = new NoiseSensor(reading, updateFrequency);
+                    room.addSensor(sensor);
+                    hazardSensor =
+                            new NoiseSensor(reading, updateFrequency);
+                    forWeightBase.put(hazardSensor, weight);
+                } catch (Exception e) {
+                    throw new FileFormatException();
+                }
+            }
+        } else {
+            String[] readingString = lastElementSplit[0].split(",");
+            int[] reading = new int[readingString.length];
+
+            try {
+                for (int j = 0; j < readingString.length; j++) {
+                    reading[j] = Integer.parseInt(readingString[j]);
+                }
+            } catch (Exception e) {
+                throw new FileFormatException();
+            }
+
+            try {
+                int weight = Integer.parseInt(lastElementSplit[1]);
+                sensor = new TemperatureSensor(reading);
+                room.addSensor(sensor);
+                hazardSensor = new TemperatureSensor(reading);
+                forWeightBase.put(hazardSensor, weight);
+            } catch (Exception e) {
+                throw new FileFormatException();
+            }
+        }
+        return forWeightBase;
+    }
+
+    private static HazardSensor readSensorForRuleBase
+            (String[] sensorInformation) throws FileFormatException {
+        String[] readingString = sensorInformation[1].split(",");
+        int[] reading = new int[readingString.length];
+        HazardSensor hazardSensor = null;
+
+
+        try {
+            for (int j = 0; j < readingString.length; j++) {
+                reading[j] = Integer.parseInt(readingString[j]);
+            }
+        } catch (Exception e) {
+            throw new FileFormatException();
+        }
+
+        if (sensorInformation.length == 5) {
+            try {
+                int updateFrequency =
+                        Integer.parseInt(sensorInformation[2]);
+                int idealValue = Integer.parseInt(sensorInformation[3]);
+                int variationLimit =
+                        Integer.parseInt(sensorInformation[4]);
+
+                hazardSensor = new CarbonDioxideSensor(reading, updateFrequency,
+                        idealValue, variationLimit);
+
+            } catch (Exception e) {
+                throw new FileFormatException();
+            }
+
+        } else if (sensorInformation.length == 4) {
+            try {
+                int updateFrequency =
+                        Integer.parseInt(sensorInformation[2]);
+                int capacity = Integer.parseInt(sensorInformation[3]);
+
+
+                    hazardSensor = new OccupancySensor(reading,
+                            updateFrequency, capacity);
+
+            } catch (Exception e) {
+                throw new FileFormatException();
+            }
+        } else if (sensorInformation.length == 3) {
+            try {
+                int updateFrequency =
+                        Integer.parseInt(sensorInformation[2]);
+
+                    hazardSensor = new NoiseSensor(reading,
+                            updateFrequency);
+
+            } catch (Exception e) {
+                throw new FileFormatException();
+            }
+        } else if (sensorInformation.length == 2) {
+            try {
+                    hazardSensor = new TemperatureSensor(reading);
+            } catch (Exception e) {
+                throw new FileFormatException();
+            }
+        }
+        return hazardSensor;
+    }
+
+
+
+    private static Sensor readSensor(String[] sensorInformation)
+            throws FileFormatException {
+        String[] readingString = sensorInformation[1].split(",");
+        int[] reading = new int[readingString.length];
+        Sensor sensor = null;
+        try {
+            for (int j = 0; j < readingString.length; j++) {
+                reading[j] = Integer.parseInt(readingString[j]);
+            }
+        } catch (Exception e) {
+            throw new FileFormatException();
+        }
+
+        if (sensorInformation.length == 5) {
+            try {
+                int updateFrequency =
+                        Integer.parseInt(sensorInformation[2]);
+                int idealValue = Integer.parseInt(sensorInformation[3]);
+                int variationLimit =
+                        Integer.parseInt(sensorInformation[4]);
+                sensor = new CarbonDioxideSensor(reading,
+                        updateFrequency, idealValue, variationLimit);
+
+            } catch (Exception e) {
+                throw new FileFormatException();
+            }
+            } else if (sensorInformation.length == 4) {
+            try {
+                int updateFrequency =
+                        Integer.parseInt(sensorInformation[2]);
+                int capacity = Integer.parseInt(sensorInformation[3]);
+                sensor = new OccupancySensor(reading, updateFrequency,
+                        capacity);
+
+            } catch (Exception e) {
+                throw new FileFormatException();
+            }
+        } else if (sensorInformation.length == 3) {
+            try {
+                int updateFrequency =
+                        Integer.parseInt(sensorInformation[2]);
+                sensor = new NoiseSensor(reading, updateFrequency);
+
+            } catch (Exception e) {
+                throw new FileFormatException();
+            }
+        } else if (sensorInformation.length == 2) {
+            try {
+                sensor = new TemperatureSensor(reading);
+
+            } catch (Exception e) {
+                throw new FileFormatException();
+            }
+        }
+        return sensor;
+    }
 
 
     private static String[] loadSensor(BufferedReader r) throws IOException {
