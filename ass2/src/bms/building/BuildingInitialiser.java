@@ -75,6 +75,12 @@ public class BuildingInitialiser {
             }
             buildings.add(building);
         }
+
+        String checkMissing = reader.readLine();
+        if (checkMissing != null) {
+            throw new FileFormatException();
+        }
+
         return buildings;
     }
 
