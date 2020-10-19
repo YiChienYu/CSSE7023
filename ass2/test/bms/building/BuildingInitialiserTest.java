@@ -20,7 +20,9 @@ public class BuildingInitialiserTest {
     @Test
     public void successful() throws IOException, FileFormatException {
         try {
-            buildings = BuildingInitialiser.loadBuildings("saves/uqstlucia.txt");
+            buildings =
+                    BuildingInitialiser.
+                            loadBuildings("saves/uqstlucia.txt");
         } catch (IOException ioe) {
             throw new IOException();
         } catch (Exception e) {
@@ -30,7 +32,8 @@ public class BuildingInitialiserTest {
 
     @Test (expected = FileFormatException.class)
     public void  floorsNotMatch() throws IOException, FileFormatException {
-            buildings = BuildingInitialiser.loadBuildings("saves/1.txt");
+            buildings =
+                    BuildingInitialiser.loadBuildings("saves/1.txt");
     }
 
     @Test (expected = FileFormatException.class)
@@ -44,7 +47,8 @@ public class BuildingInitialiserTest {
     }
 
     @Test (expected = FileFormatException.class)
-    public void  maintenanceRoomNotExist() throws IOException, FileFormatException {
+    public void  maintenanceRoomNotExist() throws IOException,
+            FileFormatException {
         buildings = BuildingInitialiser.loadBuildings("saves/4.txt");
     }
 
@@ -54,17 +58,20 @@ public class BuildingInitialiserTest {
     }
 
     @Test (expected = FileFormatException.class)
-    public void  maintenanceEmptyOrder() throws IOException, FileFormatException {
+    public void  maintenanceEmptyOrder() throws IOException,
+            FileFormatException {
         buildings = BuildingInitialiser.loadBuildings("saves/6.txt");
     }
 
     @Test (expected = FileFormatException.class)
-    public void  maintenanceRoomTwice() throws IOException, FileFormatException {
+    public void  maintenanceRoomTwice() throws IOException,
+            FileFormatException {
         buildings = BuildingInitialiser.loadBuildings("saves/7.txt");
     }
 
     @Test (expected = FileFormatException.class)
-    public void  maintenanceRoomNotInFloor() throws IOException, FileFormatException {
+    public void  maintenanceRoomNotInFloor() throws IOException,
+            FileFormatException {
         buildings = BuildingInitialiser.loadBuildings("saves/8.txt");
     }
 
@@ -91,5 +98,119 @@ public class BuildingInitialiserTest {
     @Test (expected = FileFormatException.class)
     public void  floorDuplicateRoom() throws IOException, FileFormatException {
         buildings = BuildingInitialiser.loadBuildings("saves/13.txt");
+    }
+
+    @Test (expected = FileFormatException.class)
+    public void  roomTooLarge() throws IOException, FileFormatException {
+        buildings = BuildingInitialiser.loadBuildings("saves/14.txt");
+    }
+
+    @Test (expected = FileFormatException.class)
+    public void  invalidRoomType() throws IOException, FileFormatException {
+        buildings = BuildingInitialiser.loadBuildings("saves/15.txt");
+    }
+
+    @Test (expected = FileFormatException.class)
+    public void  invalidRoomArea() throws IOException, FileFormatException {
+        buildings = BuildingInitialiser.loadBuildings("saves/16.txt");
+    }
+
+    @Test (expected = FileFormatException.class)
+    public void  invalidEvaluatorType() throws IOException,
+            FileFormatException {
+        buildings = BuildingInitialiser.loadBuildings("saves/17.txt");
+    }
+
+    @Test (expected = FileFormatException.class)
+    public void  invalidWeight() throws IOException, FileFormatException {
+        buildings = BuildingInitialiser.loadBuildings("saves/18.txt");
+    }
+
+    @Test (expected = FileFormatException.class)
+    public void  duplicateSensor() throws IOException, FileFormatException {
+        buildings = BuildingInitialiser.loadBuildings("saves/19.txt");
+    }
+
+    @Test (expected = FileFormatException.class)
+    public void  invalidSensorType() throws IOException, FileFormatException {
+        buildings = BuildingInitialiser.loadBuildings("saves/20.txt");
+    }
+
+    @Test (expected = FileFormatException.class)
+    public void  updateFrequencyLessOne() throws IOException,
+            FileFormatException {
+        buildings = BuildingInitialiser.loadBuildings("saves/21.txt");
+    }
+
+    @Test (expected = FileFormatException.class)
+    public void  updateFrequencyGreaterFive() throws IOException,
+            FileFormatException {
+        buildings = BuildingInitialiser.loadBuildings("saves/22.txt");
+    }
+
+    @Test (expected = FileFormatException.class)
+    public void  variationGreaterThanIdealValue() throws IOException,
+            FileFormatException {
+        buildings = BuildingInitialiser.loadBuildings("saves/23.txt");
+    }
+
+    @Test (expected = FileFormatException.class)
+    public void  negativeNumberOfFloor() throws IOException,
+            FileFormatException {
+        buildings = BuildingInitialiser.loadBuildings("saves/24.txt");
+    }
+
+    @Test (expected = FileFormatException.class)
+    public void  negativeNumberOfRoom() throws IOException,
+            FileFormatException {
+        buildings = BuildingInitialiser.loadBuildings("saves/25.txt");
+    }
+
+    @Test (expected = FileFormatException.class)
+    public void  negativeNumberOfSensor() throws IOException,
+            FileFormatException {
+        buildings = BuildingInitialiser.loadBuildings("saves/26.txt");
+    }
+
+    @Test (expected = FileFormatException.class)
+    public void  negativeSensorReadings() throws IOException,
+            FileFormatException {
+        buildings = BuildingInitialiser.loadBuildings("saves/27.txt");
+    }
+
+    @Test (expected = FileFormatException.class)
+    public void  negativeCapacity() throws IOException,
+            FileFormatException {
+        buildings = BuildingInitialiser.loadBuildings("saves/28.txt");
+    }
+
+    @Test (expected = FileFormatException.class)
+    public void  negativeIdealCO2Level() throws IOException,
+            FileFormatException {
+        buildings = BuildingInitialiser.loadBuildings("saves/29.txt");
+    }
+
+    @Test (expected = FileFormatException.class)
+    public void  negativeVariationLimit() throws IOException,
+            FileFormatException {
+        buildings = BuildingInitialiser.loadBuildings("saves/30.txt");
+    }
+
+    @Test (expected = FileFormatException.class)
+    public void  floorLessThanOne() throws IOException,
+            FileFormatException {
+        buildings = BuildingInitialiser.loadBuildings("saves/31.txt");
+    }
+
+    @Test (expected = FileFormatException.class)
+    public void parseFail() throws IOException,
+            FileFormatException {
+        buildings = BuildingInitialiser.loadBuildings("saves/32.txt");
+    }
+
+    @Test (expected = FileFormatException.class)
+    public void emptyLine() throws IOException,
+            FileFormatException {
+        buildings = BuildingInitialiser.loadBuildings("saves/33.txt");
     }
 }

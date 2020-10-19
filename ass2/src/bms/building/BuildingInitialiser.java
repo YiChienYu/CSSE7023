@@ -105,6 +105,11 @@ public class BuildingInitialiser {
 
         try {
             floorNumber = Integer.parseInt(floorInformation[0]);
+
+            if (floorNumber < 1) {
+                throw new FileFormatException();
+            }
+
             width = Double.parseDouble(floorInformation[1]);
             length = Double.parseDouble(floorInformation[2]);
             numberOfRoom = Integer.parseInt(floorInformation[3]);
@@ -207,6 +212,8 @@ public class BuildingInitialiser {
                     evaluator = new RuleBasedHazardEvaluator(forRuleBase);
                 } else if (roomInfo[4].equals("WeightingBased")) {
                     evaluator = new WeightingBasedHazardEvaluator(forWeightBase);
+                } else {
+                    throw new FileFormatException();
                 }
                 room.setHazardEvaluator(evaluator);
             }
@@ -435,9 +442,16 @@ public class BuildingInitialiser {
     }
 
 
-    private static String[] loadSensor(BufferedReader r) throws IOException {
+    private static String[] loadSensor(BufferedReader r) throws IOException,
+            FileFormatException {
+        String[] typesHolder = {"CarbonDioxideSensor", "NoiseSensor",
+                "OccupancySensor", "TemperatureSensor"};
+        List<String> types = Arrays.asList(typesHolder);
         String temp = r.readLine();
         String[] sensorInfo = temp.split(":");
+        if(!types.contains(sensorInfo[0])) {
+            throw new FileFormatException();
+        }
         return sensorInfo;
     }
 }
