@@ -16,6 +16,14 @@ import java.util.List;
  * Utility class that provides a recommendation for a study room in a building.
  */
 public class StudyRoomRecommender {
+    /**
+     * Returns a room in the given building that is most suitable
+     * for study purposes.
+     *
+     * @param building building in which to search for a study room
+     * @return the most suitable study room in the building; null
+     * if there are none
+     */
     public static Room recommendStudyRoom(Building building) {
         List<Floor> floors = building.getFloors();
         List<Room> tempRooms = new ArrayList<>();
@@ -40,6 +48,7 @@ public class StudyRoomRecommender {
         }
 
         for (int i = 0; i < floors.size(); i++) {
+            // Moving to next floor
             previousLevel = currentLevel;
             previousRoom = currentRoom;
             List<Integer> levels = new ArrayList<>();
@@ -76,6 +85,7 @@ public class StudyRoomRecommender {
                 currentRoom = null;
                 currentLevel = -1;
             } else {
+                // Find the room with max comfort level
                 int max = Collections.max(levels);
                 int index = levels.indexOf(max);
                 currentLevel = max;

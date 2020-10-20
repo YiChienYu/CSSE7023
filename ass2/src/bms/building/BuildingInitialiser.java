@@ -39,6 +39,7 @@ public class BuildingInitialiser {
         int numberOfFloor = 0;
         String line;
 
+        // Get the number of buildings.
         while ((line = tempReader.readLine()) != null) {
             if ("".equals(line)) {
                 throw new FileFormatException();
@@ -51,6 +52,7 @@ public class BuildingInitialiser {
             }
         }
 
+        // Initialise building
         for (int j = 0; j < numberOfBuilding; j++) {
             Building building = new Building(reader.readLine());
             try {
@@ -71,6 +73,7 @@ public class BuildingInitialiser {
             buildings.add(building);
         }
 
+        // Check if there is missing information.
         String checkMissing = reader.readLine();
         if (checkMissing != null) {
             throw new FileFormatException();

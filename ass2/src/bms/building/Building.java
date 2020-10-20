@@ -252,12 +252,14 @@ public class Building implements FireDrill, Encodable {
         Floor floor = this.getFloorByNumber(floorNumber);
         int indexOfFloor = 0;
 
+        // Find out which floor it is.
         for (int i = 0; i < floors.size(); i++) {
             if (floors.get(i).getFloorNumber() == floorNumber) {
                 indexOfFloor = i;
             }
         }
 
+        // Check the floors below could handle its' new size
         if ((newWidth * newLength) > floor.calculateArea()) {
             for (int i = 0; i < indexOfFloor; i++){
                 if (floors.get(i).calculateArea() < (newWidth * newLength)) {
@@ -268,6 +270,8 @@ public class Building implements FireDrill, Encodable {
             if ((newWidth * newLength) < floor.occupiedArea()) {
                 throw new FloorTooSmallException();
             }
+
+            // Check if new size could handle the upper floors.
             for (int i = indexOfFloor + 1; i < floors.size(); i++) {
                 if (floors.get(i).calculateArea() > (newWidth * newLength)) {
                     throw new FloorTooSmallException();
