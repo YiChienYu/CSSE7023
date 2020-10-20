@@ -158,8 +158,8 @@ public class MaintenanceSchedule implements TimedItem, Encodable {
      */
     @Override
     public String toString() {
-        return String.format("MaintenanceSchedule: currentRoom=#%s, " +
-                "currentElapsed=%s", currentRoom.getRoomNumber(), timeElapsed);
+        return String.format("MaintenanceSchedule: currentRoom=#%d, " +
+                "currentElapsed=%d", currentRoom.getRoomNumber(), timeElapsed);
     }
 
     /**
