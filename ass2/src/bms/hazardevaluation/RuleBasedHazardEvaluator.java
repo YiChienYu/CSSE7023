@@ -1,6 +1,7 @@
 package bms.hazardevaluation;
 
 import bms.sensors.HazardSensor;
+import bms.sensors.OccupancySensor;
 
 import java.util.List;
 
@@ -30,31 +31,31 @@ public class RuleBasedHazardEvaluator implements HazardEvaluator {
      */
     @Override
     public int evaluateHazardLevel() {
-        float average = 0;
+        float average;
         float multiplier = 1;
 
-        if (sensors.size() == 0) {
+        if (sensors.size() == 0 || sensors == null) {
             return 0;
         } else if (sensors.size() == 1) {
             return sensors.get(0).getHazardLevel();
         } else {
             int total = 0;
-            int num = 0;
+            int numberOfSensor = sensors.size();
             for (int i = 0; i < sensors.size(); i++) {
                 HazardSensor sensor = sensors.get(i);
-                if (sensor.getClass().getSimpleName() != "OccupancySensor") {
-                    if (sensor.getHazardLevel() == 100) {
-                        return 100;
-                    }
-                    total += sensor.getHazardLevel();
-                    num += 1;
-                } else {
-                    multiplier = (float) (sensor.getHazardLevel() / 100);
+                int hazard = sensor.getHazardLevel();
+                if (sensor instanceof OccupancySensor) {
+                    multiplier = ((float) hazard) / 100;
+                    numberOfSensor--;
+                    continue;
                 }
+                total += hazard;
             }
-            average = (float) (total / num);
+            average = (float) (total / numberOfSensor);
+            average = average * multiplier;
+            return (int) (average);
         }
-        return (int) (average * multiplier);
+
     }
 
     /**

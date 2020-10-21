@@ -117,9 +117,10 @@ public class OccupancySensor extends TimedSensor implements HazardSensor,
     public int getComfortLevel() {
         int capacity = this.getCapacity();
         int currentReading = this.getCurrentReading();
-        double comfortLevel = ((capacity - currentReading) / capacity) * 100;
 
-        if (currentReading >= capacity) {
+        // Calculate comfortLevel based on the given formula
+        double comfortLevel = ((capacity - currentReading) / capacity) * 100;
+        if (currentReading > capacity) {
             return 0;
         }
         return (int) comfortLevel;
@@ -136,7 +137,9 @@ public class OccupancySensor extends TimedSensor implements HazardSensor,
         if (!super.equals(obj)) {
             return false;
         }
-
+        if (!(obj instanceof OccupancySensor)) {
+            return false;
+        }
         OccupancySensor sensor = (OccupancySensor) obj;
         if (this.getCapacity() != sensor.getCapacity()) {
             return false;

@@ -103,8 +103,7 @@ public class WeightingBasedHazardEvaluator implements HazardEvaluator {
             int indexOfElement = unSortedNames.indexOf(sortedNames.get(i));
             weightings.add(unSortedWeights.get(indexOfElement));
         }
-
-
+            
         return weightings;
     }
 

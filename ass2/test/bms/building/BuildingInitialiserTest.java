@@ -24,7 +24,7 @@ public class BuildingInitialiserTest {
                             loadBuildings("saves/uqstlucia.txt");
         } catch (IOException ioe) {
             throw new IOException();
-        } catch (Exception e) {
+        } catch (FileFormatException e) {
             throw new FileFormatException();
         }
     }

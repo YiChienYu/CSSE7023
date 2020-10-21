@@ -180,19 +180,19 @@ public class BuildingInitialiser {
 
             if (lengthOfInformation == 4 || (lengthOfInformation == 5 &&
                     roomInfo[4].equals("RuleBased"))) {
-                try {
-                    sensor = BuildingInitialiser.readSensor(sensorInformation);
-                    room.addSensor(sensor);
-                } catch (Exception e) {
-                    throw new FileFormatException();
-                }
-                if (sensorInformation.length == 5) {
+                if (lengthOfInformation == 4) {
                     try {
-                        hazardSensor =
-                                BuildingInitialiser.
-                                        readSensorForRuleBase
-                                                (sensorInformation);
-                        forRuleBase.add(hazardSensor);
+                        sensor = readSensor(sensorInformation);
+                        room.addSensor(sensor);
+                    } catch (Exception e) {
+                        throw new FileFormatException();
+                    }
+                } else if (lengthOfInformation == 5 &&
+                        roomInfo[4].equals("RuleBased")) {
+                    try {
+                        forRuleBase =
+                                readSensorForRuleBase
+                                        (sensorInformation, forRuleBase, room);
                     } catch (Exception e) {
                         throw new FileFormatException();
                     }
@@ -200,26 +200,24 @@ public class BuildingInitialiser {
             } else if (lengthOfInformation == 5 &&
                     roomInfo[4].equals("WeightingBased")) {
                 try {
-                    forWeightBase =
-                            BuildingInitialiser.readSensorForWeightBase
-                                    (sensorInformation,
-                                            forWeightBase, room);
+                    forWeightBase = readSensorForWeightBase
+                            (sensorInformation, forWeightBase, room);
                 } catch (Exception e) {
                     throw new FileFormatException();
                 }
             }
 
         }
-            if (lengthOfInformation == 5) {
-                if (roomInfo[4].equals("RuleBased")) {
-                    evaluator = new RuleBasedHazardEvaluator(forRuleBase);
-                } else if (roomInfo[4].equals("WeightingBased")) {
-                    evaluator = new WeightingBasedHazardEvaluator(forWeightBase);
-                } else {
-                    throw new FileFormatException();
-                }
-                room.setHazardEvaluator(evaluator);
+        if (lengthOfInformation == 5) {
+            if (roomInfo[4].equals("RuleBased")) {
+                evaluator = new RuleBasedHazardEvaluator(forRuleBase);
+            } else if (roomInfo[4].equals("WeightingBased")) {
+                evaluator = new WeightingBasedHazardEvaluator(forWeightBase);
+            } else {
+                throw new FileFormatException();
             }
+            room.setHazardEvaluator(evaluator);
+        }
 
         return room;
     }
@@ -321,11 +319,14 @@ public class BuildingInitialiser {
         return forWeightBase;
     }
 
-    private static HazardSensor readSensorForRuleBase
-            (String[] sensorInformation) throws FileFormatException {
+    private static List<HazardSensor> readSensorForRuleBase
+            (String[] sensorInformation, List<HazardSensor> forRuleBase, Room r)
+            throws FileFormatException {
         String[] readingString = sensorInformation[1].split(",");
         int[] reading = new int[readingString.length];
-        HazardSensor hazardSensor = null;
+        HazardSensor hazardSensor;
+        Sensor sensor;
+        Room room = r;
 
 
         try {
@@ -343,10 +344,12 @@ public class BuildingInitialiser {
                 int idealValue = Integer.parseInt(sensorInformation[3]);
                 int variationLimit =
                         Integer.parseInt(sensorInformation[4]);
-
+                sensor = new CarbonDioxideSensor(reading, updateFrequency,
+                        idealValue, variationLimit);
+                room.addSensor(sensor);
                 hazardSensor = new CarbonDioxideSensor(reading, updateFrequency,
                         idealValue, variationLimit);
-
+                forRuleBase.add(hazardSensor);
             } catch (Exception e) {
                 throw new FileFormatException();
             }
@@ -357,9 +360,12 @@ public class BuildingInitialiser {
                         Integer.parseInt(sensorInformation[2]);
                 int capacity = Integer.parseInt(sensorInformation[3]);
 
-
-                    hazardSensor = new OccupancySensor(reading,
-                            updateFrequency, capacity);
+                sensor = new OccupancySensor(reading,
+                        updateFrequency, capacity);
+                room.addSensor(sensor);
+                hazardSensor = new OccupancySensor(reading,
+                        updateFrequency, capacity);
+                forRuleBase.add(hazardSensor);
 
             } catch (Exception e) {
                 throw new FileFormatException();
@@ -369,20 +375,25 @@ public class BuildingInitialiser {
                 int updateFrequency =
                         Integer.parseInt(sensorInformation[2]);
 
-                    hazardSensor = new NoiseSensor(reading,
-                            updateFrequency);
+                sensor = new NoiseSensor(reading, updateFrequency);
+                room.addSensor(sensor);
+                hazardSensor = new NoiseSensor(reading, updateFrequency);
+                forRuleBase.add(hazardSensor);
 
             } catch (Exception e) {
                 throw new FileFormatException();
             }
         } else if (sensorInformation.length == 2) {
             try {
-                    hazardSensor = new TemperatureSensor(reading);
+                sensor = new TemperatureSensor(reading);
+                room.addSensor(sensor);
+                hazardSensor = new TemperatureSensor(reading);
+                forRuleBase.add(hazardSensor);
             } catch (Exception e) {
                 throw new FileFormatException();
             }
         }
-        return hazardSensor;
+        return forRuleBase;
     }
 
 
@@ -413,7 +424,7 @@ public class BuildingInitialiser {
             } catch (Exception e) {
                 throw new FileFormatException();
             }
-            } else if (sensorInformation.length == 4) {
+        } else if (sensorInformation.length == 4) {
             try {
                 int updateFrequency =
                         Integer.parseInt(sensorInformation[2]);

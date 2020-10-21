@@ -298,13 +298,14 @@ public class Room implements Encodable {
      */
     public RoomState evaluateRoomState() {
         if (this.getSensor("TemperatureSensor") != null) {
+            // Fetch the temperature sensor
             TemperatureSensor sensor =
-                    (TemperatureSensor) this.getSensor("TemperatureSensor");
+                    (TemperatureSensor)
+                            this.getSensor("TemperatureSensor");
             if (sensor.getHazardLevel() == 100) {
                 state = RoomState.EVACUATE;
             }
         }
-
         if (this.fireDrill) {
             state = RoomState.EVACUATE;
         } else if (!(this.fireDrillOngoing()) && this.maintenanceOngoing()) {
@@ -330,6 +331,7 @@ public class Room implements Encodable {
                     Math.abs(this.getArea() - room.getArea()) <= 0.001 &&
                     this.getSensors().size() == room.getSensors().size()) {
                 for (int i = 0; i < this.getSensors().size(); i++) {
+                    // The name of each sensor
                     String name = this.getSensors().get(i).getClass()
                             .getSimpleName();
                     if (room.getSensor(name) == null) {
@@ -337,6 +339,7 @@ public class Room implements Encodable {
                     } else {
                         int index = room.getSensors().
                                 indexOf(room.getSensor(name));
+                        // Check if the two sensors are the same
                         if (!this.getSensors().get(i).
                                 equals(room.getSensors().get(index))) {
                             return false;
@@ -358,7 +361,6 @@ public class Room implements Encodable {
     public int hashCode() {
         int roundedArea = (int) (Math.round(this.getArea() * 100));
         int sensorsHashCode = 0;
-
         for (int i = 0; i < this.getSensors().size(); i++) {
             sensorsHashCode +=
                     sensors.get(i).getClass().getSimpleName().hashCode();

@@ -161,6 +161,7 @@ public class CarbonDioxideSensor extends TimedSensor implements HazardSensor,
      * @return the current comfort level as an integer between 0 and 100
      */
     public int getComfortLevel() {
+        // Calculate the difference between idealValue and current reading
         int difference = Math.abs(this.getIdealValue() -
                 this.getCurrentReading());
         int comfortLevel = (int) (1 - ((difference) / this.getVariationLimit()))
@@ -180,9 +181,10 @@ public class CarbonDioxideSensor extends TimedSensor implements HazardSensor,
         if (!super.equals(obj)) {
             return false;
         }
-
+        if (!(obj instanceof CarbonDioxideSensor)) {
+            return false;
+        }
         CarbonDioxideSensor sensor = (CarbonDioxideSensor) obj;
-
         if (this.getIdealValue() != sensor.getIdealValue() ||
                 this.getVariationLimit() != sensor.getVariationLimit()) {
             return false;

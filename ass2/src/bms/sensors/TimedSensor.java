@@ -180,6 +180,7 @@ public abstract class TimedSensor implements TimedItem, Sensor, Encodable {
      */
     @Override
     public boolean equals(Object obj) {
+        // Check if obj is an instance of TimedSensor
         if (obj instanceof TimedSensor) {
             TimedSensor sensorToCompare = (TimedSensor) obj;
             if (this.updateFrequency != sensorToCompare.getUpdateFrequency()){
@@ -211,12 +212,11 @@ public abstract class TimedSensor implements TimedItem, Sensor, Encodable {
      */
     @Override
     public int hashCode() {
+        // Calculate total of sensor readings
         int temp = 0;
-
         for (int i = 0; i < sensorReadings.length; i++) {
             temp += this.sensorReadings[i];
         }
-
         return this.getClass().getSimpleName().hashCode() +
                 this.getCurrentReading() + temp;
     }
@@ -232,7 +232,6 @@ public abstract class TimedSensor implements TimedItem, Sensor, Encodable {
         for (int i = 0; i < sensorReadings.length; i++) {
             joiner.add(String.valueOf(sensorReadings[i]));
         }
-
         return joiner.toString();
     }
 }

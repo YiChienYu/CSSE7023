@@ -110,8 +110,8 @@ public class NoiseSensor extends TimedSensor implements HazardSensor,
      */
     @Override
     public int getComfortLevel() {
+        // Calculate comfortLevel based on the given formula
         int comfortLevel = (int) ((1 - this.calculateRelativeLoudness()) * 100);
-
         if (comfortLevel < 0) {
             return 0;
         }
@@ -128,7 +128,6 @@ public class NoiseSensor extends TimedSensor implements HazardSensor,
         joiner.add("NoiseSensor");
         joiner.add(super.encode());
         joiner.add(String.valueOf(this.getUpdateFrequency()));
-
         return joiner.toString();
     }
 }
