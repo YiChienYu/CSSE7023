@@ -159,7 +159,6 @@ public class ViewModel {
      * @ass2
      */
     public void tick() {
-        // TODO implement for assignment 2
         if (paused.getValue() != true) {
             int value = ticks.getValue();
             ticks.setValue(value+1);
