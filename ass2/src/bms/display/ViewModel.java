@@ -77,8 +77,10 @@ public class ViewModel {
                     this.save("saves/quicksave.txt");
                 } catch (IOException e) {
                 }
+                break;
             case P :
                 this.togglePause();
+                break;
         }
     }
 
