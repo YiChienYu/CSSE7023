@@ -74,6 +74,7 @@ public class MaintenanceSchedule implements TimedItem, Encodable {
             multiplier = 2;
         }
 
+        // Calculate actual maintenance time
         if (room.getArea() > Room.getMinArea()) {
             double difference = room.getArea() - Room.getMinArea();
             minimumMinute += (0.2 * difference);
@@ -122,6 +123,8 @@ public class MaintenanceSchedule implements TimedItem, Encodable {
                 } else {
                     indexOfNextRoom += 1;
                 }
+
+                // Moving to the next room
                 currentRoom.setMaintenance(true);
                 this.timeElapsed = 0;
             } else {
@@ -146,6 +149,8 @@ public class MaintenanceSchedule implements TimedItem, Encodable {
         } else {
             indexOfNextRoom += 1;
         }
+
+        // Moving to the next room
         currentRoom.setMaintenance(true);
         this.timeElapsed = 0;
     }

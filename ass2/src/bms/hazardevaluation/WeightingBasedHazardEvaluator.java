@@ -80,7 +80,9 @@ public class WeightingBasedHazardEvaluator implements HazardEvaluator {
      * @return weightings
      */
     public List<Integer> getWeightings() {
-        List<Integer> weightings = new ArrayList<Integer>();
+        // Sorted weights
+        List<Integer> weights = new ArrayList<Integer>();
+
         List<Integer> unSortedWeights = new ArrayList<>();
         List<String> sortedNames = new ArrayList<>();
         List<String> unSortedNames = new ArrayList<>();
@@ -101,10 +103,10 @@ public class WeightingBasedHazardEvaluator implements HazardEvaluator {
 
         for (int i = 0; i < sortedNames.size(); i++) {
             int indexOfElement = unSortedNames.indexOf(sortedNames.get(i));
-            weightings.add(unSortedWeights.get(indexOfElement));
+            weights.add(unSortedWeights.get(indexOfElement));
         }
             
-        return weightings;
+        return weights;
     }
 
     /**

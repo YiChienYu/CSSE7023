@@ -46,6 +46,8 @@ public class RuleBasedHazardEvaluator implements HazardEvaluator {
                 int hazard = sensor.getHazardLevel();
                 if (sensor instanceof OccupancySensor) {
                     multiplier = ((float) hazard) / 100;
+
+                    // Exclude OccupancySensor
                     numberOfSensor--;
                     continue;
                 }

@@ -69,7 +69,6 @@ public class ViewModel {
      * @ass2
      */
     public void accept(KeyCode keyCode) {
-        // TODO implement for assignment 2
         switch (keyCode) {
             case Q:
                 System.exit(0);
@@ -77,7 +76,6 @@ public class ViewModel {
                 try {
                     this.save("saves/quicksave.txt");
                 } catch (IOException e) {
-
                 }
             case P :
                 this.togglePause();
@@ -97,7 +95,7 @@ public class ViewModel {
      * @ass2
      */
     public void togglePause() {
-        // TODO implement for assignment 2
+        // Current boolean value
         boolean value = paused.getValue();
         if (value == false) {
             pauseButtonText.setValue("Unpause");
@@ -124,7 +122,6 @@ public class ViewModel {
      * @ass2
      */
     public void save(String filename) throws IOException {
-        // TODO implement for assignment 2
         try (FileWriter writer = new FileWriter(filename)) {
             BufferedWriter bufferedWriter = new BufferedWriter(writer);
             String temp = "";
@@ -134,6 +131,7 @@ public class ViewModel {
                 if (i != buildings.size() - 1) {
                     temp += System.lineSeparator();
                 }
+
                 bufferedWriter.write(temp);
                 bufferedWriter.flush();
             }

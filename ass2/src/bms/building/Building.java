@@ -313,7 +313,6 @@ public class Building implements FireDrill, Encodable {
             }
             return true;
         }
-
         return false;
     }
 

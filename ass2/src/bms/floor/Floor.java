@@ -363,7 +363,6 @@ public class Floor implements FireDrill, Encodable {
         if (roomOrder == null || roomOrder.size() < 1) {
             throw new IllegalArgumentException();
         }
-
         if (roomOrder.size() != 1) {
             for (int i = 0; i < roomOrder.size(); i ++) {
                 if (this.getRoomByNumber(roomOrder.get(i).getRoomNumber()) ==
@@ -389,7 +388,6 @@ public class Floor implements FireDrill, Encodable {
         if (maintenanceSchedule != null) {
             maintenanceSchedule.getCurrentRoom().setMaintenance(false);
         }
-
         maintenanceSchedule = new MaintenanceSchedule(roomOrder);
     }
 
@@ -407,12 +405,13 @@ public class Floor implements FireDrill, Encodable {
             double widthDifference = Math.abs((this.width - floor.getWidth()));
             double lengthDifference = Math.abs(this.length - floor.getLength());
 
-            if (this.floorNumber == floor.floorNumber && widthDifference <= 0.001 &&
-                    lengthDifference <= 0.001 && this.rooms.size() ==
-                    floor.rooms.size()) {
+            if (this.floorNumber == floor.floorNumber &&
+                    widthDifference <= 0.001 &&
+                    lengthDifference <= 0.001 &&
+                    this.rooms.size() == floor.rooms.size()) {
                 for (int i = 0; i < this.rooms.size(); i++) {
-                    if (floor.getRoomByNumber(this.rooms.get(i).getRoomNumber()) !=
-                            null) {
+                    if (floor.getRoomByNumber
+                            (this.rooms.get(i).getRoomNumber()) != null) {
                         if (!floor.getRoomByNumber(this.rooms.get(i).
                                 getRoomNumber()).equals(this.rooms.get(i))) {
                             return false;
@@ -433,14 +432,14 @@ public class Floor implements FireDrill, Encodable {
     @Override
     public int hashCode() {
         int width = (int) this.width * 100;
-        int lenght = (int) this.length * 100;
+        int length = (int) this.length * 100;
         int roomsHashCode = 0;
 
         for(Room r : rooms) {
             roomsHashCode += r.hashCode();
         }
 
-        return floorNumber + width + lenght + rooms.size() + roomsHashCode;
+        return floorNumber + width + length + rooms.size() + roomsHashCode;
     }
 
     /**
@@ -464,7 +463,6 @@ public class Floor implements FireDrill, Encodable {
         for (int i = 0; i < rooms.size(); i++) {
            joiner.add(rooms.get(i).encode());
         }
-
 
         return joiner.toString();
     }
